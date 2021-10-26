@@ -8,7 +8,6 @@
 ## Table of Contents
 - [Overview](#overview)
 - [Requirements](#requirements)
-- [Frameworks/Libraries](#frameworks)
 - [Integrating with OpenAPI Generator](#OpenAPI_Generator)
 - [Configuration](#configuration)
 - [Use-Cases](#use-cases)
@@ -38,28 +37,54 @@ To call these APIs, consumer key and .p12 file required from your project on Mas
 OpenAPI Generator generates API client libraries from OpenAPI Specs. It provides generators and library templates for supporting multiple languages and frameworks.
 Check [Generating and Configuring a Mastercard API Client](https://developer.mastercard.com/platform/documentation/security-and-authentication/generating-and-configuring-a-mastercard-api-client/) to know more about how to generate a simple API client for consuming APIs.
 
+See also:
 
-### Configuring Payload Encryption
-The [Mastercard Encryption Library](https://github.com/Mastercard/client-encryption-java) provides interceptor class you can use when configuring your API client. This [interceptor](https://github.com/Mastercard/client-encryption-java#usage-of-the-okhttpfieldlevelencryptioninterceptor-openapi-generator-4xy) will encrypt the payload before sending the request.
+- [OpenAPI Generator (maven Plugin)](https://mvnrepository.com/artifact/org.openapitools/openapi-generator-maven-plugin)
+- [OpenAPI Generator (executable)](https://mvnrepository.com/artifact/org.openapitools/openapi-generator-cli)
+- [CONFIG OPTIONS for java](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/java.md)
 
-**Encryption Config**
+### OpenAPI Generator Plugin Configuration
+
 ```
-FieldLevelEncryptionConfig config = FieldLevelEncryptionConfigBuilder
-                    .aFieldLevelEncryptionConfig()
-                    .withEncryptionCertificate(cert)
-                    .withEncryptionPath("$", "$")
-                    .withEncryptedValueFieldName("encryptedData")
-                    .withEncryptedKeyFieldName("encryptedKey")
-                    .withOaepPaddingDigestAlgorithmFieldName("oaepHashingAlgorithm")
-                    .withOaepPaddingDigestAlgorithm("SHA-256")
-                    .withEncryptionKeyFingerprintFieldName("publicKeyFingerprint")
-                    .withIvFieldName("iv")
-                    .withFieldValueEncoding(FieldLevelEncryptionConfig.FieldValueEncoding.HEX)
-                    .build();
+<plugin>
+    <groupId>org.openapitools</groupId>
+    <artifactId>openapi-generator-maven-plugin</artifactId>
+    <version>${openapi-generator.version}</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+            <configuration>
+                <inputSpec>${project.basedir}/src/main/resources/elevate-accelerator-proxy-services.yaml</inputSpec>
+                <generatorName>java</generatorName>
+                <library>okhttp-gson</library>
+                <generateApiTests>false</generateApiTests>
+                <generateModelTests>false</generateModelTests>
+                <configOptions>
+                    <sourceFolder>src/gen/main/java</sourceFolder>
+                    <dateLibrary>java8</dateLibrary>
+                </configOptions>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
 ```
 
-See also: 
-- [Securing Sensitive Data Using Payload Encryption](https://developer.mastercard.com/platform/documentation/security-and-authentication/securing-sensitive-data-using-payload-encryption/).
+### Generating The API Client Sources
+Now that you have all the dependencies you need, you can generate the sources. To do this, use one of the following two methods:
+
+```Using IDE```
+
+- **Method 1** <br>
+In IntelliJ IDEA, open the Maven window (View > Tool Windows > Maven). Click the icons ```Reimport All Maven Projects``` and ```Generate Sources and Update Folders for All Projects```
+
+- **Method 2** <br>
+In the same menu, navigate to the commands ({Project name} > Lifecycle), select ```clean``` and ```compile``` then click the icon ```Run Maven Build```.
+
+```Using Terminal```
+
+Navigate to the root directory of the project within a terminal window and execute ```mvn clean compile``` command.
 
 ## Configuration <a name="configuration"></a>
 1. Create your account on [Mastercard Developers](https://developer.mastercard.com/) if you don't have it already.

@@ -52,6 +52,7 @@ public final class RequestHelper {
     private static String propertyFile = "application.properties";
 
     private static final Logger logger = Logger.getLogger(RequestHelper.class.getName());
+    private static Gson gson = new Gson();
 
     private RequestHelper(){}
 
@@ -91,7 +92,6 @@ public final class RequestHelper {
                         getEncryptionConfig(prop))).addInterceptor(
                 new OkHttpOAuth1Interceptor(prop.getProperty(CONSUMER_KEY), getPrivateKey()))
                 .build();
-        logger.info("Calling API: " + prop.getProperty(BASE_URL));
         return new ApiClient().setHttpClient(client).setBasePath(prop.getProperty(BASE_URL));
     }
 
@@ -107,12 +107,10 @@ public final class RequestHelper {
     }
 
     public static CheckEligibility getCheckEligibilityPayload() {
-        Gson gson = new Gson();
         return gson.fromJson(CHECK_ELIGIBILITY_PAYLOAD, CheckEligibility.class);
     }
 
     public static Redemptions getRedemptionsPayload() {
-        Gson gson = new Gson();
         return gson.fromJson(REDEMPTIONS_PAYLOAD, Redemptions.class);
     }
 

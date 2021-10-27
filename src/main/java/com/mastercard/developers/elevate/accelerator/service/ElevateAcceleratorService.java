@@ -15,6 +15,7 @@ public class ElevateAcceleratorService {
 
     private final Logger logger = Logger.getLogger(ElevateAcceleratorService.class.getName());
 
+    private static final String BASE_URL = "mastercard.elevate.client.api.base.path";
     private static final String CHECK_ELIGIBILITY = "checkEligibility";
     private static final String REDEMPTION = "redemption";
     private static final String CHECKING_ELIGIBILITY = "CHECKING ELIGIBILITY";
@@ -38,6 +39,10 @@ public class ElevateAcceleratorService {
     private void checkEligibility(ElevateApi elevateApi) {
         try {
             CheckEligibility checkEligibility = RequestHelper.getCheckEligibilityPayload();
+            logger.info( "\nRequest API: " + RequestHelper.getProperty(BASE_URL) + "/eligibilities \n" +
+                    "Source: checkEligibility \n" +
+                    "Request Payload : " + new Gson().toJson(maskPayload(checkEligibility))
+            );
             Eligibility eligibility = elevateApi.checkEligibility(checkEligibility);
             logResponse(eligibility);
         }catch (ApiException exception){
@@ -49,6 +54,10 @@ public class ElevateAcceleratorService {
     private void redemption(ElevateApi elevateApi) {
         try {
             Redemptions redemptions = RequestHelper.getRedemptionsPayload();
+            logger.info( "\nRequest API: " + RequestHelper.getProperty(BASE_URL) + "/redemptions \n" +
+                    "Source: redemption \n" +
+                    "Request Payload : " + new Gson().toJson(maskPayload(redemptions))
+            );
             RedemptionInfo redemptionInfo = elevateApi.createRedemption(redemptions);
             logResponse(redemptionInfo);
         }catch (ApiException exception){
@@ -79,5 +88,29 @@ public class ElevateAcceleratorService {
                 + gson.toJson(response)
                 + "\n--------------------------------------------------------------------\n";
         logger.info(responseString);
+    }
+
+    private CheckEligibility maskPayload(CheckEligibility checkEligibility){
+        CheckEligibility mask = new CheckEligibility();
+        mask.setPartnerId(checkEligibility.getPartnerId());
+        mask.setCreditCardNumber(checkEligibility.getCreditCardNumber());
+        mask.setCardHolderName(checkEligibility.getCardHolderName());
+        mask.setProductId(checkEligibility.getProductId());
+        mask.setEmail(checkEligibility.getEmail());
+        mask.setAccessCode(checkEligibility.getAccessCode());
+        mask.setCreditCardNumber("************" + checkEligibility.getCreditCardNumber().substring(12,16));
+        return mask;
+    }
+
+    private Redemptions maskPayload(Redemptions redemptions){
+        Redemptions mask = new Redemptions();
+        mask.setPartnerId(redemptions.getPartnerId());
+        mask.setEligibilityId(redemptions.getEligibilityId());
+        mask.setSpendAmount(redemptions.getSpendAmount());
+        mask.setSpendCurrencyCode(redemptions.getSpendCurrencyCode());
+        mask.setBenefitAmountGiven(redemptions.getBenefitAmountGiven());
+        mask.setBenefitCurrencyCode(redemptions.getBenefitCurrencyCode());
+        mask.setCreditCardNumber("************" + redemptions.getCreditCardNumber().substring(12,16));
+        return mask;
     }
 }

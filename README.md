@@ -113,7 +113,7 @@ More details can be found [here](https://developer.mastercard.com/elevate/docume
 
 ## Execute the Use-Cases   <a name="execute-the-use-cases"></a>
 Below are the APIs exposed by this application:  
-       - POST <Host>/elevate/eligibility      
+       - POST <Host>/elevate/eligibilities      
        - POST <Host>/elevate/redemptions            
 
 Once you have added the correct properties, you are ready to build the application. You can do this by navigating to the project’s base directory from the terminal and then by running the following command.

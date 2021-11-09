@@ -101,7 +101,7 @@ Navigate to the root directory of the project within a terminal window and execu
 
 ## Use-Cases <a name="use-cases"></a>
 1. **Check Eligibility**    
-Endpoint: "/eligibility".
+Endpoint: "/eligibilities".
 Used to check eligibility of a credit card in elevate program for a specific benefit.
 
 2. **Create Redemptions**    
@@ -113,7 +113,7 @@ More details can be found [here](https://developer.mastercard.com/elevate/docume
 
 ## Execute the Use-Cases   <a name="execute-the-use-cases"></a>
 Below are the APIs exposed by this application:  
-       - POST <Host>/elevate/eligibility      
+       - POST <Host>/elevate/eligibilities      
        - POST <Host>/elevate/redemptions            
 
 Once you have added the correct properties, you are ready to build the application. You can do this by navigating to the project’s base directory from the terminal and then by running the following command.
@@ -123,7 +123,7 @@ Once you have added the correct properties, you are ready to build the applicati
 When the project builds successfully, you can run the following command to start the project  
 - Run ```java -jar target/elevate-accelerator-1.0.0.jar``` command to run the application.  
 - Add argument ```checkEligibility``` or ```redemption``` in above command to execute each api individually: 
-    * For example, run ```java -jar target/elevate-accelerator-1.0.0.jar checkEligibility``` command to execute the ```/eligibility``` api,
+    * For example, run ```java -jar target/elevate-accelerator-1.0.0.jar checkEligibility``` command to execute the ```/eligibilities``` api,
     * Run ```java -jar target/elevate-accelerator-1.0.0.jar redemption``` command to execute the ```/redemption``` api.
                                                                                
 **NOTE:**   

@@ -2,27 +2,28 @@ openapi: 3.0.3
 info:
   title: Mastercard Elevate Services API
   description: >
-    Open API document for Mastercard Elevate APIs. These APIs can be used to
+    This is an open API document for Mastercard Elevate APIs. These APIs can be used to
     check eligibility for particular offer and redeem the same for a given
     payment card number. For additional documentation and use cases, see
     **[Documentation](https://developer.mastercard.com/elevate/documentation/).**
 
     <br/>
 
-    ---
+      ---
 
-    * **All requests must be signed using OAuth 1.0a. Please refer [Access
-    Mastercard
-    APIs](https://developer.mastercard.com/platform/documentation/using-oauth-1a-to-access-mastercard-apis/).**
+       * **All requests must be signed using OAuth 1.0a. For more information, see [Access
+       Mastercard
+       APIs](https://developer.mastercard.com/platform/documentation/using-oauth-1a-to-access-mastercard-apis/).**
 
-    ---
+       ---
 
-    * **The user must provide their card details and email address while
-    checking eligibility or redemption of benefit. These details must be
-    encrypted before entering transit. Please refer to [Mastercard
-    security](https://mstr.cd/2UPfda0).**
+       * **The user must provide their card details and email address when
+       checking eligibility or redemption of benefit. These details must be
+       encrypted before entering transit. For more information, see [Mastercard
+       security](https://mstr.cd/2UPfda0).**
 
-    ---
+       ---
+
   termsOfService: 'https://developer.mastercard.com/terms-of-use'
   contact:
     name: API Support

@@ -49,7 +49,7 @@ paths:
       tags:
         - Elevate
       description: >
-        This endpoint checks whether provided payment card is eligible for
+        This endpoint checks whether provided credit card is eligible for
         benefit or not. If eligible then generate and return eligibility
         id which needs to be provided as an input into `redemptions` endpoint.
       operationId: checkEligibility
@@ -68,7 +68,7 @@ paths:
   /redemptions:
     post:
       summary: >-
-        Used to create a redemption for a payment card that was previously
+        Used to create a redemption for a credit card that was previously
         enrolled through the eligibilities resource.
       tags:
         - Elevate
@@ -316,7 +316,7 @@ components:
     Eligibility:
       description: >-
         The response object that contains eligibility information for a given
-        payment card.
+        credit card.
       content:
         application/json:
           schema:
@@ -335,9 +335,9 @@ components:
               $ref: '#/components/examples/RedemptionInfo'
     EligibilitiesBadRequestError:
       description: >-
-        This response code is returned when one or more request parameters is
-        either missing or is invalid. A caller should update his request as per
-        error details before trying again.
+        This response code is returned when one or more request parameters are
+        either missing or are invalid. Before trying again, a caller should update
+        the request as per the error details given.
       content:
         application/json:
           schema:
@@ -349,9 +349,9 @@ components:
               $ref: '#/components/examples/RequestDecryptionError'
     RedemptionBadRequestError:
       description: >-
-        This response code is returned when one or more request parameters is
-        either missing or is invalid. A caller should update his request as per
-        error details before trying again.
+        This response code is returned when one or more request parameters are
+        either missing or are invalid. Before trying again, a caller should update
+        the request as per the error details given.
       content:
         application/json:
           schema:
@@ -360,7 +360,7 @@ components:
             RequestDecryptionError:
               $ref: '#/components/examples/RequestDecryptionError'
     APIAuthorizationError:
-      description: This response code is returned when a API authorization fails.
+      description: This response code is returned when an API authorization fails.
       content:
         application/json:
           schema:
@@ -370,7 +370,7 @@ components:
               $ref: '#/components/examples/APIAuthorizationError'
     InvalidAPIError:
       description: >-
-        This response code is returned when the request URI doesn't match an
+        This response code is returned when the request URL does not match with an
         existing API resource.
       content:
         application/json:

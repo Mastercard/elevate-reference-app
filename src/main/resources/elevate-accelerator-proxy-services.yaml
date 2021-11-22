@@ -370,7 +370,7 @@ components:
               $ref: '#/components/examples/APIAuthorizationError'
     InvalidAPIError:
       description: >-
-        This response code is returned when the request URL does not match with an
+        This response code is returned when the request URI does not match with an
         existing API resource.
       content:
         application/json:

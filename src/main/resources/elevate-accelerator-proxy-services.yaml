@@ -50,7 +50,7 @@ paths:
         - Elevate
       description: >
         This endpoint checks whether provided credit card is eligible for
-        benefit or not. If eligible then generate and return eligibility
+        benefit or not. If eligible, then generate and return eligibility
         id which needs to be provided as an input into `redemptions` endpoint.
       operationId: checkEligibility
       x-mastercard-api-encrypted: true

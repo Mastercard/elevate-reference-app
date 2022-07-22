@@ -48,7 +48,7 @@ paths:
         specific benefit.
       tags:
         - Elevate
-      description: >
+      description: >-
         This endpoint checks whether provided credit card is eligible for
         benefit or not. If eligible, then generate and return eligibility
         id which needs to be provided as an input into `redemptions` endpoint.
@@ -179,6 +179,8 @@ components:
         - partnerId
         - creditCardNumber
         - cardHolderName
+        - expirationYear
+        - expirationMonth
         - productId
         - email
         - accessCode
@@ -195,6 +197,14 @@ components:
           type: string
           example: John Doe
           description: Name of the card holder.
+        expirationYear:
+          type: string
+          example: 24
+          description: Year of card Expiry in 2 digits.
+        expirationMonth:
+          type: string
+          example: 04
+          description: Month of card Expiry in 2 digits.
         productId:
           type: integer
           example: 161041
@@ -242,6 +252,29 @@ components:
                 Unique identifier generated in case of card is eligible for
                 particular benefit. This id needs to provide as an input to
                 `redemptions` API.
+            redemptionURL:
+              type: string
+              example: https://www.amazonxxx.com
+              description: >-
+                This field is only presented when the partner program is configured to
+                return redemption info. This is the url where one can redeem benefit.
+            redemptionCode:
+              type: string
+              example: k86n7a7
+              description: >-
+                This field is only presented when the partner program is configured to
+                return redemption info. This field along with redemptionURL needed to
+                be passed in redemption payload for redeeming benefit.
+            productId:
+              type: string
+              example: 158384
+              description: >-
+                This is the unique id associated with each product.
+            accessCode:
+              type: string
+              example: amazon
+              description: >-
+                This is the access code associated with each product.
     RedemptionInfo:
       title: RedemptionInfo
       type: object
@@ -275,6 +308,13 @@ components:
         - spendCurrencyCode
         - benefitAmountGiven
         - benefitCurrencyCode
+        - externalIdentifier
+        - redemptionCode
+        - redemptionURL
+        - isDefaultCardOnFile
+        - benefitStartTime
+        - benefitEndTime
+        - redeemedTime
       properties:
         partnerId:
           type: integer
@@ -304,6 +344,36 @@ components:
           type: string
           example: USD
           description: currency code of benefit amount.
+        externalIdentifier:
+          type: string
+          example: XXX
+          description: External Identifier for each product.
+        redemptionCode:
+          type: string
+          example: k86n7a7
+          description: This field is only presented when the partner program is configured
+            to return redemption info.
+        redemptionURL:
+          type: string
+          example: https://www.amazonxxx.com
+          description: This field is only presented when the partner program is configured to
+            return redemption info. This is the url where one can redeem benefit.
+        isDefaultCardOnFile:
+          type: integer
+          example: 1
+          description: This field indicates if the given card is default or not.
+        benefitStartTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time when a benfit becomes available for redemption.
+        benefitEndTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time by when a benfit can be availed for redemption.
+        redeemedTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time when a benfit is actually redeemed.
       example:
         partnerId: 10
         creditCardNumber: '5555555555554444'
@@ -312,6 +382,13 @@ components:
         spendCurrencyCode: USD
         benefitAmountGiven: 50.99
         benefitCurrencyCode: USD
+        externalIdentifier: XXX
+        redemptionCode: k86n7a7
+        redemptionURL: https://www.amazonxxx.com
+        isDefaultCardOnFile: 1
+        benefitStartTime: 2022-05-04T00:00:00Z
+        benefitEndTime: 2023-05-04T00:00:00Z
+        redeemedTime: 2023-03-04T00:00:00Z
   responses:
     Eligibility:
       description: >-
@@ -336,7 +413,7 @@ components:
     EligibilitiesBadRequestError:
       description: >-
         This response code is returned when one or more request parameters are
-        either missing or are invalid. Before trying again, a caller should update 
+        either missing or are invalid. Before trying again, a caller should update
         the request as per the given error details.
       content:
         application/json:
@@ -350,7 +427,7 @@ components:
     RedemptionBadRequestError:
       description: >-
         This response code is returned when one or more request parameters are
-        either missing or are invalid. Before trying again, a caller should update 
+        either missing or are invalid. Before trying again, a caller should update
         the request as per the given error details.
       content:
         application/json:

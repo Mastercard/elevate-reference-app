@@ -19,12 +19,19 @@ class RequestHelperTest {
 
     private static final String VALUE_BASE_URL = "https://sandbox.api.mastercard.com/elevate";
 
-    private static final int PARTNER_ID = 512;
-    private static final String CREDIT_CARD_NUMBER = "5555555555554444";
-    private static final int PRODUCT_ID = 161041;
     private static final String ACCESS_CODE = "ae-amazonprime";
     private static final String CURRENCY_CODE = "USD";
-    private static final String ELIGIBILITY_ID = "25161_161041_1179";
+    private static final String CARDHOLDER_NAME = "A K Chauhan";
+    private static final String EMAIL = "ak.chauhan@hotmail.com";
+    private static final String EXPIRY_MONTH = "04";
+    private static final String EXPIRY_YEAR = "24";
+    private static final String BENEFIT_END_TIME = "2023-05-04T00:00:00Z";
+    private static final String BENEFIT_START_TIME = "2022-05-04T00:00:00Z";
+    private static final String BENEFIT_REDEMPTION_TIME = "2023-04-04T00:00:00Z";
+    private static final String EXTERNAL_IDENTIFIER = "xxx";
+    private static final String REDEMPTION_CODE = "k86n7a7";
+    private static final String REDEMPTION_URL = "https://www.amazonxxx.com";
+    private static final int IS_DEFAULT_CARD_ON_FILE = 1;
     private static final BigDecimal SPEND_AMOUNT = BigDecimal.valueOf(109.99);
     private static final BigDecimal BENEFIT_AMOUNT_GIVEN = BigDecimal.valueOf(50.99);
 
@@ -51,21 +58,26 @@ class RequestHelperTest {
     void testCheckEligibilityPayload(){
         CheckEligibility checkEligibilityPayload = RequestHelper.getCheckEligibilityPayload();
         assertEquals(ACCESS_CODE, checkEligibilityPayload.getAccessCode());
-        assertEquals(CREDIT_CARD_NUMBER, checkEligibilityPayload.getCreditCardNumber());
-        assertEquals(PARTNER_ID, checkEligibilityPayload.getPartnerId());
-        assertEquals(PRODUCT_ID, checkEligibilityPayload.getProductId());
+        assertEquals(CARDHOLDER_NAME, checkEligibilityPayload.getCardHolderName());
+        assertEquals(EMAIL, checkEligibilityPayload.getEmail());
+        assertEquals(EXPIRY_MONTH, checkEligibilityPayload.getExpirationMonth());
+        assertEquals(EXPIRY_YEAR, checkEligibilityPayload.getExpirationYear());
     }
 
     @Test
     void testRedemptionsPayload(){
         Redemptions redemptions = RequestHelper.getRedemptionsPayload();
         assertEquals(CURRENCY_CODE, redemptions.getBenefitCurrencyCode());
-        assertEquals(CREDIT_CARD_NUMBER, redemptions.getCreditCardNumber());
-        assertEquals(PARTNER_ID, redemptions.getPartnerId());
         assertEquals(BENEFIT_AMOUNT_GIVEN, redemptions.getBenefitAmountGiven());
-        assertEquals(ELIGIBILITY_ID, redemptions.getEligibilityId());
         assertEquals(SPEND_AMOUNT, redemptions.getSpendAmount());
         assertEquals(CURRENCY_CODE, redemptions.getSpendCurrencyCode());
+        assertEquals(BENEFIT_END_TIME, redemptions.getBenefitEndTime());
+        assertEquals(BENEFIT_START_TIME, redemptions.getBenefitStartTime());
+        assertEquals(EXTERNAL_IDENTIFIER, redemptions.getExternalIdentifier());
+        assertEquals(BENEFIT_REDEMPTION_TIME, redemptions.getRedeemedTime());
+        assertEquals(REDEMPTION_CODE, redemptions.getRedemptionCode());
+        assertEquals(REDEMPTION_URL, redemptions.getRedemptionURL());
+        assertEquals(IS_DEFAULT_CARD_ON_FILE, redemptions.getIsDefaultCardOnFile());
     }
 
     @Test

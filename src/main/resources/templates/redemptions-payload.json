@@ -1,9 +1,16 @@
 {
-  "partnerId": 512,
-  "creditCardNumber": 5555555555554444,
-  "eligibilityId": "25161_161041_1179",
+  "partnerId": 669,
+  "creditCardNumber": 5555555555556001,
+  "eligibilityId": "129017_161041_1179",
   "spendAmount": 109.99,
   "spendCurrencyCode": "USD",
   "benefitAmountGiven": 50.99,
-  "benefitCurrencyCode": "USD"
+  "benefitCurrencyCode": "USD",
+  "externalIdentifier": "xxx",
+  "redemptionCode": "k86n7a7",
+  "redemptionURL": "https://www.amazonxxx.com",
+  "isDefaultCardOnFile": "1",
+  "benefitStartTime": "2022-05-04T00:00:00Z",
+  "benefitEndTime": "2023-05-04T00:00:00Z",
+  "redeemedTime": "2023-04-04T00:00:00Z"
 }

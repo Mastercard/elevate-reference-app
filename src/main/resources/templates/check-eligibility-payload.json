@@ -1,8 +1,10 @@
 {
-  "partnerId": 512,
-  "creditCardNumber": 5555555555554444,
-  "cardHolderName": "Ajit Chauhan",
+  "partnerId": 669,
+  "creditCardNumber": 5555555555556001,
+  "cardHolderName": "A K Chauhan",
+  "expirationYear": "24",
+  "expirationMonth": "04",
   "productId": 161041,
-  "email": "ajit.chauhan@mastercard.com",
+  "email": "ak.chauhan@hotmail.com",
   "accessCode": "ae-amazonprime"
 }

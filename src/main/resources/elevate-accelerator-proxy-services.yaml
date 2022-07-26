@@ -254,7 +254,7 @@ components:
                 `redemptions` API.
             redemptionURL:
               type: string
-              example: https://www.amazonxxx.com
+              example: https://www.amazonprime.com
               description: >-
                 This field is only presented when the partner program is configured to
                 return redemption info. This is the url where one can redeem benefit.
@@ -346,7 +346,7 @@ components:
           description: currency code of benefit amount.
         externalIdentifier:
           type: string
-          example: XXX
+          example: EXT_ID-9a5k7
           description: External Identifier for each product.
         redemptionCode:
           type: string
@@ -355,7 +355,7 @@ components:
             to return redemption info.
         redemptionURL:
           type: string
-          example: https://www.amazonxxx.com
+          example: https://www.amazonprime.com
           description: This field is only presented when the partner program is configured to
             return redemption info. This is the url where one can redeem benefit.
         isDefaultCardOnFile:
@@ -382,9 +382,9 @@ components:
         spendCurrencyCode: USD
         benefitAmountGiven: 50.99
         benefitCurrencyCode: USD
-        externalIdentifier: XXX
+        externalIdentifier: EXT_ID-9a5k7
         redemptionCode: k86n7a7
-        redemptionURL: https://www.amazonxxx.com
+        redemptionURL: https://www.amazonprime.com
         isDefaultCardOnFile: 1
         benefitStartTime: 2022-05-04T00:00:00Z
         benefitEndTime: 2023-05-04T00:00:00Z

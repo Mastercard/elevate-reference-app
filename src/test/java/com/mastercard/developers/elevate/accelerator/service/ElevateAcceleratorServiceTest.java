@@ -30,6 +30,10 @@ class ElevateAcceleratorServiceTest {
     private static final String REDEMPTION = "redemption";
     private static final String OK = "OK";
     private static final String ID = "390008_0265_2921";
+    private static final String AMAZON = "amazon";
+    private static final String PRODUCT_ID = "158384";
+    private static final String REDEMPTION_CODE = "k86n7a7";
+    private static final String REDEMPTION_URL = "https://www.amazonprime.com";
 
     @BeforeEach
     void init() {
@@ -73,6 +77,10 @@ class ElevateAcceleratorServiceTest {
         EligibilityData data = new EligibilityData();
         data.setEligible(true);
         data.setEligibilityId(ID);
+        data.setAccessCode(AMAZON);
+        data.setProductId(PRODUCT_ID);
+        data.setRedemptionCode(REDEMPTION_CODE);
+        data.setRedemptionURL(REDEMPTION_URL);
         eligibility.setData(data);
         return eligibility;
     }

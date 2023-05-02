@@ -19,7 +19,7 @@
 
 ## Overview  <a name="overview"></a>
 This is a reference application to demonstrate how Elevate Accelerator Proxy APIs can be used.
-To call these APIs, consumer key and .p12 file required from your project on Mastercard Developers.
+To call these APIs, a consumer key and .p12 file are required from your project on Mastercard Developers.
 
 ## Requirements  <a name="requirements"></a>
 
@@ -31,6 +31,10 @@ To call these APIs, consumer key and .p12 file required from your project on Mas
 ## Frameworks/Libraries <a name="frameworks"></a>
 - Apache Maven
 - OpenAPI Generator
+
+##Pre-requisites
+
+To start using the Elevate services you will first have to be onboarded on our sandbox environment. Refer to the [Sandbox Access](https://developer.mastercard.com/elevate/documentation/tutorials-and-guides/request-sandbox-access) documentation.
 
 ## Integrating with OpenAPI Generator <a name="OpenAPI_Generator"></a>
 
@@ -72,15 +76,7 @@ See also:
 ```
 
 ### Generating The API Client Sources
-Now that you have all the dependencies you need, you can generate the sources. To do this, use one of the following two methods:
-
-```Using IDE```
-
-- **Method 1** <br>
-In IntelliJ IDEA, open the Maven window (View > Tool Windows > Maven). Click the icons ```Reimport All Maven Projects``` and ```Generate Sources and Update Folders for All Projects```
-
-- **Method 2** <br>
-In the same menu, navigate to the commands ({Project name} > Lifecycle), select ```clean``` and ```compile``` then click the icon ```Run Maven Build```.
+Now that you have all the dependencies you need, you can generate the sources. To do this, use one of the following methods:
 
 ```Using Terminal```
 
@@ -90,45 +86,51 @@ Navigate to the root directory of the project within a terminal window and execu
 1. Create your account on [Mastercard Developers](https://developer.mastercard.com/) if you don't have it already.
 2. Create a new project here and add ***Elevate*** to it and click continue.
 3. Download Sandbox Signing Key, a ```.p12``` file will be downloaded.
-4. In the Client Encryption Keys section of the dashboard, click on the ```Actions``` dropdown and download the client encryption key, a ``.pem``` file will be downloaded. 
+4. In the Client Encryption Keys section of the dashboard, click on the ```Actions``` dropdown and download the client encryption key, a ```.pem``` file will be downloaded.
 5. Copy the downloaded ```.p12``` and ```.pem``` files to ```src/main/resources``` folder in your code.
 6. Open ```src/main/resources/application.properties``` and configure:
-    - ```mastercard.elevate.client.p12.path ```- Path to keystore (.p12) file, just change the name as per the downloaded file in step 5. 
+    - ```mastercard.elevate.client.p12.path ```- Path to keystore (.p12) file, just change the name as per the downloaded file in step 5.
     - ```mastercard.elevate.client.ref.app.consumer.key``` - Copy the Consumer key from "Sandbox/Production Keys" section on your project page
     - ```mastercard.elevate.client.ref.app.keystore.alias``` - Alias of your key. Default key alias for the sandbox is ```keyalias```.
     - ```mastercard.elevate.client.ref.app.keystore.password``` -  Password of your Keystore. Default keystore password for sandbox project is ```keystorepassword```.
     - ```mastercard.elevate.client.ref.app.encryption.file ```- Path to encryption key (.pem) file, just change the name as per the downloaded file in step 5, e.g. ```src/main/resources/<fileName>.pem```.
 
 ## Use-Cases <a name="use-cases"></a>
-1. **Check Eligibility**    
-Endpoint: "/eligibilities".
-Used to check eligibility of a credit card in elevate program for a specific benefit.
+1. **Benefits**
+   Endpoint: "/benefits".
+   Used to get benefits available to the merchant.
 
-2. **Create Redemptions**    
-Endpoint: "/redemptions".
-Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource.
+2. **Check Eligibility**    
+   Endpoint: "/eligibility".
+   Used to check eligibility of a credit card in elevate program for a specific benefit.
 
-More details can be found [here](https://developer.mastercard.com/elevate/documentation/use-cases/).    
+3. **Create Redemptions**    
+   Endpoint: "/redemptions".
+   Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource.
+
+
+More details can be found [here](https://developer.mastercard.com/elevate/documentation/use-cases/).
 
 
 ## Execute the Use-Cases   <a name="execute-the-use-cases"></a>
-Below are the APIs exposed by this application:  
-       - POST <Host>/elevate/eligibilities      
-       - POST <Host>/elevate/redemptions            
+Below are the APIs exposed by this application:
+- GET  <HOST>/elevate/benefits
+- POST <Host>/elevate/eligibility      
+- POST <Host>/elevate/redemptions
 
 Once you have added the correct properties, you are ready to build the application. You can do this by navigating to the project’s base directory from the terminal and then by running the following command.
 
 `mvn clean install`
 
-When the project builds successfully, you can run the following command to start the project  
-- Run ```java -jar target/elevate-accelerator-1.0.0.jar``` command to run the application.  
-- Add argument ```checkEligibility``` or ```redemption``` in above command to execute each api individually: 
-    * For example, run ```java -jar target/elevate-accelerator-1.0.0.jar checkEligibility``` command to execute the ```/eligibilities``` api,
-    * Run ```java -jar target/elevate-accelerator-1.0.0.jar redemption``` command to execute the ```/redemption``` api.
-                                                                               
+When the project builds successfully, you can run the following command to start the project
+- Run ```java -jar target/elevate-accelerator-1.0.0.jar``` command in the terminal to run the application.
+- Open the browser and enter the url ```http://localhost:5001/elevate/``` and you will land on benefits page.
+- Click on ```benefits```, ```eligibility``` or ```redemeptions``` tab and enter the details as required.
+- When clicked on submit you will receive a JSON response for each service.
+
 **NOTE:**   
-    - Update request with valid details in json files under location ```/src/main/resources/templates/``` in order to execute these apis successfully.  
-    - For each new call, you should change the email address,such as, dane+101@ifonly.com or dane+102@ifonly.com. If you use the same email address, you may get an error that the benefit has already been redeemed (this is expected). For each new call, you should change the card number. Use the number generator to generate a number that passes the MOD10/Luhn test. The range of eligible PANs is 5555555555550000 through 5555555555559999.
+- Update the json files located here: ```/src/main/resources/templates/``` with valid request data in order to execute these apis successfully.  
+- For each new call, you should change the email address such as, john.doe@elevate.mastercard.com. If you use the same email address, you may get an error that the benefit has already been redeemed (this is expected). For each new call, you should change the card number. Use the number generator to generate a number that passes the MOD10/Luhn test. The range of eligible PANs is 5555555555550000 through 5555555555559999.
 
 ## Service Documentation <a name="documentation"></a>
 

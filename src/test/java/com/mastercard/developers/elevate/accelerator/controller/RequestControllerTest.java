@@ -26,7 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class RequestControllerTest {
+class RequestControllerTest {
 
 
     @InjectMocks
@@ -43,7 +43,7 @@ public class RequestControllerTest {
 
 
     @BeforeEach
-    void setUp() throws ApiException{
+    void setUp() {
 
     }
 

@@ -7,7 +7,9 @@ import com.mastercard.developer.utils.EncryptionUtils;
 import java.security.cert.Certificate;
 import java.util.Properties;
 import java.util.logging.Logger;
-
+/*
+ * This class is used for encryption of request payload using mastercard Oauth1 protocol
+ */
 public class EncryptionConfigUtil {
 
     private EncryptionConfigUtil(){}

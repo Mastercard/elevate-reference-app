@@ -15,15 +15,14 @@
  */
 package com.mastercard.developers.elevate.accelerator;
 
-import com.mastercard.developers.elevate.accelerator.service.ElevateAcceleratorService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
+@SpringBootApplication
+@ComponentScan(basePackages = "com.mastercard.developers.elevate.accelerator.*")
 public class ElevateAcceleratorDemoApplication {
-
-    private static final ElevateAcceleratorService elevateAcceleratorService = new ElevateAcceleratorService();
-
     public static void main(String[] args) {
-
-        elevateAcceleratorService.callElevateServiceApis(args);
-
+        SpringApplication.run(ElevateAcceleratorDemoApplication.class);
     }
 }

@@ -85,9 +85,9 @@ public final class RequestHelper {
     public static ApiClient signRequest() {
         loadProperties();
         OkHttpClient client = new OkHttpClient().newBuilder().addInterceptor(
-                new OkHttpFieldLevelEncryptionInterceptor(
-                        getEncryptionConfig(prop))).addInterceptor(
-                new OkHttpOAuth1Interceptor(prop.getProperty(CONSUMER_KEY), getPrivateKey()))
+                        new OkHttpFieldLevelEncryptionInterceptor(
+                                getEncryptionConfig(prop))).addInterceptor(
+                        new OkHttpOAuth1Interceptor(prop.getProperty(CONSUMER_KEY), getPrivateKey()))
                 .build();
         return new ApiClient().setHttpClient(client).setBasePath(prop.getProperty(BASE_URL));
     }

@@ -27,7 +27,7 @@ info:
   termsOfService: 'https://developer.mastercard.com/terms-of-use'
   contact:
     name: API Support
-    url: 'https://developer.mastercard.com/'
+    url: 'https://developer.mastercard.com/support'
     email: apisupport@mastercard.com
   version: 1.0.0
 servers:
@@ -84,6 +84,20 @@ paths:
           $ref: '#/components/responses/RedemptionInfo'
         '400':
           $ref: '#/components/responses/RedemptionBadRequestError'
+  /benefits:
+    get:
+      summary: Used to fetch the partner benefit details.
+      tags:
+        - Elevate
+      description: |
+        **This endpoint uses [Mastercard payload encryption](https://mstr.cd/2UPfda0) to encrypt entire payload.Please refer to the API documentation for implementation details.**
+      operationId: getBenefits
+      x-mastercard-api-encrypted: true
+      responses:
+        '200':
+          $ref: '#/components/responses/PartnerBenefitDetails'
+        '404':
+          $ref: '#/components/responses/NotFoundAPIError'
 components:
   requestBodies:
     CheckEligibility:
@@ -191,19 +205,19 @@ components:
           example: 512
         creditCardNumber:
           type: string
-          example: 5555555555553107
+          example: '5555555555553107'
           description: 16 digit full creditCardNumber for which eligibility needs to check.
         cardHolderName:
           type: string
-          example: John Doe
+          example: 'John Doe'
           description: Name of the card holder.
         expirationYear:
           type: string
-          example: 24
+          example: '24'
           description: Year of card Expiry in 2 digits.
         expirationMonth:
           type: string
-          example: 04
+          example: '04'
           description: Month of card Expiry in 2 digits.
         productId:
           type: integer
@@ -211,11 +225,11 @@ components:
           description: Unique identifier of product.
         email:
           type: string
-          example: john.doe@mail.com
+          example: 'john.doe@mail.com'
           description: Email address of card holder.
         accessCode:
           type: string
-          example: ae-amazonprime
+          example: 'MyAC-611-20044'
           description: Code assigned to a benefit for which eligibility needs to check.
       example:
         partnerId: 10
@@ -223,7 +237,9 @@ components:
         cardHolderName: John Doe
         productId: 5467
         email: john.doe@elevate.mastercard.com
-        accessCode: ae-amazonprime
+        accessCode: MyAC-611-20044
+        expirationYear: '24'
+        expirationMonth: '04'
     Eligibility:
       title: Eligibility
       type: object
@@ -234,7 +250,7 @@ components:
       properties:
         msg:
           type: string
-          example: OK
+          example: 'OK'
           description: Contains response message.
         data:
           type: object
@@ -254,25 +270,25 @@ components:
                 `redemptions` API.
             redemptionURL:
               type: string
-              example: https://www.amazonprime.com
+              example: 'https://www.abcmerchant.com'
               description: >-
                 This field is only presented when the partner program is configured to
                 return redemption info. This is the url where one can redeem benefit.
             redemptionCode:
               type: string
-              example: k86n7a7
+              example: 'k86n7a7'
               description: >-
                 This field is only presented when the partner program is configured to
                 return redemption info. This field along with redemptionURL needed to
                 be passed in redemption payload for redeeming benefit.
             productId:
               type: string
-              example: 158384
+              example: '158384'
               description: >-
                 This is the unique id associated with each product.
             accessCode:
               type: string
-              example: amazon
+              example: MyAC-611-20044
               description: >-
                 This is the access code associated with each product.
     RedemptionInfo:
@@ -285,7 +301,7 @@ components:
       properties:
         msg:
           type: string
-          example: OK
+          example: 'OK'
           description: Contains response message.
         data:
           type: object
@@ -296,6 +312,55 @@ components:
               description: >-
                 Unique identifier generated post successful redemption of a
                 benefit.
+    Benefit:
+      title: Benefit
+      type: object
+      description: The object containing benefit data.
+      properties:
+        merchantName:
+          type: string
+          example: 'abcmerchant'
+          description: Name of the merchant.
+        productId:
+          type: integer
+          example: 158384
+          description: Unique identifier of product.
+        accessCode:
+          type: string
+          example: 'MyAC-611-20044'
+          description: Code assigned to a benefit for which eligibility needs to check.
+        active:
+          type: boolean
+          example: true
+          description: Indicates if benefit is active.
+      example:
+        productId: 158384
+        active: true
+        merchantName: 'abcmerchant'
+        accessCode: 'MyAC-611-20044'
+    PartnerBenefitDetails:
+      title: PartnerBenefitDetails
+      type: object
+      description: The response object that contains partner benefit details.
+      required:
+        - msg
+        - data
+      properties:
+        msg:
+          type: string
+          example: "OK"
+          description: Contains response message.
+        data:
+          type: object
+          properties:
+            partnerId:
+              type: string
+              example: '10_7890'
+              description: A unique identifier assigned to the issuer.
+            benefits:
+              type: array
+              items:
+                $ref: '#/components/schemas/Benefit'
     Redemptions:
       title: Redemptions
       type: object
@@ -322,7 +387,7 @@ components:
           description: A unique identifier assigned to the issuer.
         creditCardNumber:
           type: string
-          example: 5555555555553107
+          example: '5555555555553107'
           description: 16 digit full creditCardNumber for which eligibility needs to check.
         eligibilityId:
           type: string
@@ -346,16 +411,16 @@ components:
           description: currency code of benefit amount.
         externalIdentifier:
           type: string
-          example: EXT_ID-9a5k7
+          example: 'EXT_ID-9a5k7'
           description: External Identifier for each product.
         redemptionCode:
           type: string
-          example: k86n7a7
+          example: 'k86n7a7'
           description: This field is only presented when the partner program is configured
             to return redemption info.
         redemptionURL:
           type: string
-          example: https://www.amazonprime.com
+          example: 'https://www.abcmerchant.com'
           description: This field is only presented when the partner program is configured to
             return redemption info. This is the url where one can redeem benefit.
         isDefaultCardOnFile:
@@ -365,15 +430,15 @@ components:
         benefitStartTime:
           type: string
           example: 2022-05-04T00:00:00Z
-          description: This is the time when a benfit becomes available for redemption.
+          description: This is the time when a benefit becomes available for redemption.
         benefitEndTime:
           type: string
           example: 2022-05-04T00:00:00Z
-          description: This is the time by when a benfit can be availed for redemption.
+          description: This is the time by when a benefit can be availed for redemption.
         redeemedTime:
           type: string
           example: 2022-05-04T00:00:00Z
-          description: This is the time when a benfit is actually redeemed.
+          description: This is the time when a benefit is actually redeemed.
       example:
         partnerId: 10
         creditCardNumber: '5555555555554444'
@@ -384,7 +449,7 @@ components:
         benefitCurrencyCode: USD
         externalIdentifier: EXT_ID-9a5k7
         redemptionCode: k86n7a7
-        redemptionURL: https://www.amazonprime.com
+        redemptionURL: https://www.abcmerchant.com
         isDefaultCardOnFile: 1
         benefitStartTime: 2022-05-04T00:00:00Z
         benefitEndTime: 2023-05-04T00:00:00Z
@@ -410,6 +475,15 @@ components:
           examples:
             RedemptionInfo:
               $ref: '#/components/examples/RedemptionInfo'
+    PartnerBenefitDetails:
+      description: The response object that contains redemption information.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PartnerBenefitDetails'
+          examples:
+            RedemptionInfo:
+              $ref: '#/components/examples/PartnerBenefitDetails'
     EligibilitiesBadRequestError:
       description: >-
         This response code is returned when one or more request parameters are
@@ -456,6 +530,15 @@ components:
           examples:
             InvalidAPIError:
               $ref: '#/components/examples/InvalidAPIError'
+    NotFoundAPIError:
+      description: This response code is returned when the requested resource is not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            InvalidAPIError:
+              $ref: '#/components/examples/ParterDetailsNotFoundError'
   examples:
     Eligibility:
       value:
@@ -468,6 +551,11 @@ components:
         msg: OK
         data:
           redemptionId: '10_7890'
+    PartnerBenefitDetails:
+      value:
+        msg: 'OK'
+        data:
+          partnerId: '10_7890'
     MissingPartnerIdError:
       value:
         Errors:
@@ -505,5 +593,14 @@ components:
             - Source: Elevate API
               ReasonCode: '453'
               Description: Request URI does not match an existing API resource.
+              Recoverable: true
+              Details: ''
+    ParterDetailsNotFoundError:
+      value:
+        Errors:
+          Error:
+            - Source: 'Elevate API'
+              ReasonCode: '404'
+              Description: 'Resource not found for the give Id.'
               Recoverable: true
               Details: ''

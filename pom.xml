@@ -21,6 +21,7 @@
         <lmax.disruptor.version>3.4.2</lmax.disruptor.version>
         <google.code.findbugs.version>3.0.2</google.code.findbugs.version>
         <junit.jupiter.version>5.6.3</junit.jupiter.version>
+        <spring.boot.version>2.7.2</spring.boot.version>
         <org.awaitility.version>3.1.6</org.awaitility.version>
         <apache.maven.plugins.version>3.0.0-M4</apache.maven.plugins.version>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
@@ -28,20 +29,52 @@
         <javax.annotation.version>1.3.2</javax.annotation.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <webjars-bootstrap.version>3.3.6</webjars-bootstrap.version>
+        <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
+        <webjars-jquery.version>2.2.4</webjars-jquery.version>
+        <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
+        <commons.io.version>2.11.0</commons.io.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.coverage.jacoco.xmlReportPaths>
-            ${project.build.directory}/site/jacoco-merged-test-coverage-report/jacoco.xml
+            ${project.build.directory}/site/jacoco-merged-test-coverage-report,${project.build.directory}/site/jacoco-test-coverage-report/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <sonar.coverage.exclusions>
             **/ElevateAcceleratorDemoApplication.java,
-            **/com/mastercard/developers/elevate/accelerator/util/*.java
+            **/com/mastercard/developers/elevate/accelerator/model/*.java
+            **/EncryptionConfigUtil.java
         </sonar.coverage.exclusions>
         <sonar.projectKey>Mastercard_elevate-reference-app</sonar.projectKey>
         <sonar.organization>mastercard</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring.boot.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
@@ -88,18 +121,35 @@
             <version>${client-encryption-version}</version>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.10.19</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+            <version>0.45</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>${webjars-jquery.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery-ui</artifactId>
+            <version>${webjars-jquery-ui.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>${webjars-bootstrap.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
@@ -107,14 +157,20 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>openapi-generator-cli</artifactId>
-            <version>${openapitools.version}</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>${javax.annotation.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>
@@ -179,7 +235,7 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco-maven-plugin.version}</version>
                 <configuration>
-                <argLine>@{argLine} -Xmx1024m -XX:MaxPermSize=512m</argLine>
+                    <argLine>@{argLine} -Xmx1024m -XX:MaxPermSize=512m</argLine>
                 </configuration>
                 <executions>
                     <execution>
@@ -270,6 +326,7 @@
                                     <excludes>
                                         <exclude>${default.package}.generated.*</exclude>
                                         <exclude>*ElevateAcceleratorDemoApplication</exclude>
+                                        <exclude>com.mastercard.developers.elevate.accelerator.model.*</exclude>
                                         <exclude>com.mastercard.developers.elevate.accelerator.util.*</exclude>
                                     </excludes>
                                     <limits>

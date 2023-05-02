@@ -19,7 +19,7 @@ class RequestHelperTest {
 
     private static final String VALUE_BASE_URL = "https://sandbox.api.mastercard.com/elevate";
 
-    private static final String ACCESS_CODE = "ae-amazonprime";
+    private static final String ACCESS_CODE = "MyAC-611-20044";
     private static final String CURRENCY_CODE = "USD";
     private static final String CARDHOLDER_NAME = "A K Chauhan";
     private static final String EMAIL = "ak.chauhan@hotmail.com";
@@ -30,7 +30,7 @@ class RequestHelperTest {
     private static final String BENEFIT_REDEMPTION_TIME = "2023-04-04T00:00:00Z";
     private static final String EXTERNAL_IDENTIFIER = "EXT_ID-9a5k7";
     private static final String REDEMPTION_CODE = "k86n7a7";
-    private static final String REDEMPTION_URL = "https://www.amazonprime.com";
+    private static final String REDEMPTION_URL = "https://www.abcmerchant.com";
     private static final int IS_DEFAULT_CARD_ON_FILE = 1;
     private static final BigDecimal SPEND_AMOUNT = BigDecimal.valueOf(109.99);
     private static final BigDecimal BENEFIT_AMOUNT_GIVEN = BigDecimal.valueOf(50.99);

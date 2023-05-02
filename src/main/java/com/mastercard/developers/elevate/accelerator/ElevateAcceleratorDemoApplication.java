@@ -22,7 +22,9 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = "com.mastercard.developers.elevate.accelerator.*")
 public class ElevateAcceleratorDemoApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(ElevateAcceleratorDemoApplication.class);
     }
+
 }

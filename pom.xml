@@ -36,7 +36,7 @@
         <commons.io.version>2.11.0</commons.io.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.coverage.jacoco.xmlReportPaths>
-            ${project.build.directory}/site/jacoco-merged-test-coverage-report,${project.build.directory}/site/jacoco-test-coverage-report/jacoco.xml
+            ${project.build.directory}/site/jacoco-merged-test-coverage-report/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <sonar.coverage.exclusions>
             **/ElevateAcceleratorDemoApplication.java,
@@ -45,6 +45,7 @@
         </sonar.coverage.exclusions>
         <sonar.projectKey>Mastercard_elevate-reference-app</sonar.projectKey>
         <sonar.organization>mastercard</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>

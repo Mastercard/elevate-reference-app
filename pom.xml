@@ -21,7 +21,7 @@
         <lmax.disruptor.version>3.4.2</lmax.disruptor.version>
         <google.code.findbugs.version>3.0.2</google.code.findbugs.version>
         <junit.jupiter.version>5.6.3</junit.jupiter.version>
-        <spring.boot.version>2.7.2</spring.boot.version>
+        <spring.boot.version>2.7.18</spring.boot.version>
         <org.awaitility.version>3.1.6</org.awaitility.version>
         <apache.maven.plugins.version>3.0.0-M4</apache.maven.plugins.version>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>

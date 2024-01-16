@@ -41,7 +41,7 @@ public final class RequestHelper {
     private static final String KEYSTORE_ALIAS = "mastercard.elevate.client.ref.app.keystore.alias";
     private static final String KEYSTORE_PASSWORD = "mastercard.elevate.client.ref.app.keystore.password";
     private static final String TYPE_PK_CS12 = "PKCS12";
-
+    private static final String READ_TIME_OUT = "mastercard.elevate.client.ref.app.read.timeout";
     private static final String CHECK_ELIGIBILITY_PAYLOAD = resourceContent("templates/" + "check-eligibility-payload.json");
 
     private static final String REDEMPTIONS_PAYLOAD = resourceContent("templates/" + "redemptions-payload.json");
@@ -89,7 +89,7 @@ public final class RequestHelper {
                                 getEncryptionConfig(prop))).addInterceptor(
                         new OkHttpOAuth1Interceptor(prop.getProperty(CONSUMER_KEY), getPrivateKey()))
                 .build();
-        return new ApiClient().setHttpClient(client).setBasePath(prop.getProperty(BASE_URL));
+        return new ApiClient().setHttpClient(client).setBasePath(prop.getProperty(BASE_URL)).setReadTimeout(Integer.parseInt(prop.getProperty(READ_TIME_OUT)));
     }
 
     private static PrivateKey getPrivateKey() {

@@ -12,109 +12,80 @@
 
 
     <script>
-        $(document).ready(function () {
-            var EligibilityApi = '/elevate/eligibilities';
-            var RedemptionApi = '/elevate/redemptions';
+        $(document).ready(function(){
+            var EligibilityApi =  '/elevate/eligibilities';
+            var RedemptionApi  =  '/elevate/redemptions';
             var BenefitsApi = '/elevate/benefits';
-            var TokenApi = '/elevate/payment-tokens';
 
             $('#ben_tab').css("background-color", "#D3D3D3");
 
-            $("#el_reset,#re_reset,#ben_reset,#token_reset").click(function () {
+            $("#el_reset,#re_reset,#ben_reset").click(function (){
                 location.reload();
             });
 
-            function toggle() {
-                if ('eli_tab' == $(".active").attr('id')) {
+            function toggle(){
+                if('eli_tab'==$(".active").attr('id')) {
                     $('.nav-link').toggleClass("noactive").toggleClass("active");
                     $('.tab-pane').toggleClass("fade").toggleClass("active");
                     $('#red_tab').css("background-color", "#D3D3D3");
-                    $('#token_tab').css("background-color", "#D3D3D3");
-                    $('#ben_tab').css("background-color", "#D3D3D3");
                     $('#eli_tab').attr('style', '');
-                } else if ('red_tab' == $(".active").attr('id')) {
+                   // $("#red_tab").css("display","block");
+                  //  $("#eli_tab").css("display","none");
+                }else{
                     $('#eli_tab').css("background-color", "#D3D3D3");
-                    $('#token_tab').css("background-color", "#D3D3D3");
-                    $('#ben_tab').css("background-color", "#D3D3D3");
                     $('#red_tab').attr('style', '');
-                } else if ('token_tab' == $(".active").attr('id')) {
-                    $('#eli_tab').css("background-color", "#D3D3D3");
-                    $('#red_tab').css("background-color", "#D3D3D3");
-                    $('#ben_tab').css("background-color", "#D3D3D3");
-                    $('#token_tab').attr('style', '');
-                }else {
-                    $('#eli_tab').css("background-color", "#D3D3D3");
-                    $('#red_tab').css("background-color", "#D3D3D3");
-                    $('#token_tab').css("background-color", "#D3D3D3");
-                    $('#ben_tab').attr('style', '');
                 }
             };
 
-            $(".nav-link").click(function () {
+            $(".nav-link").click(function(){
                 $('#status_msg').hide();
-                if ('red_tab' === $(".active").attr('id')) {
+                if('red_tab'===$(".active").attr('id')) {
                     $('#red_tab').css("background-color", "#D3D3D3");
                     $('#eli_tab').attr('style', '');
                     $('#ben_tab').attr('style', '');
-                    $('#token_tab').attr('style', '');
                     $('#ben_body').hide();
-                    $('#token_body').hide();
                     $('#eli_body').hide();
                     $('#red_body').show();
-                } else if ('ben_tab' === $(".active").attr('id')) {
+                } else if('ben_tab'===$(".active").attr('id')){
                     $('#ben_tab').css("background-color", "#D3D3D3");
                     $('#eli_tab').attr('style', '');
                     $('#red_tab').attr('style', '');
-                    $('#token_tab').attr('style', '');
                     $('#eli_body').hide();
                     $('#red_body').hide();
                     $('#ben_body').show();
-                    $('#token_body').hide();
-                } else if ('token_tab' === $(".active").attr('id')) {
-                    $('#token_tab').css("background-color", "#D3D3D3");
-                    $('#red_tab').attr('style', '');
-                    $('#ben_tab').attr('style', '');
-                    $('#token_body').show();
-                    $('#ben_body').hide();
-                    $('#red_body').hide();
-                    $('#eli_tab').attr('style', '');
-                    $('#eli_body').hide();
-                } else {
+                }else{
                     $('#eli_tab').css("background-color", "#D3D3D3");
                     $('#red_tab').attr('style', '');
                     $('#ben_tab').attr('style', '');
-                    $('#token_tab').attr('style', '');
                     $('#eli_body').show();
                     $('#ben_body').hide();
                     $('#red_body').hide();
-                    $('#token_body').hide();
-
                 }
             });
 
-            function statusbar(status, msg, message_type) {
+            function statusbar(status,msg,message_type){
                 $('#status_msg').show();
-                if ('show' == status) {
+                if('show'== status){
                     $("#main_div").hide();
                     $("#status_bar").show();
                 }
-                if ('hide' == status) {
+                if('hide'== status){
                     $("#main_div").show();
                     $("#status_bar").hide();
                 }
-                if ('error' == message_type) {
+                if('error'== message_type){
                     $("#main_div").show();
                     $('#status_msg').removeClass('alert-success').addClass(('alert-danger'));
                 }
-                if ('success' == message_type) {
+                if('success'== message_type){
                     $("#main_div").show();
                     $('#status_msg').removeClass('alert-danger').addClass(('alert-success'));
                 }
-                if (msg != null) {
-                    if (document.getElementById("status_msg").innerHTML == '') {
-                        document.getElementById("status_msg").innerHTML = "<li>" + msg + "</li>";
-                    } else {
-                        document.getElementById("status_msg").innerHTML = document.getElementById("status_msg").innerHTML + "<li>" + msg + "</li>";
+                if(msg!=null){
+                    if(document.getElementById("status_msg").innerHTML==''){
+                        document.getElementById("status_msg").innerHTML="<li>"+msg+"</li>";
+                    }else {
+                        document.getElementById("status_msg").innerHTML = document.getElementById("status_msg").innerHTML + "<li>" +msg+ "</li>";
                     }
                 }
             }
@@ -127,168 +98,106 @@
                 $("#benefit-start-time").val('2022-05-04T00:00:00Z');
                 $("#benefit-end-time").val('2023-05-04T00:00:00Z');
                 $("#redeemed-time").val('2023-04-04T00:00:00Z');
-                $("#redemption-url").val('https://www.amazonprime.com');
+                $("#redemption-url").val('https://www.abcmerchant.com');
                 $("#external-identifier").val('EXT_ID-9a5k7');
                 $("#benefit-amount-given").val('50.99');
                 $("#redemption-code").val('k86n7a7');
             }
-
-            function resetBenefitsForm() {
+            function resetBenefitsForm(){
                 $('#benefits_form')[0].reset();
-                document.getElementById('ben_body_out').innerHTML = '';
+                document.getElementById('ben_body_out').innerHTML='';
                 $('#ben_body_card').hide();
-                document.getElementById("status_msg").innerHTML = '';
+                document.getElementById("status_msg").innerHTML='';
             }
-
-            function resetTokenForm() {
-                $('#benefits_form')[0].reset();
-                document.getElementById('ben_body_out').innerHTML = '';
-                $('#ben_body_card').hide();
-                document.getElementById("status_msg").innerHTML = '';
-            }
-
-            function resetRedemptionForm() {
+            function resetRedemptionForm(){
                 $('#redemption_form')[0].reset();
-                document.getElementById('red_body_out').innerHTML = '';
+                document.getElementById('red_body_out').innerHTML='';
                 $('#red_body_card').hide();
                 $('#ben_body_card').hide();
-                document.getElementById("status_msg").innerHTML = '';
+                document.getElementById("status_msg").innerHTML='';
             }
 
-            function resetEligibilityForm() {
+            function resetEligibilityForm(){
                 $('#eligibility_form')[0].reset();
-                document.getElementById('eli_body_out').innerHTML = '';
+                document.getElementById('eli_body_out').innerHTML='';
                 $('#eli_body_card').hide();
                 $('#ben_body_card').hide();
-                document.getElementById("status_msg").innerHTML = '';
+                document.getElementById("status_msg").innerHTML='';
             }
 
-            $('#ben_submit').click(function () {
+            $('#ben_submit').click(function (){
                 resetBenefitsForm();
                 $('#spinner').show();
                 $('#ben_body_card').show();
-                statusbar('show', "Sending request to Benefits API", "success");
+                statusbar('show',"Sending request to Benefits API","success");
                 $.ajax({
-                    url: window.location.origin + BenefitsApi,
+                    url: window.location.origin+BenefitsApi,
                     type: "GET",
-                    success: function (result) {
-                        statusbar('show', "Received Response from Benefits API - Success", "success");
+                    success: function (result){
+                        statusbar('show', "Received Response from Benefits API - Success","success");
                         var jparse = JSON.stringify(result, null, 4);
                         $("#ben_body_out").text(jparse);
                         $('#spinner').hide();
                     },
                     error: function (errors) {
-                        statusbar('show', "Received Response from Benefits API - Error", "error");
+                        statusbar('show', "Received Response from Benefits API - Error","error");
                         $("#ben_body_out").text(errors.responseText);
                         $('#ben_body_card').show();
                         $('#spinner').hide();
                     }
                 });
-                document.getElementById("ben_body").className = 'container tab-pane fade active show';
+                document.getElementById("ben_body").className='container tab-pane fade active show';
             })
-
-            function prepareEligibilityPayload() {
-                let paymentCardData = {
-                    paymentNumber: $("#payment-number").val(),
-                    cardHolderName: $("#card-holder-name").val(),
-                    expirationYear: $("#expiration-year").val(),
-                    expirationMonth: $("#expiration-month").val()
-                }
-                let paymentTokenData = {
-                    token: $("#token").val(),
-                    tokenType: $("#token-type").val(),
-                    pspId: $("#psp-id").val()
-                }
-                let json;
-                if ((paymentCardData.expirationYear !== '' || paymentCardData.expirationMonth !== '' || paymentCardData.cardHolderName !== '' || paymentCardData.paymentNumber !== '')
-                    && (paymentTokenData.tokenType !== '' || paymentTokenData.pspId !== '' || paymentTokenData.token !== '')) {
-                    json = {
-                        partnerId: $("#partner-id").val(),
-                        paymentCard: paymentCardData,
-                        paymentToken: paymentTokenData,
-                        productId: $("#product-id").val(),
-                        email: $("#email-id").val(),
-                        accessCode: $("#access-code").val()
-                    }
-                    return json;
-                }
-                else if (paymentCardData.expirationYear !== '' || paymentCardData.expirationMonth !== '' || paymentCardData.cardHolderName !== '' || paymentCardData.paymentNumber !== '') {
-                    json = {
-                        partnerId: $("#partner-id").val(),
-                        paymentCard: paymentCardData,
-                        productId: $("#product-id").val(),
-                        email: $("#email-id").val(),
-                        accessCode: $("#access-code").val()
-                    }
-                    return json;
-                }
-                else if (paymentTokenData.tokenType !== '' || paymentTokenData.pspId !== '' || paymentTokenData.token !== '') {
-                    json = {
-                        partnerId: $("#partner-id").val(),
-                        paymentToken: paymentTokenData,
-                        productId: $("#product-id").val(),
-                        email: $("#email-id").val(),
-                        accessCode: $("#access-code").val()
-                    }
-                    return json;
-                } else {
-                    statusbar('show', "Either one of Payment Card or payment token is required", "error");
-                    return '';
-                }
-            }
-
-            $("#el_submit").click(function () {
+            $("#el_submit").click(function (){
                 resetRedemptionForm();
                 $('#spinner').show();
-                document.getElementById("eli_body_out").innerHTML = '';
+                document.getElementById("eli_body_out").innerHTML='';
                 $('#eli_body_card').hide();
-                statusbar('show', "Sending request to Eligibility API", "success");
-
-                let json =prepareEligibilityPayload();
-
-                if (json == '') {
-                    $('#spinner').hide();
-                    return false;
-                }
-
+                statusbar('show',"Sending request to Eligibility API","success");
+                var json = {
+                    partnerId: $("#partner-id").val(),
+                    creditCardNumber: $("#credit-card-number").val(),
+                    cardHolderName: $("#card-holder-name").val(),
+                    expirationYear: $("#expiration-year").val(),
+                    expirationMonth: $("#expiration-month").val(),
+                    productId: $("#product-id").val(),
+                    email: $("#email-id").val(),
+                    accessCode: $("#access-code").val()
+                };
                 $.ajax({
-                    url: window.location.origin + EligibilityApi,
+                    url: window.location.origin+EligibilityApi,
                     type: "POST",
                     async: true,
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
                     success: function (result) {
-                        statusbar('show', "Received Response from Eligibility API - Success", "success");
+                        statusbar('show', "Received Response from Eligibility API - Success","success");
                         var jparse = JSON.stringify(result, null, 4);
                         $("#eli_body_out").text(jparse);
                         $('#eli_body_card').show();
                         var res = result.data;
-                        if (res.eligible) {
-                            if ((res.redemptionURL !== '') && (res.redemptionURL !== null) && (res.redemptionURL !== undefined)) {
-                                statusbar('show', "Redemption URL received in Eligibility API Response", "success");
+                        if(res.eligible) {
+                            if((res.redemptionURL !== '') && (res.redemptionURL !== null) && (res.redemptionURL!==undefined)) {
+                                statusbar('show', "Redemption URL received in Eligibility API Response","success");
                                 $('#spinner').hide();
-                            } else {
+                            }else{
                                 statusbar('show', "Credit card is eligible for redemption", "success");
                                 statusbar('show', "Auto populating Partner ID, Credit Card Number, Eligibility ID from Eligibility API", "success");
                                 $("#eligibility-id").val(res.eligibilityId);
                                 $("#partner-id-1").val($("#partner-id").val());
-                                $("#payment-number-1").val($("#payment-number").val());
-                                $("#token-1").val($("#token").val());
-                                $("#token-type-1").val($("#token-type").val());
-                                $("#psp-id-1").val($("#psp-id").val());
+                                $("#credit-card-number-1").val($("#credit-card-number").val());
                                 setRedemptionDefaultValues();
-                                $('#eli_tab').attr('style', '');
-                                $('#red_tab').css("background-color", "#D3D3D3");
+                                toggle();
                                 callRedemptionAjax();
                             }
-                        } else {
-                            statusbar('show', "Credit card is not eligible for redemption", "error");
+                        }else{
+                            statusbar('show', "Credit card is not eligible for redemption","error");
                             $('#spinner').hide();
                         }
                     },
                     error: function (errors) {
-                        statusbar('show', "Received Response from Eligibility API - Error", "error");
+                        statusbar('show', "Received Response from Eligibility API - Error","error");
                         $("#eli_body_out").text(errors.responseText);
                         $('#eli_body_card').show();
                         $('#spinner').hide();
@@ -296,137 +205,33 @@
                 });
             });
 
-            $("#token_submit").click(function () {
-                resetTokenForm();
-                $('#spinner').show();
-                document.getElementById("token_body_out").innerHTML = '';
-                $('#token_body_card').hide();
-                statusbar('show', "Sending request to payment-tokens API", "success");
-                var paymentCardVar={
-                    paymentNumber: $("#payment-number-2").val(),
-                    cardHolderName: $("#card-holder-name-1").val(),
-                    expirationYear: $("#expiration-year-1").val(),
-                    expirationMonth: $("#expiration-month-1").val(),
-                }
-                var json = {
-                    partnerId: $("#partner-id-2").val(),
-                    paymentCard : paymentCardVar,
-                    token: $('#token-2').val(),
-                    asiVerified:$('#asi-verified').val()
-                };
-
-                $.ajax({
-                    url: window.location.origin + TokenApi,
-                    type: "POST",
-                    async: true,
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(json),
-                    success: function (result) {
-                        statusbar('show', "Received Response from payment-tokens API - Success", "success");
-                        var jparse = JSON.stringify(result, null, 4);
-                        $("#token_body_out").text(jparse);
-                        $('#token_body_card').show();
-                    },
-                    error: function (errors) {
-                        statusbar('show', "Received Response from payment-tokens API - Error", "error");
-                        $("#token_body_out").text(errors.responseText);
-                        $('#token_body_card').show();
-                        $('#spinner').hide();
-                    }
-                });
-                $('#spinner').hide();
-            });
-
-            $("#re_submit").click(function () {
+            $("#re_submit").click(function (){
                 resetEligibilityForm();
-                document.getElementById('red_body_out').innerHTML = '';
-                $('#red_body_out').hide();
                 callRedemptionAjax();
             });
 
 
-            function getRedemptionPayload() {
-                let paymentTokenData = {
-                    token: $("#token-1").val(),
-                    tokenType: $("#token-type-1").val(),
-                    pspId: $("#psp-id-1").val()
-                }
-                let json = '';
-                if ((paymentTokenData.token !== '' || paymentTokenData.pspId !== '' || paymentTokenData.tokenType !== '') && ($("#payment-number-1").val() !== '')) {
-                    json = {
-                        partnerId: $("#partner-id-1").val(),
-                        paymentNumber: $("#payment-number-1").val(),
-                        paymentToken: paymentTokenData,
-                        eligibilityId: $("#eligibility-id").val(),
-                        spendAmount: $("#spend-amount").val(),
-                        spendCurrencyCode: $("#spend-currency-code").val(),
-                        benefitAmountGiven: $("#benefit-amount-given").val(),
-                        benefitCurrencyCode: $("#benefit-currency-code").val(),
-                        externalIdentifier: $("#external-identifier").val(),
-                        redemptionCode: $("#redemption-code").val(),
-                        redemptionURL: $("#redemption-url").val(),
-                        isDefaultCardOnFile: $("#is-default-card-on-file").val(),
-                        benefitStartTime: $("#benefit-start-time").val(),
-                        benefitEndTime: $("#benefit-end-time").val(),
-                        redeemedTime: $("#redeemed-time").val()
-                    };
-                    return json;
-                }
-                if (paymentTokenData.token !== '' || paymentTokenData.pspId !== '' || paymentTokenData.tokenType !== '') {
-                    json = {
-                        partnerId: $("#partner-id-1").val(),
-                        paymentToken: paymentTokenData,
-                        eligibilityId: $("#eligibility-id").val(),
-                        spendAmount: $("#spend-amount").val(),
-                        spendCurrencyCode: $("#spend-currency-code").val(),
-                        benefitAmountGiven: $("#benefit-amount-given").val(),
-                        benefitCurrencyCode: $("#benefit-currency-code").val(),
-                        externalIdentifier: $("#external-identifier").val(),
-                        redemptionCode: $("#redemption-code").val(),
-                        redemptionURL: $("#redemption-url").val(),
-                        isDefaultCardOnFile: $("#is-default-card-on-file").val(),
-                        benefitStartTime: $("#benefit-start-time").val(),
-                        benefitEndTime: $("#benefit-end-time").val(),
-                        redeemedTime: $("#redeemed-time").val()
-                    };
-                    return json;
-                }
-                if ($("#payment-number-1").val() !== '') {
-                    json = {
-                        partnerId: $("#partner-id-1").val(),
-                        paymentNumber: $("#payment-number-1").val(),
-                        eligibilityId: $("#eligibility-id").val(),
-                        spendAmount: $("#spend-amount").val(),
-                        spendCurrencyCode: $("#spend-currency-code").val(),
-                        benefitAmountGiven: $("#benefit-amount-given").val(),
-                        benefitCurrencyCode: $("#benefit-currency-code").val(),
-                        externalIdentifier: $("#external-identifier").val(),
-                        redemptionCode: $("#redemption-code").val(),
-                        redemptionURL: $("#redemption-url").val(),
-                        isDefaultCardOnFile: $("#is-default-card-on-file").val(),
-                        benefitStartTime: $("#benefit-start-time").val(),
-                        benefitEndTime: $("#benefit-end-time").val(),
-                        redeemedTime: $("#redeemed-time").val()
-                    };
-                    return json;
-                }
-                return json;
-            }
-
-            function callRedemptionAjax() {
+            function callRedemptionAjax(){
                 $('#spinner').show();
-                statusbar('show', "Sending request to Redemption API", "success");
-
-                let json=getRedemptionPayload();
-                if(json==''){
-                    statusbar('show', "Either one of Payment Number or payment token is required", "error");
-                    $('#spinner').hide();
-                    return false;
-                }
-                $('#red_body_out').show();
+                statusbar('show',"Sending request to Redemption API","success");
+                var json = {
+                    partnerId: $("#partner-id-1").val(),
+                    creditCardNumber: $("#credit-card-number-1").val(),
+                    eligibilityId: $("#eligibility-id").val(),
+                    spendAmount: $("#spend-amount").val(),
+                    spendCurrencyCode: $("#spend-currency-code").val(),
+                    benefitAmountGiven: $("#benefit-amount-given").val(),
+                    benefitCurrencyCode: $("#benefit-currency-code").val(),
+                    externalIdentifier: $("#external-identifier").val(),
+                    redemptionCode: $("#redemption-code").val(),
+                    redemptionURL: $("#redemption-url").val(),
+                    isDefaultCardOnFile: $("#is-default-card-on-file").val(),
+                    benefitStartTime: $("#benefit-start-time").val(),
+                    benefitEndTime: $("#benefit-end-time").val(),
+                    redeemedTime: $("#redeemed-time").val()
+                };
                 $.ajax({
-                    url: window.location.origin + RedemptionApi,
+                    url: window.location.origin+RedemptionApi,
                     type: "POST",
                     async: true,
                     dataType: "json",
@@ -434,22 +239,22 @@
                     data: JSON.stringify(json),
                     timeout: 20000,
                     success: function (result) {
-                        statusbar("show", "Received Response from Redemption API - Success", "success");
-                        var jparse = JSON.stringify(result, null, 4);
+                        statusbar("show","Received Response from Redemption API - Success","success");
+                        var jparse = JSON.stringify(result,null, 4);
                         $("#red_body_out").text(jparse);
                         $('#red_body_card').show();
                         $('#spinner').hide();
                     },
                     error: function (errmsg) {
-                        statusbar("error", "Received Response from Redemption API - Error", "error");
+                        statusbar("error","Received Response from Redemption API - Error","error");
                         $("#red_body_out").text(errmsg.responseText);
                         $('#red_body_card').show();
                         $('#spinner').hide();
                     }
                 });
-                document.getElementById("red_body").className = 'container tab-pane fade active show';
-                $("#red_body").css("display", "block");
-                $("#eli_body").css("display", "none");
+                document.getElementById("red_body").className='container tab-pane fade active show';
+                $("#red_body").css("display","block");
+                $("#eli_body").css("display","none");
             }
 
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -462,59 +267,44 @@
 
     <style>
         .button {
-            text-align: center;
+            text-align:center;
             color: #fdefb0;
             background-color: #ff7e00;
             border-color: #ff7e00
         }
-
-        .button-style-custom {
-            text-align: center;
+        .button-style-custom
+        {
+            text-align : center;
             margin-top: 15%;
             margin-left: 20%;
             margin-right: 20%;
             padding-right: 40%;
             padding-left: 40%;
         }
-
-        .label-text-color {
-            color: #424242;
+        .label-text-color{
+            color:#424242;
         }
-
-        .label-condition-text-color {
-            color: #ff0000;
-        }
-
         .blue-color {
-            color: blue;
+            color:blue;
         }
     </style>
 </head>
 <body bgcolor="#ffffff">
 
 <div class="container mt-3"><br/>
-    <h1 style="color:#141414;">
-        <center><b>Elevate Accelerator Reference App</b></center>
-    </h1>
+    <h1 style="color:#141414;"><center><b>Elevate Accelerator Reference App</b></center></h1>
     <br>
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active label-text-color" data-bs-toggle="tab" id="ben_tab" href="#ben_body"><h6>
-                Benefits</h6></a>
+        <li class="nav-item" >
+            <a class="nav-link active label-text-color" data-bs-toggle="tab" id="ben_tab" href="#ben_body"><h6>Benefits</h6></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link label-text-color" data-bs-toggle="tab" id="token_tab" href="#token_body"><h6>Payment
-                token</h6></a>
+            <a class="nav-link label-text-color" data-bs-toggle="tab" id="eli_tab" href="#eli_body"><h6>Eligibility</h6></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link label-text-color" data-bs-toggle="tab" id="eli_tab" href="#eli_body"><h6>Eligibility</h6>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link label-text-color" data-bs-toggle="tab" id="red_tab" href="#red_body"><h6>Redemption</h6>
-            </a>
+            <a class="nav-link label-text-color" data-bs-toggle="tab" id="red_tab" href="#red_body"><h6>Redemption</h6></a>
         </li>
     </ul>
 
@@ -546,593 +336,191 @@
 
                         <input type="text" class="form-control" id="partner-id" placeholder="[Partner ID]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-
-                </div>
-
-
-                <div class="row">
                     <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter payment card details">
-                          <label class="label-text-color"><h6>Payment Card:</h6></label>
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter 16 digit Credit Card Number">
+                          <label class="label-text-color"><h6>Credit Card Number:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
-                    </div>
-                </div>
-                <div class="row" style="border: thin solid lightgrey ;  background-color: cornsilk">
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter payment number">
-                          <label class="label-text-color"><h6>Payment Number:  <a href="#" data-toggle="tooltip"
-                                                                                  class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="payment-number"
-                               placeholder="[Payment number]" maxlength="16"/>
+                        <input type="text" class="form-control" id="credit-card-number" placeholder="[Credit card number]" maxlength="16"/>
                     </div>
                     <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Card Holder Name">
-                          <label class="label-text-color"><h6>Card Holder Name:  <a href="#" data-toggle="tooltip"
-                                                                                    class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Card Holder Name">
+                          <label class="label-text-color"><h6>Card Holder Name:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
                         <input type="text" class="form-control" id="card-holder-name" placeholder="[Card holder name]"/>
                     </div>
+                </div>
+                <div class="row">
                     <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Expiration Year of the card. example:24">
-                          <label class="label-text-color"><h6>Expiration Year:  <a href="#" data-toggle="tooltip"
-                                                                                   class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Expiration Year of the card. example:24">
+                          <label class="label-text-color"><h6>Expiration Year:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
                         <input type="text" class="form-control" id="expiration-year" placeholder="[Expiration Year]"/>
                     </div>
                     <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Expiration Month of the card. example:04">
-                          <label class="label-text-color"><h6>Expiration Month:  <a href="#" data-toggle="tooltip"
-                                                                                    class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Expiration Month of the card. example:04">
+                          <label class="label-text-color"><h6>Expiration Month:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
-                        <input type="text" class="form-control" id="expiration-month" placeholder="[Expiration Month]"
-                               maxlength="2"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6 p-6"></div>
-
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Either one of Payment Card or payment token is required">
-                          <label class="label-condition-text-color"><h6>OR  <a href="#" data-toggle="tooltip"
-                                                                               class="tooltiptext"><i
-                                  class="bi-info-circle red-color"></i></a></h6></label>
-                      </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter payment token details">
-                          <label class="label-text-color"><h6>Payment Token:</h6></label>
-                      </span>
-                </div>
-
-
-                <div class="row" style="border: thin solid lightgrey; background-color: cornsilk">
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter token">
-                          <label class="label-text-color"><h6>Token:  <a href="#" data-toggle="tooltip"
-                                                                         class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="token"
-                               placeholder="[Token]" maxlength="16"/>
+                        <input type="text" class="form-control" id="expiration-month" placeholder="[Expiration Month]" maxlength="2"/>
                     </div>
                     <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter token type. example:PARTNER">
-                          <label class="label-text-color"><h6>Token Type:  <a href="#" data-toggle="tooltip"
-                                                                              class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="token-type" placeholder="[Token Type]"/>
-                    </div>
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter PSP ID. example:514">
-                          <label class="label-text-color"><h6>PSP ID:  <a href="#" data-toggle="tooltip"
-                                                                          class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="psp-id" placeholder="[PSP ID]"/>
-                    </div>
-                    <div class="mb-3 mt-3 col"></div>
-                </div>
-
-                <div class="row">
-
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Product Id. example:161041">
-                          <label class="label-text-color"><h6>Product Id:  <a href="#" data-toggle="tooltip"
-                                                                              class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Product Id. example:161041">
+                          <label class="label-text-color"><h6>Product Id:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
                         <input type="text" class="form-control" id="product-id" placeholder="[Product Id]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
                 </div>
                 <div class="row">
                     <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Email address of card holder">
-                          <label class="label-text-color"><h6>Email:   <a href="#" data-toggle="tooltip"
-                                                                          class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Email address of card holder">
+                          <label class="label-text-color"><h6>Email:   <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
                         <input type="email" class="form-control" id="email-id" placeholder="[Email Id]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-
-                </div>
-                <div class="row">
                     <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Code assigned to a benefit for which eligibility needs to check. e.g: ae-amazonprime">
-                          <label class="label-text-color"><h6>Access Code:  <a href="#" data-toggle="tooltip"
-                                                                               class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Code assigned to a benefit for which eligibility needs to check. e.g: MyAC-611-20044">
+                          <label class="label-text-color"><h6>Access Code:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
                         <input type="text" class="form-control" id="access-code" placeholder="[Access Code]"/>
                     </div>
                     <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-3 p-3"></div>
                     <div class="col-sm-3 p-3">
-                        <button type="button" id="el_submit" class="btn btn-default button col button-style-custom">
-                            <center>Submit</center>
-                        </button>
+                        <button type="button"  id="el_submit" class="btn btn-default button col button-style-custom"><center>Submit</center></button>
                     </div>
                     <div class="col-sm-3 p-3">
-                        <button type="button" id="el_reset"
-                                class="btn btn-outline-warning col button-style-custom .btn-text-color">
-                            <center>Reset</center>
-                        </button>
+                        <button type="button"  id="el_reset" class="btn btn-outline-warning col button-style-custom .btn-text-color"><center>Reset</center></button>
                     </div>
                     <div class="col-sm-3 p-3"></div>
                 </div>
-
-                <br/><br/>
-                <div class="card border-info" id="eli_body_card" style="display: none;">
-                    <div class="card-body" id="eli_body_out">
-                    </div>
-                </div>
-                <br/><br/>
-
             </form>
 
 
             </br></br>
             <!--    -->
-
+            <div class="card border-info" id="eli_body_card" style="display: none;">
+                <div class="card-body" id="eli_body_out">
+                </div>
+            </div>
 
         </div>
         <div id="red_body" class="container tab-pane fade"><br>
             <form id="redemption_form">
                 <div class="row">
                     <div class="mb-3 mt-3 col">
-                        <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter partner Id. example:512">
-                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"
-                                                                              class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter partner Id. example:512">
+                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
                         <input type="text" class="form-control" id="partner-id-1" placeholder="[Partner ID]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                </div>
-                <div class="row">
                     <div class="mb-3 mt-3 col">
-						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Please enter Eligibility ID received in the response of eligibilities API. example:17385_161041_1179">
-                          <label class="label-text-color"><h6>Eligibility ID:  <a href="#" data-toggle="tooltip"
-                                                                                  class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter 16 digit Credit Card Number">
+                          <label class="label-text-color"><h6>Credit Card Number:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="credit-card-number-1" placeholder="[Credit card number]" maxlength="16"/>
+                    </div>
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Eligibility ID received in the response of eligibilities API. example:17385_161041_1179">
+                          <label class="label-text-color"><h6>Eligibility ID:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
                         <input type="text" class="form-control" id="eligibility-id" placeholder="[Eligibility ID]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
                 </div>
                 <div class="row">
                     <div class="mb-3 mt-3 col">
-						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Please enter Spend amount. example:109.99">
-                          <label class="label-text-color"><h6>Spend amount:  <a href="#" data-toggle="tooltip"
-                                                                                class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Spend amount. example:109.99">
+                          <label class="label-text-color"><h6>Spend amount:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
                         <input type="text" class="form-control" id="spend-amount" placeholder="[Spend amount]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                </div>
-                <div class="row">
-
                     <div class="mb-3 mt-3 col">
-						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Please enter Currency code of spent amount. example:USD">
-                          <label class="label-text-color"><h6>Spend Currency Code: <a href="#" data-toggle="tooltip"
-                                                                                      class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Currency code of spent amount. example:USD">
+                          <label class="label-text-color"><h6>Spend Currency Code: <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
-                        <input type="text" class="form-control" id="spend-currency-code"
-                               placeholder="[Spend Currency Code]"/>
+                        <input type="text" class="form-control" id="spend-currency-code" placeholder="[Spend Currency Code]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                </div>
-                <div class="row">
                     <div class="mb-3 mt-3 col">
-						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Please enter Benefit amount. example: 50.99">
-                          <label class="label-text-color"><h6>Benefit Amount Given:  <a href="#" data-toggle="tooltip"
-                                                                                        class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Benefit amount. example: 50.99">
+                          <label class="label-text-color"><h6>Benefit Amount Given:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
-                        <input type="text" class="form-control" id="benefit-amount-given"
-                               placeholder="[Benefit Amount Given]"/>
+                        <input type="text" class="form-control" id="benefit-amount-given" placeholder="[Benefit Amount Given]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
                 </div>
                 <div class="row">
                     <div class="mb-3 mt-3 col">
-						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Please enter currency code of benefit amount. example: USD">
-                          <label class="label-text-color"><h6>Benefit Currency Code:  <a href="#" data-toggle="tooltip"
-                                                                                         class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter currency code of benefit amount. example: USD">
+                          <label class="label-text-color"><h6>Benefit Currency Code:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
-                        <input type="email" class="form-control" id="benefit-currency-code"
-                               placeholder="[Benefit Currency Code]"/>
+                        <input type="email" class="form-control" id="benefit-currency-code" placeholder="[Benefit Currency Code]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                </div>
-                <div class="row">
-
                     <div class="mb-3 mt-3 col">
-						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Please enter external identifier. example : abcd">
-                          <label class="label-text-color"><h6>External Identifier:  <a href="#" data-toggle="tooltip"
-                                                                                       class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter external identifier. example : abcd">
+                          <label class="label-text-color"><h6>External Identifier:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
-                        <input type="email" class="form-control" id="external-identifier"
-                               placeholder="[External Identifier]"/>
+                        <input type="email" class="form-control" id="external-identifier" placeholder="[External Identifier]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                </div>
-                <div class="row">
                     <div class="mb-3 mt-3 col">
-						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Please enter Redemption Code. example : k86n7a7">
-                          <label class="label-text-color"><h6>Redemption Code:  <a href="#" data-toggle="tooltip"
-                                                                                   class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Redemption Code. example : k86n7a7">
+                          <label class="label-text-color"><h6>Redemption Code:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
                         <input type="text" class="form-control" id="redemption-code" placeholder="[Redemption Code]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
                 </div>
                 <div class="row">
                     <div class="mb-3 mt-3 col">
-						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Please enter Redemption URL. example : https://www.amazonxxx.com">
-                          <label class="label-text-color"><h6>Redemption URL:  <a href="#" data-toggle="tooltip"
-                                                                                  class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Redemption URL. example : https://www.abcmerchantxxx.com">
+                          <label class="label-text-color"><h6>Redemption URL:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
                         <input type="text" class="form-control" id="redemption-url" placeholder="[Redemption URL]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                </div>
-                <div class="row">
-
                     <div class="mb-3 mt-3 col">
-						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Please enter Is Default Card On File. example : 1">
-                          <label class="label-text-color"><h6>Is Default Card On File:  <a href="#"
-                                                                                           data-toggle="tooltip"
-                                                                                           class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Is Default Card On File. example : 1">
+                          <label class="label-text-color"><h6>Is Default Card On File:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
-                        <input type="text" class="form-control" id="is-default-card-on-file"
-                               placeholder="[Is Default Card On File]"/>
+                        <input type="text" class="form-control" id="is-default-card-on-file" placeholder="[Is Default Card On File]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                </div>
-                <div class="row">
                     <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Benefit Start Time in YYYY-MM-DDThh:mm:ssZ format.example : 2022-05-04T00:00:00Z">
-                          <label class="label-text-color"><h6>Benefit Start Time: <a href="#" data-toggle="tooltip"
-                                                                                     class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Benefit Start Time in YYYY-MM-DDThh:mm:ssZ format.example : 2022-05-04T00:00:00Z">
+                          <label class="label-text-color"><h6>Benefit Start Time: <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
-                        <input type="text" class="form-control" id="benefit-start-time"
-                               placeholder="[Benefit Start Time]"/>
+                        <input type="text" class="form-control" id="benefit-start-time" placeholder="[Benefit Start Time]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
                 </div>
                 <div class="row">
                     <div class="mb-3 mt-3 col">
-					    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Benefit End Time in YYYY-MM-DDThh:mm:ssZ format. example : 2022-05-04T00:00:00Z">
-                          <label class="label-text-color"><h6>Benefit End Time: <a href="#" data-toggle="tooltip"
-                                                                                   class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+					    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Benefit End Time in YYYY-MM-DDThh:mm:ssZ format. example : 2022-05-04T00:00:00Z">
+                          <label class="label-text-color"><h6>Benefit End Time: <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                         </span>
                         <input type="text" class="form-control" id="benefit-end-time" placeholder="[Benefit End Time]"/>
                     </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                </div>
-                <div class="row">
-
                     <div class="mb-3 mt-3 col">
-					<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                          title="Please enter Redeemed Time in YYYY-MM-DDThh:mm:ssZ format. example : 2022-05-04T00:00:00Z">
-                          <label class="label-text-color"><h6>Redeemed Time: <a href="#" data-toggle="tooltip"
-                                                                                class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
+					<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter Redeemed Time in YYYY-MM-DDThh:mm:ssZ format. example : 2022-05-04T00:00:00Z">
+                          <label class="label-text-color"><h6>Redeemed Time: <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
                      </span>
                         <input type="text" class="form-control" id="redeemed-time" placeholder="[Redeemed Time]"/>
                     </div>
                     <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                </div>
-                <div class="row" style="border: thin solid lightgrey; background-color: cornsilk">
-                    <div class="mb-3 mt-3 col">
-                						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip"
-                                              data-bs-placement="top"
-                                              title="Please enter Payment Number">
-                                          <label class="label-text-color"><h6>Payment Number:  <a href="#"
-                                                                                                  data-toggle="tooltip"
-                                                                                                  class="tooltiptext"><i
-                                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                                        </span>
-                        <input type="text" class="form-control" id="payment-number-1"
-                               placeholder="[Payment number]" maxlength="16"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6 p-6"></div>
-
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Either one of Payment Card or payment token is required">
-                          <label class="label-condition-text-color"><h6>OR  <a href="#" data-toggle="tooltip"
-                                                                               class="tooltiptext"><i
-                                  class="bi-info-circle red-color"></i></a></h6></label>
-                      </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter payment token details">
-                          <label class="label-text-color"><h6>Payment Token:</h6></label>
-                      </span>
-                </div>
-
-
-                <div class="row" style="border: thin solid lightgrey; background-color: cornsilk">
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter token">
-                          <label class="label-text-color"><h6>Token:  <a href="#" data-toggle="tooltip"
-                                                                         class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="token-1"
-                               placeholder="[Token]" maxlength="16"/>
-                    </div>
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter token type. example:PARTNER">
-                          <label class="label-text-color"><h6>Token Type:  <a href="#" data-toggle="tooltip"
-                                                                              class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="token-type-1" placeholder="[Token Type]"/>
-                    </div>
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter PSP ID. example:514">
-                          <label class="label-text-color"><h6>PSP ID:  <a href="#" data-toggle="tooltip"
-                                                                          class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="psp-id-1" placeholder="[PSP ID]"/>
-                    </div>
-                    <div class="mb-3 mt-3 col"></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3 p-3"></div>
                     <div class="col-sm-3 p-3">
-                        <button type="button" id="re_submit" class="btn btn-default button col button-style-custom">
-                            <center>Submit</center>
-                        </button>
+                        <button type="button"  id="re_submit" class="btn btn-default button col button-style-custom"><center>Submit</center></button>
                     </div>
                     <div class="col-sm-3 p-3">
-                        <button type="button" id="re_reset" class="btn btn-outline-warning col button-style-custom">
-                            <center>Reset</center>
-                        </button>
-                    </div>
-                    <div class="col-sm-3 p-3"></div>
-                    <div class="col-sm-3 p-3"></div>
-                </div>
-
-                <br/><br/>
-                <div class="card border-info" id="red_body_card" style="display:none;">
-                    <div class="card-body" id="red_body_out">
-                    </div>
-                </div>
-                <br/><br/>
-
-            </form>
-
-            <br/>
-
-
-        </div>
-        <div id="token_body" class="container tab-pane fade"><br>
-            <form id="token_form">
-
-                <div class="row">
-
-
-                    <div class="mb-3 mt-3 col">
-
-                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter partner Id. example:512">
-                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-
-                        <input type="text" class="form-control" id="partner-id-2" placeholder="[Partner ID]"/>
-                    </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-
-                </div>
-                <div class="row">
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter payment card details">
-                          <label class="label-text-color"><h6>Payment Card:</h6></label>
-                      </span>
-                    </div>
-                </div>
-                <div class="row" style="border: thin solid lightgrey ;  background-color: cornsilk">
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter payment number">
-                          <label class="label-text-color"><h6>Payment Number:  <a href="#" data-toggle="tooltip"
-                                                                                  class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="payment-number-2"
-                               placeholder="[Payment number]" maxlength="16"/>
-                    </div>
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Card Holder Name">
-                          <label class="label-text-color"><h6>Card Holder Name:  <a href="#" data-toggle="tooltip"
-                                                                                    class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="card-holder-name-1" placeholder="[Card holder name]"/>
-                    </div>
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Expiration Year of the card. example:24">
-                          <label class="label-text-color"><h6>Expiration Year:  <a href="#" data-toggle="tooltip"
-                                                                                   class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="expiration-year-1" placeholder="[Expiration Year]"/>
-                    </div>
-                    <div class="mb-3 mt-3 col">
-						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Please enter Expiration Month of the card. example:04">
-                          <label class="label-text-color"><h6>Expiration Month:  <a href="#" data-toggle="tooltip"
-                                                                                    class="tooltiptext"><i
-                                  class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-                        <input type="text" class="form-control" id="expiration-month-1" placeholder="[Expiration Month]"
-                               maxlength="2"/>
-                    </div>
-                </div>
-                <div class="row">
-
-
-                    <div class="mb-3 mt-3 col">
-
-                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter token">
-                          <label class="label-text-color"><h6>Token:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-
-                        <input type="text" class="form-control" id="token-2" placeholder="[Token]"/>
-                    </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-
-                </div>
-                <div class="row">
-
-
-                    <div class="mb-3 mt-3 col">
-
-                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please ASI VERIFIED. eg 1">
-                          <label class="label-text-color"><h6>ASI Verified:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
-                      </span>
-
-                        <input type="text" class="form-control" id="asi-verified" placeholder="[ASI VERIFIED]"/>
-                    </div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-                    <div class="mb-3 mt-3 col"></div>
-
-                </div>
-                <div class="row">
-                    <div class="col-sm-3 p-3"></div>
-                    <div class="col-sm-3 p-3">
-                        <button type="button" id="token_submit" class="btn btn-default button col button-style-custom">
-                            <center>Submit</center>
-                        </button>
-                    </div>
-                    <div class="col-sm-3 p-3">
-                        <button type="button" id="token_reset"
-                                class="btn btn-outline-warning col button-style-custom .btn-text-color">
-                            <center>Reset</center>
-                        </button>
+                        <button type="button"  id="re_reset" class="btn btn-outline-warning col button-style-custom"><center>Reset</center</button>
                     </div>
                     <div class="col-sm-3 p-3"></div>
                 </div>
             </form>
+
             <br/>
-            <div class="card border-info" id="token_body_card" style="display: none;">
-                <div class="card-body" id="token_body_out">
+            <div class="card border-info" id="red_body_card" style="display:none;">
+                <div class="card-body" id="red_body_out">
                 </div>
             </div>
+
         </div>
     </div>
     <div id="ben_body" class="container tab-pane active">
@@ -1140,15 +528,10 @@
             <div class="row">
                 <div class="col-sm-3 p-3"></div>
                 <div class="col-sm-3 p-3">
-                    <button type="button" id="ben_submit" class="btn btn-default button col button-style-custom">
-                        <center>Submit</center>
-                    </button>
+                    <button type="button"  id="ben_submit" class="btn btn-default button col button-style-custom"><center>Submit</center></button>
                 </div>
                 <div class="col-sm-3 p-3">
-                    <button type="button" id="ben_reset"
-                            class="btn btn-outline-warning col button-style-custom .btn-text-color">
-                        <center>Reset</center>
-                    </button>
+                    <button type="button"  id="ben_reset" class="btn btn-outline-warning col button-style-custom .btn-text-color"><center>Reset</center></button>
                 </div>
                 <div class="col-sm-3 p-3"></div>
             </div>

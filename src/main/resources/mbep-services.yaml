@@ -1,0 +1,1089 @@
+openapi: 3.0.3
+info:
+  title: Mastercard MBEP Services API
+  description: >
+    This is an open API document for Mastercard MBEP APIs. These APIs can be used to
+    check eligibility for particular benefit and redeem the same for a given
+    payment card number. For additional documentation and use cases, see
+    **[Documentation](https://developer.mastercard.com/elevate/documentation/).**
+
+    <br/>
+
+      ---
+
+       * **All requests must be signed using OAuth 1.0a. For more information, see [Access
+       Mastercard
+       APIs](https://developer.mastercard.com/platform/documentation/using-oauth-1a-to-access-mastercard-apis/).**
+
+       ---
+
+       * **The user must provide their card details and email address to
+       check eligibility and redeem the benefit. These details must be
+       encrypted before entering transit. For more information, see [Mastercard
+       security](https://mstr.cd/2UPfda0).**
+
+       ---
+
+  termsOfService: 'https://developer.mastercard.com/terms-of-use'
+  contact:
+    name: API Support
+    url: 'https://developer.mastercard.com/support'
+    email: apisupport@mastercard.com
+  version: 1.0.0
+servers:
+  - url: 'https://api.mastercard.com/elevate'
+    description: Production Server
+  - url: 'https://sandbox.api.mastercard.com/elevate'
+    description: Sandbox Server
+tags:
+  - name: MBEP
+    description: >-
+      APIs to check eligibility for particular benefit and redeem the same for a
+      given payment card number.
+paths:
+  /eligibilities:
+    post:
+      summary: >-
+        Used to check eligibility of a credit card in the MBEP program for a
+        specific benefit.
+      tags:
+        - MBEP
+      description: >-
+        This endpoint checks whether provided credit card is eligible for
+        benefit or not. If eligible, then generate and return eligibility
+        id which needs to be provided as an input into `redemptions` endpoint.
+      operationId: checkEligibility
+      x-mastercard-api-encrypted: true
+      requestBody:
+        $ref: '#/components/requestBodies/CheckEligibility'
+      responses:
+        '200':
+          $ref: '#/components/responses/Eligibility'
+        '400':
+          $ref: '#/components/responses/EligibilitiesBadRequestError'
+        '401':
+          $ref: '#/components/responses/APIAuthorizationError'
+        '404':
+          $ref: '#/components/responses/InvalidAPIError'
+  /redemptions:
+    post:
+      summary: >-
+        Used to create a redemption for a credit card that was previously
+        enrolled through the eligibilities resource.
+      tags:
+        - MBEP
+      description: >
+        This endpoint redeems a particular benefit for which eligibility has been
+        verified as a part of `eligibilities` API.
+      operationId: createRedemption
+      x-mastercard-api-encrypted: true
+      requestBody:
+        $ref: '#/components/requestBodies/Redemptions'
+      responses:
+        '200':
+          $ref: '#/components/responses/RedemptionInfo'
+        '400':
+          $ref: '#/components/responses/RedemptionBadRequestError'
+  /benefits:
+    get:
+      summary: Used to fetch the partner benefit details.
+      tags:
+        - MBEP
+      description: |
+        **This endpoint uses [Mastercard payload encryption](https://mstr.cd/2UPfda0) to encrypt entire payload.Please refer to the API documentation for implementation details.**
+      operationId: getBenefits
+      x-mastercard-api-encrypted: true
+      responses:
+        '200':
+          $ref: '#/components/responses/PartnerBenefitDetails'
+        '404':
+          $ref: '#/components/responses/NotFoundAPIError'
+  /payment-tokens:
+    post:
+      summary: This endpoint registers token against PAN.
+      tags:
+        - MBEP
+      description: |
+        ** This endpoint contains payment card details and Card Token. This endpoint uses Mastercard payload encryption.**
+      operationId: saveToken
+      x-mastercard-api-encrypted: true
+      requestBody:
+        $ref: '#/components/requestBodies/CardToken'
+      responses:
+        200:
+          $ref: '#/components/responses/CardTokenInfo'
+        400:
+          $ref: '#/components/responses/TokenBadRequestError'
+components:
+  requestBodies:
+    CheckEligibility:
+      description: >-
+        Contains payment card details and benefit code for which eligibility needs
+        to be checked. This endpoint uses Mastercard payload encryption. Please
+        refer to the **[Payload Encryption](https://mstr.cd/2UPfda0)** page for
+        implementation details.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CheckEligibility'
+    Redemptions:
+      description: >-
+        User's Personal and Card information which needs to be registered onto
+        Priceless Planet Carbon Tracker platform. This endpoint uses Mastercard
+        payload encryption. Please refer to the **[Payload
+        Encryption](https://mstr.cd/2UPfda0)** page for implementation details.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Redemptions'
+    CardToken:
+      description: >-
+        Each paymentToken is directly stored and associated with the partnerId submitted in the request.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CardToken'
+  schemas:
+    ErrorWrapper:
+      title: ErrorWrapper
+      type: object
+      description: The error response object returned in case of any error.
+      required:
+        - Errors
+      properties:
+        Errors:
+          $ref: '#/components/schemas/Errors'
+    Errors:
+      title: Errors
+      type: object
+      description: Error object which returns list of Error objects.
+      required:
+        - Error
+      properties:
+        Error:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    Error:
+      title: Error
+      type: object
+      description: Error object which contains details about error.
+      required:
+        - Source
+        - ReasonCode
+        - Description
+        - Recoverable
+      properties:
+        Source:
+          type: string
+          description: >-
+            The application name that generated this error. Every error message
+            that is generated and returned by the gateway will have this field
+            equal to Gateway. Another possible value is MBEP API.
+          example: MBEP API
+        ReasonCode:
+          type: string
+          description: >-
+            A unique constant identifying the error case encountered during
+            request processing.
+          example: 400
+        Description:
+          type: string
+          description: Short description of the ReasonCode field.
+          example: Missing partnerId.
+        Recoverable:
+          type: boolean
+          description: >-
+            Indicates whether this error will always be returned for this
+            request, or retrying could change the outcome.
+          example: true
+        Details:
+          type: string
+          description: >-
+            (Optional) Where appropriate, indicates detailed information about
+            data received and calculated during the request processing, to help
+            the user with diagnosing errors.
+          example: Please contact API Support for further details.
+    CheckEligibility:
+      title: CheckEligibility
+      type: object
+      description: >-
+        The object containing payment card data. This object will be encrypted
+        before sending it to the server.
+      required:
+        - partnerId
+        - cardHolderName
+        - expirationYear
+        - expirationMonth
+        - productId
+        - email
+        - accessCode
+      properties:
+        partnerId:
+          type: integer
+          description: A unique identifier assigned to the issuer.
+          example: 512
+        paymentCard:
+          $ref: '#/components/schemas/paymentCard'
+        paymentToken:
+          $ref: '#/components/schemas/PaymentToken'
+        productId:
+          type: integer
+          example: 161041
+          description: Unique identifier of product.
+        email:
+          type: string
+          example: 'john.doe@mail.com'
+          description: Email address of card holder.
+        accessCode:
+          type: string
+          example: 'ae-amazonprime'
+          description: Code assigned to a benefit for which eligibility needs to check.
+      example:
+        partnerId: 10
+        paymentCard:
+          paymentNumber: 5555555555554444
+          cardHolderName: 'John Doe'
+          expirationYear: '24'
+          expirationMonth: '04'
+        paymentToken:
+          token: '1234token'
+          tokenType: 'partner'
+          pspId: 514
+        productId: 5467
+        email: john.doe@elevate.mastercard.com
+        accessCode: ae-amazonprime
+    paymentCard:
+      title: PaymentCard
+      type: object
+      description: The object containing card details.
+      required:
+        - paymentNumber
+        - cardHolderName
+        - expirationYear
+        - expirationMonth
+      properties:
+        paymentNumber:
+          type: number
+          example: 5555555555554444
+          description: 'Card number of the merchant.'
+        cardHolderName:
+          type: string
+          example: 'John Doe'
+          description: 'Name of the card holder.'
+        expirationYear:
+          type: string
+          example: '24'
+          description: 'Expiration year of the card.'
+        expirationMonth:
+          type: string
+          example: '04'
+          description: 'Expiration month of the card.'
+      example:
+        paymentNumber: 5555555555554444
+        cardHolderName: 'John Doe'
+        expirationYear: '24'
+        expirationMonth: '04'
+    PaymentToken:
+      title: PaymentToken
+      type: object
+      description: The object containing payment token
+      required:
+        - token
+        - tokenType
+        - pspId
+      properties:
+        token:
+          type: string
+          example: 'HX46YT794RG'
+          description: 'Token provided by the PSP.'
+        tokenType:
+          type: string
+          example: 'Partner'
+          description: 'Type of the token.'
+        pspId:
+          type: string
+          example: '514'
+          description: 'Identifier of the PSP.'
+      example:
+        token: 'HX46YT794RG'
+        tokenType: 'Partner'
+        pspId: '514'
+    Eligibility:
+      title: Eligibility
+      type: object
+      description: The response object contains eligibility information for a payment card.
+      required:
+        - message
+        - data
+      properties:
+        msg:
+          type: string
+          example: 'OK'
+          description: Contains response message.
+        data:
+          type: object
+          properties:
+            eligible:
+              type: boolean
+              example: true
+              description: >-
+                Denotes whether given payment card is eligible for given benefit
+                or not.
+            eligibilityId:
+              type: string
+              example: '1234_5467_50'
+              description: >-
+                Unique identifier generated in case of card is eligible for
+                particular benefit. This id needs to provide as an input to
+                `redemptions` API.
+            redemptionURL:
+              type: string
+              example: 'https://www.amazonprime.com'
+              description: >-
+                This field is only presented when the partner program is configured to
+                return redemption info. This is the url where one can redeem benefit.
+            redemptionCode:
+              type: string
+              example: 'k86n7a7'
+              description: >-
+                This field is only presented when the partner program is configured to
+                return redemption info. This field along with redemptionURL needed to
+                be passed in redemption payload for redeeming benefit.
+            productId:
+              type: string
+              example: '158384'
+              description: >-
+                This is the unique id associated with each product.
+            accessCode:
+              type: string
+              example: amazon
+              description: >-
+                This is the access code associated with each product.
+    RedemptionInfo:
+      title: RedemptionInfo
+      type: object
+      description: The response object that contains redemption information.
+      required:
+        - msg
+        - data
+      properties:
+        msg:
+          type: string
+          example: 'OK'
+          description: Contains response message.
+        data:
+          type: object
+          properties:
+            redemptionId:
+              type: string
+              example: '10_7890'
+              description: >-
+                Unique identifier generated post successful redemption of a
+                benefit.
+    Benefit:
+      title: Benefit
+      type: object
+      description: The object containing benefit data.
+      properties:
+        merchantName:
+          type: string
+          example: 'Amazon URLs'
+          description: Name of the merchant.
+        productId:
+          type: integer
+          example: 158384
+          description: Unique identifier of product.
+        accessCode:
+          type: string
+          example: 'amazon'
+          description: Code assigned to a benefit for which eligibility needs to check.
+        active:
+          type: boolean
+          example: true
+          description: Indicates if benefit is active.
+      example:
+        productId: 158384
+        active: true
+        merchantName: 'Amazon URLs'
+        accessCode: 'amazon'
+    PartnerBenefitDetails:
+      title: PartnerBenefitDetails
+      type: object
+      description: The response object that contains partner benefit details.
+      required:
+        - msg
+        - data
+      properties:
+        msg:
+          type: string
+          example: "OK"
+          description: Contains response message.
+        data:
+          type: object
+          properties:
+            partnerId:
+              type: string
+              example: '10_7890'
+              description: A unique identifier assigned to the issuer.
+            benefits:
+              type: array
+              items:
+                $ref: '#/components/schemas/Benefit'
+    Redemptions:
+      title: Redemptions
+      type: object
+      description: The request object contains redemption details.
+      required:
+        - partnerId
+        - eligibilityId
+        - spendAmount
+        - spendCurrencyCode
+        - benefitAmountGiven
+        - benefitCurrencyCode
+      properties:
+        partnerId:
+          type: integer
+          example: 512
+          description: A unique identifier assigned to the issuer.
+        paymentNumber:
+          type: number
+          example: '5555555555553107'
+          description: 16 digit full creditCardNumber for which eligibility needs to check.
+        paymentToken:
+          $ref: '#/components/schemas/PaymentToken'
+        eligibilityId:
+          type: string
+          example: '17385_161041_1179'
+          description: An id received in the response of `eligibilities` API.
+        spendAmount:
+          type: number
+          example: 109.99
+          description: Amount spent.
+        spendCurrencyCode:
+          type: string
+          example: USD
+          description: Currency code of spent amount.
+        benefitAmountGiven:
+          type: number
+          example: 50.99
+          description: Benefit amount.
+        benefitCurrencyCode:
+          type: string
+          example: USD
+          description: currency code of benefit amount.
+        externalIdentifier:
+          type: string
+          example: 'EXT_ID-9a5k7'
+          description: External Identifier for each product.
+        redemptionCode:
+          type: string
+          example: 'k86n7a7'
+          description: This field is only presented when the partner program is configured
+            to return redemption info.
+        redemptionURL:
+          type: string
+          example: 'https://www.amazonprime.com'
+          description: This field is only presented when the partner program is configured to
+            return redemption info. This is the url where one can redeem benefit.
+        isDefaultCardOnFile:
+          type: integer
+          example: 1
+          description: This field indicates if the given card is default or not.
+        benefitStartTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time when a benefit becomes available for redemption.
+        benefitEndTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time by when a benefit can be availed for redemption.
+        redeemedTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time when a benefit is actually redeemed.
+      example:
+        partnerId: 10
+        paymentNumber: '5555555555554444'
+        paymentToken:
+          token: '1234token'
+          tokenType: 'partner'
+          pspId: 514
+        eligibilityId: '1234_5467_50'
+        spendAmount: 109.99
+        spendCurrencyCode: USD
+        benefitAmountGiven: 50.99
+        benefitCurrencyCode: USD
+        externalIdentifier: EXT_ID-9a5k7
+        redemptionCode: k86n7a7
+        redemptionURL: https://www.amazonprime.com
+        isDefaultCardOnFile: 1
+        benefitStartTime: 2022-05-04T00:00:00Z
+        benefitEndTime: 2023-05-04T00:00:00Z
+        redeemedTime: 2023-03-04T00:00:00Z
+    CardToken:
+      title: CardToken
+      type: object
+      description: The object containing payment card and token data. This object will be encrypted before sending it to server.
+      required:
+        - partnerId
+        - paymentCard
+        - token
+        - asiVerified
+      properties:
+        partnerId:
+          type: integer
+          example: 512
+        paymentCard:
+          $ref: '#/components/schemas/paymentCard'
+        token:
+          type: string
+          example: 'HX46YT794RG'
+          description: 'Token provided by the PSP.'
+        asiVerified:
+          type: number
+          example: 1
+          description: 'Asi verified.'
+      example:
+        partnerId: 10
+        paymentCard:
+          paymentNumber: 5555555555554444
+          cardHolderName: 'John Doe'
+          expirationYear: '24'
+          expirationMonth: '04'
+        token: 'HX46YT794RG'
+        asiVerified: 1
+    CardTokenInfo:
+      title: CardTokenInfo
+      type: object
+      description: The response object that contains token information.
+      required:
+        - msg
+      properties:
+        msg:
+          type: string
+          example: "OK"
+        data:
+          type: object
+  responses:
+    Eligibility:
+      description: >-
+        The response object that contains eligibility information for a given
+        credit card.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Eligibility'
+          examples:
+            Eligibility:
+              $ref: '#/components/examples/Eligibility'
+    RedemptionInfo:
+      description: The response object that contains redemption information.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RedemptionInfo'
+          examples:
+            RedemptionInfo:
+              $ref: '#/components/examples/RedemptionInfo'
+    PartnerBenefitDetails:
+      description: The response object that contains redemption information.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PartnerBenefitDetails'
+          examples:
+            RedemptionInfo:
+              $ref: '#/components/examples/PartnerBenefitDetails'
+    CardTokenInfo:
+      description: The response object that contains token information.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CardTokenInfo'
+          examples:
+            CardTokenInfo:
+              $ref: '#/components/examples/CardTokenInfo'
+    TokenBadRequestError:
+      description: This response code is returned when one or more request parameters is either missing or is invalid. A caller should update his request as per error details before trying again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            APIMissingPaymentTokenError:
+              $ref: '#/components/examples/APIMissingTokenError'
+            APIMissingPaymentNumberError:
+              $ref: '#/components/examples/APIMissingPaymentNumberError'
+            APIMissingASIVerifiedError:
+              $ref: '#/components/examples/APIMissingASIVerifiedError'
+            APIMissingCardHolderNameError:
+              $ref: '#/components/examples/MissingCardHolderNameError'
+            APIInvalidCardExpiration:
+              $ref: '#/components/examples/InvalidCardExpirationError'
+            APIMissingCardExpirationYear:
+              $ref: '#/components/examples/MissingCardExpirationYearError'
+            APIMissingCardExpirationMonth:
+              $ref: '#/components/examples/MissingCardExpirationMonthError'
+    EligibilitiesBadRequestError:
+      description: >-
+        This response code is returned when one or more request parameters are
+        either missing or are invalid. Before trying again, a caller should update
+        the request as per the given error details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            MissingPartnerIdError:
+              $ref: '#/components/examples/MissingPartnerIdError'
+            RequestDecryptionError:
+              $ref: '#/components/examples/RequestDecryptionError'
+            APIInvalidPaymentTokenError:
+              $ref: '#/components/examples/APIInvalidPaymentTokenError'
+            APIInvalidPaymentTokenTypeError:
+              $ref: '#/components/examples/APIInvalidPaymentTokenTypeError'
+            APIMissingPaymentTokenTypeError:
+              $ref: '#/components/examples/APIMissingPaymentTokenTypeError'
+            APIMissingPSPIDError:
+              $ref: '#/components/examples/APIMissingPSPIDError'
+            APIInvalidPSPIDError:
+              $ref: '#/components/examples/APIInvalidPSPIDError'
+            MissingCardExpirationMonthError:
+              $ref: '#/components/examples/MissingCardExpirationMonthError'
+            MissingCardExpirationYearError:
+              $ref: '#/components/examples/MissingCardExpirationYearError'
+            InvalidCardExpirationError:
+              $ref: '#/components/examples/InvalidCardExpirationError'
+            FailedToSaveCreditCardOnFileError:
+              $ref: '#/components/examples/FailedToSaveCreditCardOnFileError'
+            WrongProviderSetupError:
+              $ref: '#/components/examples/WrongProviderSetupError'
+            RedemptionLimitExceededError:
+              $ref: '#/components/examples/RedemptionLimitExceededError'
+            InvalidVendorServiceProviderMappingError:
+              $ref: '#/components/examples/InvalidVendorServiceProviderMappingError'
+            MissingBenefitAmountError:
+              $ref: '#/components/examples/MissingBenefitAmountError'
+            MissingAccessCodeError:
+              $ref: '#/components/examples/MissingAccessCodeError'
+    RedemptionBadRequestError:
+      description: >-
+        This response code is returned when one or more request parameters are
+        either missing or are invalid. Before trying again, a caller should update
+        the request as per the given error details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            RequestDecryptionError:
+              $ref: '#/components/examples/RequestDecryptionError'
+            APIInvalidPaymentTokenError:
+              $ref: '#/components/examples/APIInvalidPaymentTokenError'
+            APIInvalidPaymentTokenTypeError:
+              $ref: '#/components/examples/APIInvalidPaymentTokenTypeError'
+            APIMissingPaymentTokenTypeError:
+              $ref: '#/components/examples/APIMissingPaymentTokenTypeError'
+            APIMissingPSPIDError:
+              $ref: '#/components/examples/APIMissingPSPIDError'
+            APIInvalidPSPIDError:
+              $ref: '#/components/examples/APIInvalidPSPIDError'
+            MissingExternalIdentifierError:
+              $ref: '#/components/examples/MissingExternalIdentifierError'
+            MissingRedeemedTimeError:
+              $ref: '#/components/examples/MissingRedeemedTimeError'
+            MissingRedemptionCodeError:
+              $ref: '#/components/examples/MissingRedemptionCodeError'
+            MissingBenefitStartTimeError:
+              $ref: '#/components/examples/MissingBenefitStartTimeError'
+            MissingBenefitEndTimeError:
+              $ref: '#/components/examples/MissingBenefitEndTimeError'
+            MissingDefaultCardOnFileError:
+              $ref: '#/components/examples/MissingDefaultCardOnFileError'
+            MissingRedemptionURLError:
+              $ref: '#/components/examples/MissingRedemptionURLError'
+            MissingSpendAmountError:
+              $ref: '#/components/examples/MissingSpendAmountError'
+            MissingSpendCurrencyCodeError:
+              $ref: '#/components/examples/MissingSpendCurrencyCodeError'
+            InvalidEligibilityIdError:
+              $ref: '#/components/examples/InvalidEligibilityIdError'
+    APIAuthorizationError:
+      description: This response code is returned when an API authorization fails.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            APIAuthorizationError:
+              $ref: '#/components/examples/APIAuthorizationError'
+    InvalidAPIError:
+      description: >-
+        This response code is returned when the request URI does not match with an
+        existing API resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            InvalidAPIError:
+              $ref: '#/components/examples/InvalidAPIError'
+    NotFoundAPIError:
+      description: This response code is returned when the requested resource is not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            InvalidAPIError:
+              $ref: '#/components/examples/PartnerDetailsNotFoundError'
+  examples:
+    Eligibility:
+      value:
+        msg: OK
+        data:
+          eligible: 'true'
+          eligibilityId: '1234_5467_50'
+          redemptionURL: 'https://www.demomastercard.com'
+          redemptionCode: 'k86n7a7'
+          productId: '15838'
+          accessCode: 'mastercard-offer'
+    RedemptionInfo:
+      value:
+        msg: OK
+        data:
+          redemptionId: '10_7890'
+    PartnerBenefitDetails:
+      value:
+        msg: 'OK'
+        data:
+          partnerId: '10_7890'
+    CardTokenInfo:
+      value:
+        msg: 'OK'
+        data:
+    APIMissingTokenError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '585'
+              Description: 'API MISSING PAYMENT TOKEN'
+              Recoverable: true
+              Details: ''
+    APIMissingPaymentNumberError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '590'
+              Description: 'API MISSING PAYMENT NUMBER'
+              Recoverable: true
+              Details: ''
+    MissingPartnerIdError:
+      value:
+        Errors:
+          Error:
+            - Source: MBEP API
+              ReasonCode: '402'
+              Description: Missing partnerId.
+              Recoverable: false
+              Details: ''
+    RequestDecryptionError:
+      value:
+        Errors:
+          Error:
+            - Source: MBEP
+              ReasonCode: '1001'
+              Description: >-
+                We are unable to decipher your request, kindly verify your
+                request before trying again. If the problem persists then reach
+                out to your Mastercard associate.
+              Recoverable: true
+              Details: ''
+    APIAuthorizationError:
+      value:
+        Errors:
+          Error:
+            - Source: MBEP API
+              ReasonCode: '451'
+              Description: API Unauthorized
+              Recoverable: true
+              Details: 'Unauthorized-Please contact your priceless API integration specialist for assistance'
+    InvalidAPIError:
+      value:
+        Errors:
+          Error:
+            - Source: MBEP API
+              ReasonCode: '453'
+              Description: Request URI does not match an existing API resource.
+              Recoverable: true
+              Details: ''
+    PartnerDetailsNotFoundError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '404'
+              Description: 'Resource not found for the give Id.'
+              Recoverable: true
+              Details: ''
+
+    MissingCardHolderNameError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '407'
+              Description: 'API MISSING CARD HOLDER NAME'
+              Details: ''
+              Recoverable: true
+
+    MissingCardExpirationYearError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '409'
+              Description: 'API MISSING CARD EXPIRATION YEAR'
+              Details: ''
+              Recoverable: true
+
+    MissingAccessCodeError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '437'
+              Description: 'API MISSING ACCESSCODE'
+              Details: ''
+              Recoverable: true
+
+    MissingSpendAmountError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '439'
+              Description: 'API MISSING SPEND AMOUNT'
+              Recoverable: true
+              Details: ''
+
+    MissingSpendCurrencyCodeError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '440'
+              Description: 'API MISSING SPEND CURRENCY CODE'
+              Recoverable: true
+              Details: ''
+
+    InvalidEligibilityIdError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '468'
+              Description: 'API INVALID ELIGIBILITY ID'
+              Recoverable: true
+              Details: ''
+
+    MissingBenefitAmountError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '501'
+              Description: 'API MISSING BENEFIT AMOUNT GIVEN'
+              Recoverable: true
+              Details: ''
+
+    MissingExternalIdentifierError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '559'
+              Description: 'API MISSING EXTERNAL IDENTIFIER'
+              Recoverable: true
+              Details: ''
+
+    MissingRedeemedTimeError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '560'
+              Description: 'API MISSING REDEEMED TIME'
+              Recoverable: true
+              Details: ''
+
+    MissingRedemptionCodeError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '561'
+              Description: 'API MISSING REDEMPTION CODE'
+              Recoverable: true
+              Details: ''
+
+    MissingBenefitStartTimeError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '562'
+              Description: 'API MISSING BENEFIT START TIME'
+              Recoverable: true
+              Details: ''
+
+    MissingBenefitEndTimeError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '563'
+              Description: 'API MISSING BENEFIT END TIME'
+              Recoverable: true
+              Details: ''
+
+    MissingDefaultCardOnFileError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '564'
+              Description: 'API MISSING DEFAULT CARD ON FILE'
+              Recoverable: true
+              Details: ''
+
+    MissingRedemptionURLError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '565'
+              Description: 'API MISSING REDEMPTION URL'
+              Recoverable: true
+              Details: ''
+
+    FailedToSaveCreditCardOnFileError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '574'
+              Description: 'API FAILED SAVE CREDIT CARD ON FILE'
+              Recoverable: true
+              Details: ''
+
+    InvalidVendorServiceProviderMappingError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '576'
+              Description: 'API INVALID VENDOR SERVICE PROVIDER MAPPING'
+              Recoverable: true
+              Details: ''
+
+    WrongProviderSetupError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '577'
+              Description: 'API WRONG PROVIDER SETUP'
+              Recoverable: true
+              Details: ''
+
+    RedemptionLimitExceededError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '578'
+              Description: 'API REDEMPTION LIMIT EXCEEDED'
+              Recoverable: true
+              Details: ''
+
+    InvalidCardExpirationError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '579'
+              Description: 'API INVALID CARD EXPIRATION'
+              Recoverable: true
+              Details: ''
+
+    MissingCardExpirationMonthError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '503'
+              Description: 'API MISSING CARD EXPIRATION MONTH'
+              Recoverable: true
+              Details: ''
+
+    APIInvalidPaymentTokenError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '584'
+              Description: 'API INVALID PAYMENT TOKEN'
+              Recoverable: true
+              Details: ''
+    APIInvalidPaymentTokenTypeError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '586'
+              Description: 'API INVALID PAYMENT TOKEN TYPE'
+              Recoverable: true
+              Details: ''
+    APIMissingPaymentTokenTypeError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '587'
+              Description: 'API MISSING PAYMENT TOKEN TYPE'
+              Recoverable: true
+              Details: ''
+    APIMissingPSPIDError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '588'
+              Description: 'API MISSING PSP ID'
+              Recoverable: true
+              Details: ''
+    APIInvalidPSPIDError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '589'
+              Description: 'API INVALID PSP ID'
+              Recoverable: true
+              Details: ''
+    APIMissingASIVerifiedError:
+      value:
+        Errors:
+          Error:
+            - Source: 'MBEP API'
+              ReasonCode: '591'
+              Description: 'API MISSING ASI VERIFIED'
+              Recoverable: true
+              Details: ''

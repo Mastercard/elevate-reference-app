@@ -1,18 +1,18 @@
-package com.mastercard.developers.mbep.controller;
+package com.mastercard.developers.elevate.accelerator.controller;
 
-import com.mastercard.developers.mbep.generated.invokers.ApiException;
-import com.mastercard.developers.mbep.generated.models.Benefit;
-import com.mastercard.developers.mbep.generated.models.CardToken;
-import com.mastercard.developers.mbep.generated.models.CardTokenInfo;
-import com.mastercard.developers.mbep.generated.models.CheckEligibility;
-import com.mastercard.developers.mbep.generated.models.Eligibility;
-import com.mastercard.developers.mbep.generated.models.EligibilityData;
-import com.mastercard.developers.mbep.generated.models.PartnerBenefitDetails;
-import com.mastercard.developers.mbep.generated.models.PartnerBenefitDetailsData;
-import com.mastercard.developers.mbep.generated.models.RedemptionInfo;
-import com.mastercard.developers.mbep.generated.models.RedemptionInfoData;
-import com.mastercard.developers.mbep.generated.models.Redemptions;
-import com.mastercard.developers.mbep.service.MBEPServiceImpl;
+import com.mastercard.developers.elevate.accelerator.generated.invokers.ApiException;
+import com.mastercard.developers.elevate.accelerator.generated.models.Benefit;
+import com.mastercard.developers.elevate.accelerator.generated.models.CardToken;
+import com.mastercard.developers.elevate.accelerator.generated.models.CardTokenInfo;
+import com.mastercard.developers.elevate.accelerator.generated.models.CheckEligibility;
+import com.mastercard.developers.elevate.accelerator.generated.models.Eligibility;
+import com.mastercard.developers.elevate.accelerator.generated.models.EligibilityData;
+import com.mastercard.developers.elevate.accelerator.generated.models.PartnerBenefitDetails;
+import com.mastercard.developers.elevate.accelerator.generated.models.PartnerBenefitDetailsData;
+import com.mastercard.developers.elevate.accelerator.generated.models.RedemptionInfo;
+import com.mastercard.developers.elevate.accelerator.generated.models.RedemptionInfoData;
+import com.mastercard.developers.elevate.accelerator.generated.models.Redemptions;
+import com.mastercard.developers.elevate.accelerator.service.ElevateAcceleratorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +38,7 @@ class RequestControllerTest {
     RequestController requestController;
 
     @Mock
-    MBEPServiceImpl elevateAcceleratorService;
+    ElevateAcceleratorServiceImpl elevateAcceleratorService;
 
     @Mock
     Redemptions redemptionPayload;

@@ -1,7 +1,7 @@
-package com.mastercard.developers.mbep.exception;
+package com.mastercard.developers.elevate.accelerator.exception;
 
-import com.mastercard.developers.mbep.generated.invokers.ApiException;
-import com.mastercard.developers.mbep.generated.models.ErrorWrapper;
+import com.mastercard.developers.elevate.accelerator.generated.invokers.ApiException;
+import com.mastercard.developers.elevate.accelerator.generated.models.ErrorWrapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

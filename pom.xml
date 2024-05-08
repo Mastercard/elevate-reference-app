@@ -33,7 +33,7 @@
         <webjars-jquery-ui.version>1.13.2</webjars-jquery-ui.version>
         <webjars-jquery.version>3.6.4</webjars-jquery.version>
         <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
-        <commons.io.version>2.11.0</commons.io.version>
+      	<commons.io.version>2.11.0</commons.io.version>
         <lombok.version>1.18.26</lombok.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.coverage.jacoco.xmlReportPaths>
@@ -182,7 +182,7 @@
                     </argLine>
                     <useSystemClassLoader>true</useSystemClassLoader>
                     <useManifestOnlyJar>false</useManifestOnlyJar>
-                    <threadCount>0</threadCount>
+                    <threadCount>1</threadCount>
                     <parallel>false</parallel>
                     <forkCount>1</forkCount>
                     <reuseForks>false</reuseForks>

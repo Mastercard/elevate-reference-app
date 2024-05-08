@@ -1,10 +1,10 @@
-package com.mastercard.developers.mbep.exception;
+package com.mastercard.developers.elevate.accelerator.exception;
 
 import com.jayway.jsonpath.JsonPath;
-import com.mastercard.developers.mbep.generated.invokers.ApiException;
-import com.mastercard.developers.mbep.generated.models.Error;
-import com.mastercard.developers.mbep.generated.models.ErrorWrapper;
-import com.mastercard.developers.mbep.generated.models.Errors;
+import com.mastercard.developers.elevate.accelerator.generated.invokers.ApiException;
+import com.mastercard.developers.elevate.accelerator.generated.models.Error;
+import com.mastercard.developers.elevate.accelerator.generated.models.ErrorWrapper;
+import com.mastercard.developers.elevate.accelerator.generated.models.Errors;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import org.springframework.http.HttpHeaders;

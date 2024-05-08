@@ -1,4 +1,4 @@
-package com.mastercard.developers.mbep.util;
+package com.mastercard.developers.elevate.accelerator.util;
 
 import com.mastercard.developer.encryption.FieldLevelEncryptionConfig;
 import com.mastercard.developer.encryption.FieldLevelEncryptionConfigBuilder;
@@ -14,7 +14,7 @@ public class EncryptionConfigUtil {
 
     private EncryptionConfigUtil(){}
 
-    private static final String ENCRYPTION_KEY = "mastercard.mbep.client.ref.app.encryption.file";
+    private static final String ENCRYPTION_KEY = "mastercard.elevate.client.ref.app.encryption.file";
     private static final String JSON_PATH = "$";
     private static final String SHA_256 = "SHA-256";
     private static final String OAEP_HASHING_ALGORITHM = "oaepHashingAlgorithm";

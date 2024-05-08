@@ -111,7 +111,7 @@ Used to check eligibility of a credit card in mbep program for a specific benefi
 3. **Create Redemptions**    
 Endpoint: "/redemptions".
 Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource.
-
+   
 4. **Store Payment Tokens**
 Endpoint: "/payment-tokens".
 Used to store Pan data as tokens by PSP on behalf of merchants.
@@ -120,12 +120,11 @@ More details can be found [here](https://developer.mastercard.com/elevate/docume
 
 
 ## Execute the Use-Cases   <a name="execute-the-use-cases"></a>
-Below are the APIs exposed by this application:
-    - GET  <HOST>/benefits
-    - POST <Host>/eligibility      
-    - POST <Host>/redemptions            
-    - POST <Host>/payment-tokens          
-
+Below are the APIs exposed by this application: 
+       - GET  <HOST>/benefits
+       - POST <Host>/eligibility      
+       - POST <Host>/redemptions            
+       - POST <Host>/payment-tokens
 Once you have added the correct properties, you are ready to build the application. You can do this by navigating to the project’s base directory from the terminal and then by running the following command.
 
 `mvn clean install`

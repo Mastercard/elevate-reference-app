@@ -1,10 +1,12 @@
 {
   "partnerId": 669,
-  "creditCardNumber": 5555555555556001,
-  "cardHolderName": "A K Chauhan",
-  "expirationYear": "24",
-  "expirationMonth": "04",
+  "paymentCard": {
+    "paymentNumber": 5555555555556001,
+    "cardHolderName": "A K Chauhan",
+    "expirationYear": "24",
+    "expirationMonth": "04"
+  },
   "productId": 161041,
   "email": "ak.chauhan@hotmail.com",
-  "accessCode": "MyAC-611-20044"
+  "accessCode": "ae-amazonprime"
 }

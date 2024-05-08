@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
- * This class is used to invoke mbep APIs
- */
+* This class is used to invoke mbep APIs
+*/
 @Slf4j
 @RestController
 public class RequestController {

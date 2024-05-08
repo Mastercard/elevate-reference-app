@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mastercard.developers.mbep;
+package com.mastercard.developers.elevate.accelerator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.mastercard.developers.mbep.*")
-public class MBEPDemoApplication {
+@ComponentScan(basePackages = "com.mastercard.developers.elevate.accelerator.*")
+public class ElevateAcceleratorDemoApplication {
     public static void main(String[] args) {
-            SpringApplication.run(MBEPDemoApplication.class);
+            SpringApplication.run(ElevateAcceleratorDemoApplication.class);
         }
     }

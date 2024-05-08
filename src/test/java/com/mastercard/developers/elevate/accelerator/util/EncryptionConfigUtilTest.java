@@ -1,4 +1,4 @@
-package com.mastercard.developers.mbep.util;
+package com.mastercard.developers.elevate.accelerator.util;
 
 import com.mastercard.developer.encryption.FieldLevelEncryptionConfig;
 import org.junit.jupiter.api.Test;
@@ -21,12 +21,12 @@ public class EncryptionConfigUtilTest {
     @Test
     void getEncryptionConfig_Positive_Test() {
         Properties properties = new Properties();
-        properties.setProperty("mastercard.mbep.client.api.base.path","test1");
-        properties.setProperty("mastercard.mbep.client.p12.path","test2");
-        properties.setProperty("mastercard.mbep.client.ref.app.consumer.key","test3");
-        properties.setProperty("mastercard.mbep.client.ref.app.keystore.alias","test4");
-        properties.setProperty("mastercard.mbep.client.ref.app.keystore.password","test5");
-        properties.setProperty("mastercard.mbep.client.ref.app.encryption.file","src/test/resources/test.pem");
+        properties.setProperty("mastercard.elevate.client.api.base.path","test1");
+        properties.setProperty("mastercard.elevate.client.p12.path","test2");
+        properties.setProperty("mastercard.elevate.client.ref.app.consumer.key","test3");
+        properties.setProperty("mastercard.elevate.client.ref.app.keystore.alias","test4");
+        properties.setProperty("mastercard.elevate.client.ref.app.keystore.password","test5");
+        properties.setProperty("mastercard.elevate.client.ref.app.encryption.file","src/test/resources/test.pem");
         FieldLevelEncryptionConfig fieldLevelEncryptionConfig = encryptionConfigUtil.getEncryptionConfig(properties);
         assertNotNull(fieldLevelEncryptionConfig);
         assertNotNull(fieldLevelEncryptionConfig.getEncryptionCertificateFingerprint());

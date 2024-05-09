@@ -1,6 +1,6 @@
 {
   "partnerId": 669,
-  "creditCardNumber": 5555555555556001,
+  "paymentNumber": 5555555555556001,
   "eligibilityId": "129017_161041_1179",
   "spendAmount": 109.99,
   "spendCurrencyCode": "USD",
@@ -8,7 +8,7 @@
   "benefitCurrencyCode": "USD",
   "externalIdentifier": "EXT_ID-9a5k7",
   "redemptionCode": "k86n7a7",
-  "redemptionURL": "https://www.abcmerchant.com",
+  "redemptionURL": "https://www.amazonprime.com",
   "isDefaultCardOnFile": "1",
   "benefitStartTime": "2022-05-04T00:00:00Z",
   "benefitEndTime": "2023-05-04T00:00:00Z",

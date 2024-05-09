@@ -126,13 +126,20 @@ Below are the APIs exposed by this application:
        - POST <Host>/redemptions            
        - POST <Host>/payment-tokens
 Once you have added the correct properties, you are ready to build the application. You can do this by navigating to the project’s base directory from the terminal and then by running the following command.
-
 `mvn clean install`
+
+**NOTE:**
+    - if you want to consume api on production environment please change the url values of
+      ```mastercard.mbep.client.api.base.path``` in [application.properties](src%2Fmain%2Fresources%2Fapplication.properties),
+      ```VALUE_BASE_URL``` in [RequestHelperTest.java](src%2Ftest%2Fjava%2Fcom%2Fmastercard%2Fdevelopers%2Fmbep%2Fhelper%2FRequestHelperTest.java) and
+      ```VALUE_BASE_URL``` in [MBEPServiceImplTest.java](src%2Ftest%2Fjava%2Fcom%2Fmastercard%2Fdevelopers%2Fmbep%2Fservice%2FMBEPServiceImplTest.java)
+to 'https://api.mastercard.com/elevate'
+
 
 When the project builds successfully, you can run the following command to start the project  
 - Run ```java -jar target/elevate-accelerator-1.0.0.jar``` command to run the application.  
-- Open the browser and enter the url ```http://localhost:5001/mbep/``` and you will land on benefits page.
-- Click on ```benefits```, ```eligibility``` or ```redemeptions``` tab and enter the details as required.
+- Open the browser and enter the url ```http://localhost:8080/mbep/``` and you will land on benefits page.
+- Click on ```benefits```, ```tokens```, ```eligibility``` or ```redemeptions``` tab and enter the details as required.
 - When submitted you will get JSON response for each service. 
     
 **NOTE:**   

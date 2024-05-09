@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class MBEPServiceImplTest {
 
-    private static final String BASE_URL = "https://stage.api.mastercard.com/elevate";
+    private static final String BASE_URL = "https://sandbox.api.mastercard.com/elevate";
 
     @InjectMocks
     MBEPServiceImpl mbepService;

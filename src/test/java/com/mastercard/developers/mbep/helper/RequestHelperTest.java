@@ -17,7 +17,7 @@ class RequestHelperTest {
 
     private static final String KEY_BASE_URL = "mastercard.mbep.client.api.base.path";
 
-    private static final String VALUE_BASE_URL = "https://stage.api.mastercard.com/elevate";
+    private static final String VALUE_BASE_URL = "https://sandbox.api.mastercard.com/elevate";
 
     private static final String ACCESS_CODE = "ae-amazonprime";
     private static final String CURRENCY_CODE = "USD";

@@ -56,7 +56,7 @@ See also:
                 <goal>generate</goal>
             </goals>
             <configuration>
-                <inputSpec>${project.basedir}/src/main/resources/elevate-accelerator-proxy-services.yaml</inputSpec>
+                <inputSpec>${project.basedir}/src/main/resources/mbep-services.yaml</inputSpec>
                 <generatorName>java</generatorName>
                 <library>okhttp-gson</library>
                 <generateApiTests>false</generateApiTests>
@@ -106,40 +106,30 @@ Used to get benefits of the user.
    
 2. **Check Eligibility**    
 Endpoint: "/eligibility".
-Used to check eligibility of a credit card in mbep program for a specific benefit.
+Used to check eligibility of a credit card in mbep program for a specific benefit. Access to this API requires mapping of client ID, please contact your mastercard representative to get this access.
 
 3. **Create Redemptions**    
 Endpoint: "/redemptions".
-Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource.
+Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource. Access to this API requires mapping of client ID, please contact your mastercard representative to get this access.
    
-4. **Store Payment Tokens**
-Endpoint: "/payment-tokens".
-Used to store Pan data as tokens by PSP on behalf of merchants.
 
-More details can be found [here](https://developer.mastercard.com/elevate/documentation/use-cases/).    
+More details can be found [here](https://developer.mastercard.com/mbep/documentation/use-cases/).
 
 
 ## Execute the Use-Cases   <a name="execute-the-use-cases"></a>
 Below are the APIs exposed by this application: 
-       - GET  <HOST>/benefits
-       - POST <Host>/eligibility      
-       - POST <Host>/redemptions            
-       - POST <Host>/payment-tokens
+       - GET  <HOST>/mbep/benefits
+       - POST <Host>/mbep/eligibility      
+       - POST <Host>/mbep/redemptions            
+
 Once you have added the correct properties, you are ready to build the application. You can do this by navigating to the project’s base directory from the terminal and then by running the following command.
+
 `mvn clean install`
 
-**NOTE:**
-    - if you want to consume api on production environment please change the url values of
-      ```mastercard.mbep.client.api.base.path``` in [application.properties](src%2Fmain%2Fresources%2Fapplication.properties),
-      ```VALUE_BASE_URL``` in [RequestHelperTest.java](src%2Ftest%2Fjava%2Fcom%2Fmastercard%2Fdevelopers%2Fmbep%2Fhelper%2FRequestHelperTest.java) and
-      ```VALUE_BASE_URL``` in [MBEPServiceImplTest.java](src%2Ftest%2Fjava%2Fcom%2Fmastercard%2Fdevelopers%2Fmbep%2Fservice%2FMBEPServiceImplTest.java)
-to 'https://api.mastercard.com/elevate'
-
-
 When the project builds successfully, you can run the following command to start the project  
-- Run ```java -jar target/elevate-accelerator-1.0.0.jar``` command to run the application.  
-- Open the browser and enter the url ```http://localhost:8080/mbep/``` and you will land on benefits page.
-- Click on ```benefits```, ```tokens```, ```eligibility``` or ```redemeptions``` tab and enter the details as required.
+- Run ```java -jar target/mbep-1.0.0.jar``` command to run the application.
+- Open the browser and enter the url ```http://localhost:5001/mbep/``` and you will land on benefits page.
+- Click on ```benefits```, ```eligibility``` or ```redemeptions``` tab and enter the details as required.
 - When submitted you will get JSON response for each service. 
     
 **NOTE:**   
@@ -152,7 +142,7 @@ MBEP documentation can be found [here](https://developer.mastercard.com/mbep/doc
 
 
 ## API Reference <a name="api-reference"></a>
-The Swagger API specification can be found [here](https://developer.mastercard.com/elevate/documentation/api-reference/).
+The Swagger API specification can be found [here](https://developer.mastercard.com/mbep/documentation/api-ref/).
 
 ## Support <a name="support"></a>
 Please email **apisupport@mastercard.com** with any questions or feedback you may have.

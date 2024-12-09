@@ -5,7 +5,7 @@ info:
     This is an open API document for Mastercard MBEP APIs. These APIs can be used to
     check eligibility for particular benefit and redeem the same for a given
     payment card number. For additional documentation and use cases, see
-    **[Documentation](https://developer.mastercard.com/elevate/documentation/).**
+    **[Documentation](https://developer.mastercard.com/mbep/documentation/).**
 
     <br/>
 
@@ -44,18 +44,70 @@ paths:
   /eligibilities:
     post:
       summary: >-
-        Used to check eligibility of a credit card in the MBEP program for a
-        specific benefit.
+        Used to check eligibility of a payment card in the MBEP program for a 
+        specific benefit by PAN or Token.
       tags:
         - MBEP
       description: >-
-        This endpoint checks whether provided credit card is eligible for
-        benefit or not. If eligible, then generate and return eligibility
-        id which needs to be provided as an input into `redemptions` endpoint.
+        This endpoint checks whether provided payment card is eligible for
+        a benefit or not. If eligible, it generate and return the eligibility
+        id which needs to be provided as an input into the `redemptions` endpoint.
+        The eligibility check could be performed based on 
+        either Token or PAN (Primary Account Number) of the payment card.
       operationId: checkEligibility
       x-mastercard-api-encrypted: true
       requestBody:
         $ref: '#/components/requestBodies/CheckEligibility'
+      responses:
+        '200':
+          $ref: '#/components/responses/Eligibility'
+        '400':
+          $ref: '#/components/responses/EligibilitiesBadRequestError'
+        '401':
+          $ref: '#/components/responses/APIAuthorizationError'
+        '404':
+          $ref: '#/components/responses/InvalidAPIError'
+  /eligibilities/token:
+    post:
+      summary: >-
+        Used to check eligibility of a credit card in the MBEP program for a
+        specific benefit by Token.
+      tags:
+        - MBEP
+      description: >-
+        This endpoint checks whether the provided payment card is eligible for 
+        a benefit or not. It takes in a Token as input. If eligible, 
+        it generates and returns the eligibility ID, which needs to be provided as an input 
+        into the `redemptions/token` endpoint.
+      operationId: checkEligibilityByToken
+      x-mastercard-api-encrypted: true
+      requestBody:
+        $ref: '#/components/requestBodies/CheckEligibilityByToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/Eligibility'
+        '400':
+          $ref: '#/components/responses/EligibilitiesBadRequestError'
+        '401':
+          $ref: '#/components/responses/APIAuthorizationError'
+        '404':
+          $ref: '#/components/responses/InvalidAPIError'
+  /eligibilities/pan:
+    post:
+      summary: >-
+        Used to check eligibility of a credit card in the MBEP program for a
+        specific benefit by PAN.
+      tags:
+        - MBEP
+      description: >-
+        This endpoint checks whether the provided payment card is eligible for 
+        a benefit or not. It takes in a PAN as input. If eligible, 
+        it generates and returns the eligibility ID, which needs to be provided as an input 
+        into the `redemptions/pan` endpoint.
+      operationId: checkEligibilityByPan
+      x-mastercard-api-encrypted: true
+      requestBody:
+        $ref: '#/components/requestBodies/CheckEligibilityByPan'
       responses:
         '200':
           $ref: '#/components/responses/Eligibility'
@@ -114,6 +166,46 @@ paths:
           $ref: '#/components/responses/CardTokenInfo'
         400:
           $ref: '#/components/responses/TokenBadRequestError'
+  /redemptions/real-time/token:
+    post:
+      summary: Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource.
+      tags:
+        - MBEP
+      description: |
+        **This endpoint uses [Mastercard payload encryption](https://mstr.cd/2UPfda0) to encrypt entire payload.Please refer to the API documentation for implementation details.**
+      operationId: createRedemptionByRealTimeToken
+      x-mastercard-api-encrypted: true
+      requestBody:
+        $ref: '#/components/requestBodies/RedemptionByRealTimeToken'
+      responses:
+        '200':
+          $ref: '#/components/responses/RedemptionInfo'
+        '400':
+          $ref: '#/components/responses/RedemptionBadRequestError'
+        '401':
+          $ref: '#/components/responses/APIAuthorizationError'
+        '404':
+          $ref: '#/components/responses/InvalidAPIError'
+  /redemptions/real-time/pan:
+    post:
+      summary: Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource.
+      tags:
+        - MBEP
+      description: |
+        **This endpoint uses [Mastercard payload encryption](https://mstr.cd/2UPfda0) to encrypt entire payload.Please refer to the API documentation for implementation details.**
+      operationId: createRedemptionByRealTimePan
+      x-mastercard-api-encrypted: true
+      requestBody:
+        $ref: '#/components/requestBodies/RedemptionByRealTimePan'
+      responses:
+        '200':
+          $ref: '#/components/responses/RedemptionInfo'
+        '400':
+          $ref: '#/components/responses/RedemptionBadRequestError'
+        '401':
+          $ref: '#/components/responses/APIAuthorizationError'
+        '404':
+          $ref: '#/components/responses/InvalidAPIError'
 components:
   requestBodies:
     CheckEligibility:
@@ -127,6 +219,28 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CheckEligibility'
+    CheckEligibilityByToken:
+      description: >-
+        Contains payment card details and benefit code for which eligibility needs
+        to be checked. This endpoint uses Mastercard payload encryption. Please
+        refer to the **[Payload Encryption](https://mstr.cd/2UPfda0)** page for
+        implementation details.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CheckEligibilityByToken'
+    CheckEligibilityByPan:
+      description: >-
+        Contains payment card details and benefit code for which eligibility needs
+        to be checked. This endpoint uses Mastercard payload encryption. Please
+        refer to the **[Payload Encryption](https://mstr.cd/2UPfda0)** page for
+        implementation details.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CheckEligibilityByPan'
     Redemptions:
       description: >-
         User's Personal and Card information which needs to be registered onto
@@ -146,6 +260,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CardToken'
+    RedemptionByRealTimeToken:
+      description: >-
+        User's token created from token endpoint and eligibility ID created from
+        Eligibility endpoint is now being used to do actual redemption using this
+        Endpoint
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RedemptionByRealTimeToken'
+    RedemptionByRealTimePan:
+      description: >-
+        User's token created from token endpoint and eligibility ID created from
+        Eligibility endpoint is now being used to do actual redemption using this
+        Endpoint
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RedemptionByRealTimePan'
   schemas:
     ErrorWrapper:
       title: ErrorWrapper
@@ -249,6 +383,88 @@ components:
           cardHolderName: 'John Doe'
           expirationYear: '24'
           expirationMonth: '04'
+        paymentToken:
+          token: '1234token'
+          tokenType: 'partner'
+          pspId: 514
+        productId: 5467
+        email: john.doe@elevate.mastercard.com
+        accessCode: ae-amazonprime
+    CheckEligibilityByToken:
+      title: CheckEligibility
+      type: object
+      description: >-
+        The object containing payment card data. This object will be encrypted
+        before sending it to the server.
+      required:
+        - partnerId
+        - token
+        - tokenType
+        - pspId
+        - productId
+        - email
+        - accessCode
+      properties:
+        partnerId:
+          type: integer
+          description: A unique identifier assigned to the issuer.
+          example: 512
+        paymentToken:
+          $ref: '#/components/schemas/PaymentToken'
+        productId:
+          type: integer
+          example: 161041
+          description: Unique identifier of product.
+        email:
+          type: string
+          example: 'john.doe@mail.com'
+          description: Email address of card holder.
+        accessCode:
+          type: string
+          example: 'ae-amazonprime'
+          description: Code assigned to a benefit for which eligibility needs to check.
+      example:
+        partnerId: 10
+        paymentToken:
+          token: '1234token'
+          tokenType: 'partner'
+          pspId: 514
+        productId: 5467
+        email: john.doe@elevate.mastercard.com
+        accessCode: ae-amazonprime
+    CheckEligibilityByPan:
+      title: CheckEligibility by PAN
+      type: object
+      description: >-
+        The object containing payment card data. This object will be encrypted
+        before sending it to the server.
+      required:
+        - partnerId
+        - paymentCard
+        - productId
+        - email
+        - accessCode
+      properties:
+        partnerId:
+          type: integer
+          description: A unique identifier assigned to the issuer.
+          example: 512
+        paymentCard:
+          $ref: '#/components/schemas/paymentCard'
+        productId:
+          type: integer
+          example: 161041
+          description: Unique identifier of product.
+        email:
+          type: string
+          example: 'john.doe@mail.com'
+          description: Email address of card holder.
+        accessCode:
+          type: string
+          example: 'ae-amazonprime'
+          description: Code assigned to a benefit for which eligibility needs to check.
+      example:
+        partnerId: 10
         paymentToken:
           token: '1234token'
           tokenType: 'partner'
@@ -512,6 +728,152 @@ components:
           token: '1234token'
           tokenType: 'partner'
           pspId: 514
+        eligibilityId: '1234_5467_50'
+        spendAmount: 109.99
+        spendCurrencyCode: USD
+        benefitAmountGiven: 50.99
+        benefitCurrencyCode: USD
+        externalIdentifier: EXT_ID-9a5k7
+        redemptionCode: k86n7a7
+        redemptionURL: https://www.amazonprime.com
+        isDefaultCardOnFile: 1
+        benefitStartTime: 2022-05-04T00:00:00Z
+        benefitEndTime: 2023-05-04T00:00:00Z
+        redeemedTime: 2023-03-04T00:00:00Z
+    RedemptionByRealTimeToken:
+      title: Redemptions
+      type: object
+      description: The request object contains redemption details.
+      required:
+        - partnerId
+        - paymentToken
+        - eligibilityId
+        - externalIdentifier
+        - redemptionCode
+        - redemptionURL
+        - isDefaultCardOnFile
+        - benefitStartTime
+        - benefitEndTime
+        - redeemedTime
+      properties:
+        partnerId:
+          type: integer
+          example: 512
+          description: A unique identifier assigned to the issuer.
+        paymentToken:
+          $ref: '#/components/schemas/PaymentToken'
+        eligibilityId:
+          type: string
+          example: '17385_161041_1179'
+          description: An id received in the response of `eligibilities` API.
+        externalIdentifier:
+          type: string
+          example: 'EXT_ID-9a5k7'
+          description: External Identifier for each product.
+        redemptionCode:
+          type: string
+          example: 'k86n7a7'
+          description: This field is only presented when the partner program is configured
+            to return redemption info.
+        redemptionURL:
+          type: string
+          example: 'https://www.amazonprime.com'
+          description: This field is only presented when the partner program is configured to
+            return redemption info. This is the url where one can redeem benefit.
+        isDefaultCardOnFile:
+          type: integer
+          example: 1
+          description: This field indicates if the given card is default or not.
+        benefitStartTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time when a benefit becomes available for redemption.
+        benefitEndTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time by when a benefit can be availed for redemption.
+        redeemedTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time when a benefit is actually redeemed.
+      example:
+        partnerId: 10
+        paymentToken:
+          token: '1234token'
+          tokenType: 'partner'
+          pspId: 514
+        eligibilityId: '1234_5467_50'
+        spendAmount: 109.99
+        spendCurrencyCode: USD
+        benefitAmountGiven: 50.99
+        benefitCurrencyCode: USD
+        externalIdentifier: EXT_ID-9a5k7
+        redemptionCode: k86n7a7
+        redemptionURL: https://www.amazonprime.com
+        isDefaultCardOnFile: 1
+        benefitStartTime: 2022-05-04T00:00:00Z
+        benefitEndTime: 2023-05-04T00:00:00Z
+        redeemedTime: 2023-03-04T00:00:00Z
+    RedemptionByRealTimePan:
+      title: Redemptions
+      type: object
+      description: The request object contains redemption details.
+      required:
+        - partnerId
+        - paymentNumber
+        - eligibilityId
+        - externalIdentifier
+        - redemptionCode
+        - redemptionURL
+        - isDefaultCardOnFile
+        - benefitStartTime
+        - benefitEndTime
+        - redeemedTime
+      properties:
+        partnerId:
+          type: integer
+          example: 512
+          description: A unique identifier assigned to the issuer.
+        paymentNumber:
+          type: number
+          example: 5555555555554444
+        eligibilityId:
+          type: string
+          example: '17385_161041_1179'
+          description: An id received in the response of `eligibilities` API.
+        externalIdentifier:
+          type: string
+          example: 'EXT_ID-9a5k7'
+          description: External Identifier for each product.
+        redemptionCode:
+          type: string
+          example: 'k86n7a7'
+          description: This field is only presented when the partner program is configured
+            to return redemption info.
+        redemptionURL:
+          type: string
+          example: 'https://www.amazonprime.com'
+          description: This field is only presented when the partner program is configured to
+            return redemption info. This is the url where one can redeem benefit.
+        isDefaultCardOnFile:
+          type: integer
+          example: 1
+          description: This field indicates if the given card is default or not.
+        benefitStartTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time when a benefit becomes available for redemption.
+        benefitEndTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time by when a benefit can be availed for redemption.
+        redeemedTime:
+          type: string
+          example: 2022-05-04T00:00:00Z
+          description: This is the time when a benefit is actually redeemed.
+      example:
+        partnerId: 10
+        paymentNumber: '5555555555554444'
         eligibilityId: '1234_5467_50'
         spendAmount: 109.99
         spendCurrencyCode: USD

@@ -5,6 +5,10 @@ import com.mastercard.developers.mbep.generated.models.Benefit;
 import com.mastercard.developers.mbep.generated.models.CardToken;
 import com.mastercard.developers.mbep.generated.models.CardTokenInfo;
 import com.mastercard.developers.mbep.generated.models.CheckEligibility;
+import com.mastercard.developers.mbep.generated.models.CheckEligibilityByToken;
+import com.mastercard.developers.mbep.generated.models.CheckEligibilityByPan;
+import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimePan;
+import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimeToken;
 import com.mastercard.developers.mbep.generated.models.Eligibility;
 import com.mastercard.developers.mbep.generated.models.EligibilityData;
 import com.mastercard.developers.mbep.generated.models.PartnerBenefitDetails;
@@ -46,6 +50,18 @@ class RequestControllerTest {
     @Mock
     CheckEligibility eligibilityPayload;
 
+    @Mock
+    CheckEligibilityByToken eligibilityPayloadByToken;
+
+    @Mock
+    CheckEligibilityByPan eligibilityPayloadByPan;
+
+    @Mock
+    RedemptionByRealTimeToken redemptionByRealTimeToken;
+
+    @Mock
+    RedemptionByRealTimePan redemptionByRealTimePan;
+
 
     @BeforeEach
     void setUp() {
@@ -53,7 +69,7 @@ class RequestControllerTest {
     }
 
     @Test
-    void eligibilities() throws ApiException {
+    void eligibility() throws ApiException {
 
         Eligibility eligibility = new Eligibility();
         eligibility.msg(OK);
@@ -72,7 +88,46 @@ class RequestControllerTest {
     }
 
     @Test
-    void eligibilitiesFailure() throws ApiException {
+    void eligibilityByToken() throws ApiException {
+
+        Eligibility eligibility = new Eligibility();
+        eligibility.msg(OK);
+        EligibilityData eligibilityData = new EligibilityData();
+        eligibilityData.setEligible(true);
+        eligibilityData.setEligibilityId("1234_5467_50");
+        eligibilityData.setRedemptionURL("https://www.amazonxxx.com");
+        eligibilityData.setRedemptionCode("k86n7a7");
+        eligibilityData.setProductId("6");
+        eligibilityData.setAccessCode("20");
+        eligibility.setData(eligibilityData);
+        when(elevateAcceleratorService.checkEligibilityByToken(any())).thenReturn(eligibility);
+        String eligibilityResponseEntity = requestController.eligibilitiesByToken(eligibilityPayloadByToken);
+
+        assertNotNull(eligibilityResponseEntity);
+    }
+
+    @Test
+    void eligibilityByPan() throws ApiException {
+
+        Eligibility eligibility = new Eligibility();
+        eligibility.msg(OK);
+        EligibilityData eligibilityData = new EligibilityData();
+        eligibilityData.setEligible(true);
+        eligibilityData.setEligibilityId("1234_5467_50");
+        eligibilityData.setRedemptionURL("https://www.amazonxxx.com");
+        eligibilityData.setRedemptionCode("k86n7a7");
+        eligibilityData.setProductId("6");
+        eligibilityData.setAccessCode("20");
+        eligibility.setData(eligibilityData);
+        when(elevateAcceleratorService.checkEligibilityByPan(any())).thenReturn(eligibility);
+        String eligibilityResponseEntity = requestController.eligibilitiesByPan(eligibilityPayloadByPan);
+
+        assertNotNull(eligibilityResponseEntity);
+    }
+
+
+    @Test
+    void eligibilityFailure() throws ApiException {
         when(elevateAcceleratorService.checkEligibility(any())).thenThrow(new ApiException());
         assertThrows(ApiException.class, () -> requestController.eligibilities(eligibilityPayload));
         verify(elevateAcceleratorService).checkEligibility(any(CheckEligibility.class));
@@ -88,6 +143,30 @@ class RequestControllerTest {
         redemptionInfo.setData(redemptionInfoData);
         when(elevateAcceleratorService.redemption(any())).thenReturn(redemptionInfo);
         String redemptionInfoResponseEntity = requestController.redemptions(redemptionPayload);
+        assertNotNull(redemptionInfoResponseEntity);
+    }
+
+    @Test
+    void testRealTimeRedemptionByToken() throws ApiException{
+        RedemptionInfo redemptionInfo = new RedemptionInfo();
+        redemptionInfo.setMsg(OK);
+        RedemptionInfoData redemptionInfoData =new RedemptionInfoData();
+        redemptionInfoData.setRedemptionId("265342347");
+        redemptionInfo.setData(redemptionInfoData);
+        when(elevateAcceleratorService.createRedemptionByRealTimeToken(any())).thenReturn(redemptionInfo);
+        String redemptionInfoResponseEntity = requestController.realTimeRedemptionByToken(redemptionByRealTimeToken);
+        assertNotNull(redemptionInfoResponseEntity);
+    }
+
+    @Test
+    void testRealTimeRedemptionByPan() throws ApiException{
+        RedemptionInfo redemptionInfo = new RedemptionInfo();
+        redemptionInfo.setMsg(OK);
+        RedemptionInfoData redemptionInfoData =new RedemptionInfoData();
+        redemptionInfoData.setRedemptionId("265342347");
+        redemptionInfo.setData(redemptionInfoData);
+        when(elevateAcceleratorService.createRedemptionByRealTimePan(any())).thenReturn(redemptionInfo);
+        String redemptionInfoResponseEntity = requestController.realTimeRedemptionByPan(redemptionByRealTimePan);
         assertNotNull(redemptionInfoResponseEntity);
     }
 

@@ -1,14 +1,17 @@
 package com.mastercard.developers.mbep.service;
 
 import com.google.gson.Gson;
-
 import com.mastercard.developers.mbep.generated.apis.MbepApi;
 import com.mastercard.developers.mbep.generated.invokers.ApiException;
 import com.mastercard.developers.mbep.generated.models.CardToken;
 import com.mastercard.developers.mbep.generated.models.CardTokenInfo;
 import com.mastercard.developers.mbep.generated.models.CheckEligibility;
+import com.mastercard.developers.mbep.generated.models.CheckEligibilityByPan;
+import com.mastercard.developers.mbep.generated.models.CheckEligibilityByToken;
 import com.mastercard.developers.mbep.generated.models.Eligibility;
 import com.mastercard.developers.mbep.generated.models.PartnerBenefitDetails;
+import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimePan;
+import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimeToken;
 import com.mastercard.developers.mbep.generated.models.RedemptionInfo;
 import com.mastercard.developers.mbep.generated.models.Redemptions;
 import com.mastercard.developers.mbep.helper.RequestHelper;
@@ -71,5 +74,46 @@ public class MBEPServiceImpl {
         CardTokenInfo tokenInfo = mbepApi.saveToken(cardToken);
         log.info(RESPONSE + tokenInfo.toString());
         return tokenInfo;
+    }
+
+    public Eligibility checkEligibilityByToken(CheckEligibilityByToken checkEligibilityByToken) throws ApiException {
+        String requestPayload = new Gson().toJson(checkEligibilityByToken);
+        String request = REQUEST_API + baseUrl + "/eligibilities/token\n" +
+                "Source: checkEligibility by Token \nRequest Payload : " + requestPayload;
+        log.info(request);
+        Eligibility eligibility = mbepApi.checkEligibilityByToken(checkEligibilityByToken);
+        log.info(RESPONSE + eligibility.toString());
+        return eligibility;
+
+    }
+    public Eligibility checkEligibilityByPan(CheckEligibilityByPan checkEligibilityByPan) throws ApiException {
+        String requestPayload = new Gson().toJson(checkEligibilityByPan);
+        String request = REQUEST_API + baseUrl + "/eligibilities/pan\n" +
+                "Source: checkEligibility by PAN \nRequest Payload : " + requestPayload;
+        log.info(request);
+        Eligibility eligibility = mbepApi.checkEligibilityByPan(checkEligibilityByPan);
+        log.info(RESPONSE + eligibility.toString());
+        return eligibility;
+
+    }
+    
+    public RedemptionInfo createRedemptionByRealTimeToken(RedemptionByRealTimeToken redemptionByRealTimeToken) throws ApiException {
+        String requestPayload = new Gson().toJson(redemptionByRealTimeToken);
+        String request = REQUEST_API + baseUrl + "/redemptions/real-time/token\n" +
+                "Source: real time redemption with token \nRequest Payload : " + requestPayload;
+        log.info(request);
+        RedemptionInfo redemptionInfo = mbepApi.createRedemptionByRealTimeToken(redemptionByRealTimeToken);
+        log.info(RESPONSE + redemptionInfo.toString());
+        return redemptionInfo;
+    }
+
+    public RedemptionInfo createRedemptionByRealTimePan(RedemptionByRealTimePan redemptionByRealTimePan) throws ApiException {
+        String requestPayload = new Gson().toJson(redemptionByRealTimePan);
+        String request = REQUEST_API + baseUrl + "/redemptions/real-time/pan\n" +
+                "Source: real time redemption with pan \nRequest Payload : " + requestPayload;
+        log.info(request);
+        RedemptionInfo redemptionInfo = mbepApi.createRedemptionByRealTimePan(redemptionByRealTimePan);
+        log.info(RESPONSE + redemptionInfo.toString());
+        return redemptionInfo;
     }
 }

@@ -13,6 +13,10 @@
 
     <script>
         $(document).ready(function () {
+            var EligibilityByTokenApi = '/mbep/eligibilities/token';
+            var EligibilityByPanApi = '/mbep/eligibilities/pan';
+            var RedemptionByToken = '/mbep/redemptions/real-time/token';
+            var RedemptionByPan = '/mbep/redemptions/real-time/pan';
             var EligibilityApi = '/mbep/eligibilities';
             var RedemptionApi = '/mbep/redemptions';
             var BenefitsApi = '/mbep/benefits';
@@ -20,35 +24,10 @@
 
             $('#ben_tab').css("background-color", "#D3D3D3");
 
-            $("#el_reset,#re_reset,#ben_reset,#token_reset").click(function () {
+            $("#el_reset,#re_reset,#ben_reset,#token_reset,#el_reset_t,#el_reset_p,#re_reset_t,#re_reset_p").click(function () {
                 location.reload();
             });
 
-            function toggle() {
-                if ('eli_tab' == $(".active").attr('id')) {
-                    $('.nav-link').toggleClass("noactive").toggleClass("active");
-                    $('.tab-pane').toggleClass("fade").toggleClass("active");
-                    $('#red_tab').css("background-color", "#D3D3D3");
-                    $('#token_tab').css("background-color", "#D3D3D3");
-                    $('#ben_tab').css("background-color", "#D3D3D3");
-                    $('#eli_tab').attr('style', '');
-                } else if ('red_tab' == $(".active").attr('id')) {
-                    $('#eli_tab').css("background-color", "#D3D3D3");
-                    $('#token_tab').css("background-color", "#D3D3D3");
-                    $('#ben_tab').css("background-color", "#D3D3D3");
-                    $('#red_tab').attr('style', '');
-                } else if ('token_tab' == $(".active").attr('id')) {
-                    $('#eli_tab').css("background-color", "#D3D3D3");
-                    $('#red_tab').css("background-color", "#D3D3D3");
-                    $('#ben_tab').css("background-color", "#D3D3D3");
-                    $('#token_tab').attr('style', '');
-                }else {
-                    $('#eli_tab').css("background-color", "#D3D3D3");
-                    $('#red_tab').css("background-color", "#D3D3D3");
-                    $('#token_tab').css("background-color", "#D3D3D3");
-                    $('#ben_tab').attr('style', '');
-                }
-            };
 
             $(".nav-link").click(function () {
                 $('#status_msg').hide();
@@ -61,6 +40,14 @@
                     $('#token_body').hide();
                     $('#eli_body').hide();
                     $('#red_body').show();
+                    $('#eli_body_t').hide();
+                    $('#eli_tab_t').attr('style', '');
+                    $('#eli_body_p').hide();
+                    $('#eli_tab_p').attr('style', '');
+                    $('#red_body_t').hide();
+                    $('#red_tab_t').attr('style', '');
+                    $('#red_tab_p').attr('style', '');
+                    $('#red_body_p').hide();
                 } else if ('ben_tab' === $(".active").attr('id')) {
                     $('#ben_tab').css("background-color", "#D3D3D3");
                     $('#eli_tab').attr('style', '');
@@ -70,6 +57,14 @@
                     $('#red_body').hide();
                     $('#ben_body').show();
                     $('#token_body').hide();
+                    $('#eli_body_t').hide();
+                    $('#eli_tab_t').attr('style', '');
+                    $('#eli_body_p').hide();
+                    $('#eli_tab_p').attr('style', '');
+                    $('#red_body_t').hide();
+                    $('#red_tab_t').attr('style', '');
+                    $('#red_tab_p').attr('style', '');
+                    $('#red_body_p').hide();
                 } else if ('token_tab' === $(".active").attr('id')) {
                     $('#token_tab').css("background-color", "#D3D3D3");
                     $('#red_tab').attr('style', '');
@@ -79,7 +74,15 @@
                     $('#red_body').hide();
                     $('#eli_tab').attr('style', '');
                     $('#eli_body').hide();
-                } else {
+                    $('#eli_body_t').hide();
+                    $('#eli_tab_t').attr('style', '');
+                    $('#eli_body_p').hide();
+                    $('#eli_tab_p').attr('style', '');
+                    $('#red_body_t').hide();
+                    $('#red_tab_t').attr('style', '');
+                    $('#red_tab_p').attr('style', '');
+                    $('#red_body_p').hide();
+                } else if ('eli_tab' === $(".active").attr('id')) {
                     $('#eli_tab').css("background-color", "#D3D3D3");
                     $('#red_tab').attr('style', '');
                     $('#ben_tab').attr('style', '');
@@ -88,7 +91,82 @@
                     $('#ben_body').hide();
                     $('#red_body').hide();
                     $('#token_body').hide();
-
+                    $('#eli_body_t').hide();
+                    $('#eli_tab_t').attr('style', '');
+                    $('#eli_body_p').hide();
+                    $('#eli_tab_p').attr('style', '');
+                    $('#red_body_t').hide();
+                    $('#red_tab_t').attr('style', '');
+                    $('#red_tab_p').attr('style', '');
+                    $('#red_body_p').hide();
+                } else if ('eli_tab_t' === $(".active").attr('id')) {
+                    $('#eli_tab_t').css("background-color", "#D3D3D3");
+                    $('#red_tab').attr('style', '');
+                    $('#ben_tab').attr('style', '');
+                    $('#token_tab').attr('style', '');
+                    $('#eli_body_t').show();
+                    $('#ben_body').hide();
+                    $('#red_body').hide();
+                    $('#token_body').hide();
+                    $('#eli_body').hide();
+                    $('#eli_tab').attr('style', '');
+                    $('#eli_body_p').hide();
+                    $('#eli_tab_p').attr('style', '');
+                    $('#red_body_t').hide();
+                    $('#red_tab_t').attr('style', '');
+                    $('#red_tab_p').attr('style', '');
+                    $('#red_body_p').hide();
+                } else if ('eli_tab_p' === $(".active").attr('id')) {
+                    $('#eli_tab_p').css("background-color", "#D3D3D3");
+                    $('#red_tab').attr('style', '');
+                    $('#ben_tab').attr('style', '');
+                    $('#token_tab').attr('style', '');
+                    $('#eli_body_p').show();
+                    $('#ben_body').hide();
+                    $('#red_body').hide();
+                    $('#token_body').hide();
+                    $('#eli_body').hide();
+                    $('#eli_tab').attr('style', '');
+                    $('#eli_body_t').hide();
+                    $('#eli_tab_t').attr('style', '');
+                    $('#red_body_t').hide();
+                    $('#red_tab_t').attr('style', '');
+                    $('#red_tab_p').attr('style', '');
+                    $('#red_body_p').hide();
+                } else if ('red_tab_t' === $(".active").attr('id')) {
+                    $('#red_tab_t').css("background-color", "#D3D3D3");
+                    $('#red_tab').attr('style', '');
+                    $('#ben_tab').attr('style', '');
+                    $('#token_tab').attr('style', '');
+                    $('#red_body_t').show();
+                    $('#ben_body').hide();
+                    $('#red_body').hide();
+                    $('#token_body').hide();
+                    $('#eli_body').hide();
+                    $('#eli_tab').attr('style', '');
+                    $('#eli_body_t').hide();
+                    $('#eli_tab_t').attr('style', '');
+                    $('#eli_body_p').hide();
+                    $('#eli_tab_p').attr('style', '');
+                    $('#red_tab_p').attr('style', '');
+                    $('#red_body_p').hide();
+                } else if ('red_tab_p' === $(".active").attr('id')) {
+                    $('#red_tab_p').css("background-color", "#D3D3D3");
+                    $('#red_tab').attr('style', '');
+                    $('#ben_tab').attr('style', '');
+                    $('#token_tab').attr('style', '');
+                    $('#red_body_p').show();
+                    $('#ben_body').hide();
+                    $('#red_body').hide();
+                    $('#token_body').hide();
+                    $('#eli_body').hide();
+                    $('#eli_tab').attr('style', '');
+                    $('#eli_body_t').hide();
+                    $('#eli_tab_t').attr('style', '');
+                    $('#eli_body_p').hide();
+                    $('#eli_tab_p').attr('style', '');
+                    $('#red_tab_t').attr('style', '');
+                    $('#red_body_t').hide();
                 }
             });
 
@@ -120,17 +198,37 @@
             }
 
             function setRedemptionDefaultValues() {
-                $('#spend-currency-code').val('USD');
-                $('#benefit-currency-code').val('USD');
-                $("#spend-amount").val('109.99');
+                // $('#spend-currency-code').val('USD');
+                // $('#benefit-currency-code').val('USD');
+                // $("#spend-amount").val('109.99');
                 $("#is-default-card-on-file").val('1');
                 $("#benefit-start-time").val('2022-05-04T00:00:00Z');
                 $("#benefit-end-time").val('2023-05-04T00:00:00Z');
                 $("#redeemed-time").val('2023-04-04T00:00:00Z');
                 $("#redemption-url").val('https://www.amazonprime.com');
                 $("#external-identifier").val('EXT_ID-9a5k7');
-                $("#benefit-amount-given").val('50.99');
+                // $("#benefit-amount-given").val('50.99');
                 $("#redemption-code").val('k86n7a7');
+            }
+
+            function setRedemptionByTokenDefaultValues() {
+                $("#is-default-card-on-file_t").val('1');
+                $("#benefit-start-time_t").val('2022-05-04T00:00:00Z');
+                $("#benefit-end-time_t").val('2023-05-04T00:00:00Z');
+                $("#redeemed-time_t").val('2023-04-04T00:00:00Z');
+                $("#redemption-url_t").val('https://www.amazonprime.com');
+                $("#external-identifier_t").val('EXT_ID-9a5k7');
+                $("#redemption-code_t").val('k86n7a7');
+            }
+
+            function setRedemptionByPanDefaultValues() {
+                $("#is-default-card-on-file_p").val('1');
+                $("#benefit-start-time_p").val('2022-05-04T00:00:00Z');
+                $("#benefit-end-time_p").val('2023-05-04T00:00:00Z');
+                $("#redeemed-time_p").val('2023-04-04T00:00:00Z');
+                $("#redemption-url_p").val('https://www.amazonprime.com');
+                $("#external-identifier_p").val('EXT_ID-9a5k7');
+                $("#redemption-code_p").val('k86n7a7');
             }
 
             function resetBenefitsForm() {
@@ -155,10 +253,43 @@
                 document.getElementById("status_msg").innerHTML = '';
             }
 
+            function resetRedemptionByTokenForm() {
+                $('#redemption_form_t')[0].reset();
+                document.getElementById('red_body_out_t').innerHTML = '';
+                $('#red_body_card_t').hide();
+                $('#ben_body_card').hide();
+                document.getElementById("status_msg").innerHTML = '';
+            }
+
+
+            function resetRedemptionByPanForm() {
+                $('#redemption_form_p')[0].reset();
+                document.getElementById('red_body_out_p').innerHTML = '';
+                $('#red_body_card_p').hide();
+                $('#ben_body_card').hide();
+                document.getElementById("status_msg").innerHTML = '';
+            }
+
             function resetEligibilityForm() {
                 $('#eligibility_form')[0].reset();
                 document.getElementById('eli_body_out').innerHTML = '';
                 $('#eli_body_card').hide();
+                $('#ben_body_card').hide();
+                document.getElementById("status_msg").innerHTML = '';
+            }
+
+            function resetEligibilityTokenForm() {
+                $('#eligibility_form_t')[0].reset();
+                document.getElementById('eli_body_out_t').innerHTML = '';
+                $('#eli_body_card_t').hide();
+                $('#ben_body_card').hide();
+                document.getElementById("status_msg").innerHTML = '';
+            }
+
+            function resetEligibilityPanForm() {
+                $('#eligibility_form_p')[0].reset();
+                document.getElementById('eli_body_out_p').innerHTML = '';
+                $('#eli_body_card_p').hide();
                 $('#ben_body_card').hide();
                 document.getElementById("status_msg").innerHTML = '';
             }
@@ -211,8 +342,7 @@
                         accessCode: $("#access-code").val()
                     }
                     return json;
-                }
-                else if (paymentCardData.expirationYear !== '' || paymentCardData.expirationMonth !== '' || paymentCardData.cardHolderName !== '' || paymentCardData.paymentNumber !== '') {
+                } else if (paymentCardData.expirationYear !== '' || paymentCardData.expirationMonth !== '' || paymentCardData.cardHolderName !== '' || paymentCardData.paymentNumber !== '') {
                     json = {
                         partnerId: $("#partner-id").val(),
                         paymentCard: paymentCardData,
@@ -221,8 +351,7 @@
                         accessCode: $("#access-code").val()
                     }
                     return json;
-                }
-                else if (paymentTokenData.tokenType !== '' || paymentTokenData.pspId !== '' || paymentTokenData.token !== '') {
+                } else if (paymentTokenData.tokenType !== '' || paymentTokenData.pspId !== '' || paymentTokenData.token !== '') {
                     json = {
                         partnerId: $("#partner-id").val(),
                         paymentToken: paymentTokenData,
@@ -237,6 +366,41 @@
                 }
             }
 
+            function prepareEligibilityByTokenPayload() {
+                let paymentTokenData = {
+                    token: $("#token-t").val(),
+                    tokenType: $("#token-type-t").val(),
+                    pspId: $("#psp-id-t").val()
+                }
+                let json;
+                json = {
+                    partnerId: $("#partner-id-t").val(),
+                    paymentToken: paymentTokenData,
+                    productId: $("#product-id-t").val(),
+                    email: $("#email-id-t").val(),
+                    accessCode: $("#access-code-t").val()
+                }
+                return json;
+            }
+
+            function prepareEligibilityByPanPayload() {
+                let paymentCardData = {
+                    paymentNumber: $("#payment-number-p").val(),
+                    cardHolderName: $("#card-holder-name-p").val(),
+                    expirationYear: $("#expiration-year-p").val(),
+                    expirationMonth: $("#expiration-month-p").val()
+                }
+                let json;
+                json = {
+                    partnerId: $("#partner-id-p").val(),
+                    paymentCard: paymentCardData,
+                    productId: $("#product-id-p").val(),
+                    email: $("#email-id-p").val(),
+                    accessCode: $("#access-code-p").val()
+                }
+                return json;
+            }
+
             $("#el_submit").click(function () {
                 resetRedemptionForm();
                 $('#spinner').show();
@@ -244,7 +408,7 @@
                 $('#eli_body_card').hide();
                 statusbar('show', "Sending request to Eligibility API", "success");
 
-                let json =prepareEligibilityPayload();
+                let json = prepareEligibilityPayload();
 
                 if (json == '') {
                     $('#spinner').hide();
@@ -296,13 +460,129 @@
                 });
             });
 
+
+            $("#el_submit_t").click(function () {
+                resetRedemptionByTokenForm();
+                $('#spinner').show();
+                document.getElementById("eli_body_out_t").innerHTML = '';
+                $('#eli_body_card_t').hide();
+                statusbar('show', "Sending request to Eligibility By Token API", "success");
+
+                let json = prepareEligibilityByTokenPayload();
+
+                if (json == '') {
+                    $('#spinner').hide();
+                    return false;
+                }
+
+                $.ajax({
+                    url: window.location.origin + EligibilityByTokenApi,
+                    type: "POST",
+                    async: true,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (result) {
+                        statusbar('show', "Received Response from Eligibility By Token API - Success", "success");
+                        var jparse = JSON.stringify(result, null, 4);
+                        $("#eli_body_out_t").text(jparse);
+                        $('#eli_body_card_t').show();
+                        var res = result.data;
+                        if (res.eligible) {
+                            if ((res.redemptionURL !== '') && (res.redemptionURL !== null) && (res.redemptionURL !== undefined)) {
+                                statusbar('show', "Redemption URL received in Eligibility API Response", "success");
+                                $('#spinner').hide();
+                            } else {
+                                statusbar('show', "Credit card is eligible for redemption", "success");
+                                statusbar('show', "Auto populating Partner ID, Credit Card Number, Eligibility ID from Eligibility API", "success");
+                                $("#eligibility-id_t").val(res.eligibilityId);
+                                $("#partner-id-1_t").val($("#partner-id-t").val());
+                                $("#token-1_t").val($("#token-t").val());
+                                $("#token-type-1_t").val($("#token-type-t").val());
+                                $("#psp-id-1_t").val($("#psp-id-t").val());
+                                setRedemptionByTokenDefaultValues();
+                                $('#eli_tab_t').attr('style', '');
+                                $('#red_tab_t').css("background-color", "#D3D3D3");
+                                callRedemptionByTokenAjax();
+                            }
+                        } else {
+                            statusbar('show', "Credit card is not eligible for redemption", "error");
+                            $('#spinner').hide();
+                        }
+                    },
+                    error: function (errors) {
+                        statusbar('show', "Received Response from Eligibility API - Error", "error");
+                        $("#eli_body_out_t").text(errors.responseText);
+                        $('#eli_body_card_t').show();
+                        $('#spinner').hide();
+                    }
+                });
+            });
+
+            $("#el_submit_p").click(function () {
+                resetRedemptionByPanForm();
+                $('#spinner').show();
+                document.getElementById("eli_body_out_p").innerHTML = '';
+                $('#eli_body_card_p').hide();
+                statusbar('show', "Sending request to Eligibility By Pan API", "success");
+
+                let json = prepareEligibilityByPanPayload();
+
+                if (json == '') {
+                    $('#spinner').hide();
+                    return false;
+                }
+
+                $.ajax({
+                    url: window.location.origin + EligibilityByPanApi,
+                    type: "POST",
+                    async: true,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (result) {
+                        statusbar('show', "Received Response from Eligibility By Pan API - Success", "success");
+                        var jparse = JSON.stringify(result, null, 4);
+                        $("#eli_body_out_p").text(jparse);
+                        $('#eli_body_card_p').show();
+                        var res = result.data;
+                        if (res.eligible) {
+                            if ((res.redemptionURL !== '') && (res.redemptionURL !== null) && (res.redemptionURL !== undefined)) {
+                                statusbar('show', "Redemption URL received in Eligibility Pan API Response", "success");
+                                $('#spinner').hide();
+                            } else {
+                                statusbar('show', "Credit card is eligible for redemption", "success");
+                                statusbar('show', "Auto populating Partner ID, Credit Card Number, Eligibility ID from Eligibility API", "success");
+                                $("#eligibility-id_p").val(res.eligibilityId);
+                                $("#partner-id-1_p").val($("#partner-id-p").val());
+                                $("#payment-number-1_p").val($("#payment-number-p").val());
+                                setRedemptionByPanDefaultValues();
+                                $('#eli_tab_p').attr('style', '');
+                                $('#red_tab_p').css("background-color", "#D3D3D3");
+                                callRedemptionByPanAjax();
+                            }
+                        } else {
+                            statusbar('show', "Credit card is not eligible for redemption", "error");
+                            $('#spinner').hide();
+                        }
+                    },
+                    error: function (errors) {
+                        statusbar('show', "Received Response from Eligibility Pan API - Error", "error");
+                        $("#eli_body_out_p").text(errors.responseText);
+                        $('#eli_body_card_p').show();
+                        $('#spinner').hide();
+                    }
+                });
+            });
+
+
             $("#token_submit").click(function () {
                 resetTokenForm();
                 $('#spinner').show();
                 document.getElementById("token_body_out").innerHTML = '';
                 $('#token_body_card').hide();
                 statusbar('show', "Sending request to payment-tokens API", "success");
-                var paymentCardVar={
+                var paymentCardVar = {
                     paymentNumber: $("#payment-number-2").val(),
                     cardHolderName: $("#card-holder-name-1").val(),
                     expirationYear: $("#expiration-year-1").val(),
@@ -310,9 +590,9 @@
                 }
                 var json = {
                     partnerId: $("#partner-id-2").val(),
-                    paymentCard : paymentCardVar,
+                    paymentCard: paymentCardVar,
                     token: $('#token-2').val(),
-                    asiVerified:$('#asi-verified').val()
+                    asiVerified: $('#asi-verified').val()
                 };
 
                 $.ajax({
@@ -340,9 +620,32 @@
 
             $("#re_submit").click(function () {
                 resetEligibilityForm();
+                resetEligibilityTokenForm();
+                resetEligibilityPanForm();
                 document.getElementById('red_body_out').innerHTML = '';
                 $('#red_body_out').hide();
                 callRedemptionAjax();
+            });
+
+            $("#re_submit_t").click(function () {
+                resetEligibilityForm();
+                resetEligibilityTokenForm();
+                resetEligibilityPanForm();
+                resetRedemptionForm()
+                document.getElementById('red_body_out_t').innerHTML = '';
+                $('#red_body_out_t').hide();
+                callRedemptionByTokenAjax();
+            });
+
+
+            $("#re_submit_p").click(function () {
+                resetEligibilityForm();
+                resetEligibilityTokenForm();
+                resetEligibilityPanForm();
+                resetRedemptionForm()
+                document.getElementById('red_body_out_p').innerHTML = '';
+                $('#red_body_out_p').hide();
+                callRedemptionByPanAjax();
             });
 
 
@@ -414,12 +717,51 @@
                 return json;
             }
 
+            function getRedemptionByTokenPayload() {
+                let paymentTokenData = {
+                    token: $("#token-1_t").val(),
+                    tokenType: $("#token-type-1_t").val(),
+                    pspId: $("#psp-id-1_t").val()
+                }
+                let json = '';
+                json = {
+                    partnerId: $("#partner-id-1_t").val(),
+                    paymentToken: paymentTokenData,
+                    eligibilityId: $("#eligibility-id_t").val(),
+                    externalIdentifier: $("#external-identifier_t").val(),
+                    redemptionCode: $("#redemption-code_t").val(),
+                    redemptionURL: $("#redemption-url_t").val(),
+                    isDefaultCardOnFile: $("#is-default-card-on-file_t").val(),
+                    benefitStartTime: $("#benefit-start-time_t").val(),
+                    benefitEndTime: $("#benefit-end-time_t").val(),
+                    redeemedTime: $("#redeemed-time_t").val()
+                };
+                return json;
+            }
+
+            function getRedemptionByPanPayload() {
+                let json = '';
+                json = {
+                    partnerId: $("#partner-id-1_p").val(),
+                    paymentNumber: $("#payment-number-1_p").val(),
+                    eligibilityId: $("#eligibility-id_p").val(),
+                    externalIdentifier: $("#external-identifier_p").val(),
+                    redemptionCode: $("#redemption-code_p").val(),
+                    redemptionURL: $("#redemption-url_p").val(),
+                    isDefaultCardOnFile: $("#is-default-card-on-file_p").val(),
+                    benefitStartTime: $("#benefit-start-time_p").val(),
+                    benefitEndTime: $("#benefit-end-time_p").val(),
+                    redeemedTime: $("#redeemed-time_p").val()
+                };
+                return json;
+            }
+
             function callRedemptionAjax() {
                 $('#spinner').show();
                 statusbar('show', "Sending request to Redemption API", "success");
 
-                let json=getRedemptionPayload();
-                if(json==''){
+                let json = getRedemptionPayload();
+                if (json == '') {
                     statusbar('show', "Either one of Payment Number or payment token is required", "error");
                     $('#spinner').hide();
                     return false;
@@ -449,7 +791,93 @@
                 });
                 document.getElementById("red_body").className = 'container tab-pane fade active show';
                 $("#red_body").css("display", "block");
+                $("#red_body_t").css("display", "block");
                 $("#eli_body").css("display", "none");
+                $("#eli_body_t").css("display", "none");
+                $("#eli_body_p").css("display", "none");
+            }
+
+            function callRedemptionByTokenAjax() {
+                $('#spinner').show();
+                statusbar('show', "Sending request to Redemption by token API", "success");
+
+                let json = getRedemptionByTokenPayload();
+                if (json == '') {
+                    statusbar('show', "Can not have null payload for Redemption POST request", "error");
+                    $('#spinner').hide();
+                    return false;
+                }
+                $('#red_body_out_t').show();
+                $.ajax({
+                    url: window.location.origin + RedemptionByToken,
+                    type: "POST",
+                    async: true,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    timeout: 20000,
+                    success: function (result) {
+                        statusbar("show", "Received Response from Redemption by token API - Success", "success");
+                        var jparse = JSON.stringify(result, null, 4);
+                        $("#red_body_out_t").text(jparse);
+                        $('#red_body_card_t').show();
+                        $('#spinner').hide();
+                    },
+                    error: function (errmsg) {
+                        statusbar("error", "Received Response from Redemption API - Error", "error");
+                        $("#red_body_out_t").text(errmsg.responseText);
+                        $('#red_body_card_t').show();
+                        $('#spinner').hide();
+                    }
+                });
+                document.getElementById("red_body").className = 'container tab-pane fade active show';
+                $("#red_body_t").css("display", "block");
+                $("#red_body").css("display", "none");
+                $("#eli_body").css("display", "none");
+                $("#eli_body_t").css("display", "none");
+                $("#eli_body_p").css("display", "none");
+            }
+
+
+             function callRedemptionByPanAjax() {
+                $('#spinner').show();
+                statusbar('show', "Sending request to Redemption by token API", "success");
+
+                let json = getRedemptionByPanPayload();
+                if (json == '') {
+                    statusbar('show', "Can not have null payload for Redemption POST request", "error");
+                    $('#spinner').hide();
+                    return false;
+                }
+                $('#red_body_out_p').show();
+                $.ajax({
+                    url: window.location.origin + RedemptionByPan,
+                    type: "POST",
+                    async: true,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    timeout: 20000,
+                    success: function (result) {
+                        statusbar("show", "Received Response from Redemption by token API - Success", "success");
+                        var jparse = JSON.stringify(result, null, 4);
+                        $("#red_body_out_p").text(jparse);
+                        $('#red_body_card_p').show();
+                        $('#spinner').hide();
+                    },
+                    error: function (errmsg) {
+                        statusbar("error", "Received Response from Redemption API - Error", "error");
+                        $("#red_body_out_p").text(errmsg.responseText);
+                        $('#red_body_card_p').show();
+                        $('#spinner').hide();
+                    }
+                });
+                document.getElementById("red_body").className = 'container tab-pane fade active show';
+                $("#red_body_p").css("display", "block");
+                $("#red_body").css("display", "none");
+                $("#eli_body").css("display", "none");
+                $("#eli_body_t").css("display", "none");
+                $("#eli_body_p").css("display", "none");
             }
 
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -516,6 +944,26 @@
             <a class="nav-link label-text-color" data-bs-toggle="tab" id="red_tab" href="#red_body"><h6>Redemption</h6>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link label-text-color" data-bs-toggle="tab" id="eli_tab_t" href="#eli_body_t"><h6>Eligibility
+                By Token</h6>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link label-text-color" data-bs-toggle="tab" id="red_tab_t" href="#red_body_t"><h6>Redemption
+                By Token</h6>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link label-text-color" data-bs-toggle="tab" id="eli_tab_p" href="#eli_body_p"><h6>Eligibility
+                By PAN</h6>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link label-text-color" data-bs-toggle="tab" id="red_tab_p" href="#red_body_p"><h6>Redemption
+                By PAN</h6>
+            </a>
+        </li>
     </ul>
 
     <br/>
@@ -540,8 +988,11 @@
 
                     <div class="mb-3 mt-3 col">
 
-                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter partner Id. example:512">
-                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
+                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Please enter partner Id. example:512">
+                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"
+                                                                              class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
 
                         <input type="text" class="form-control" id="partner-id" placeholder="[Partner ID]"/>
@@ -634,7 +1085,7 @@
                                   class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
                         <input type="text" class="form-control" id="token"
-                               placeholder="[Token]" maxlength="16"/>
+                               placeholder="[Token]" maxlength="50"/>
                     </div>
                     <div class="mb-3 mt-3 col">
 						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -733,6 +1184,300 @@
 
 
         </div>
+
+        <div id="eli_body_t" class="container tab-pane"><br>
+            <form class="needs-validation" id="eligibility_form_t">
+
+
+                <div class="row">
+
+
+                    <div class="mb-3 mt-3 col">
+
+                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Please enter partner Id. example:512">
+                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"
+                                                                              class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+
+                        <input type="text" class="form-control" id="partner-id-t" placeholder="[Partner ID]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+
+                </div>
+
+                <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter payment token details">
+                          <label class="label-text-color"><h6>Payment Token:</h6></label>
+                      </span>
+                </div>
+
+
+                <div class="row" style="border: thin solid lightgrey; background-color: cornsilk">
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter token">
+                          <label class="label-text-color"><h6>Token:  <a href="#" data-toggle="tooltip"
+                                                                         class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="token-t"
+                               placeholder="[Token]" maxlength="50"/>
+                    </div>
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter token type. example:PARTNER">
+                          <label class="label-text-color"><h6>Token Type:  <a href="#" data-toggle="tooltip"
+                                                                              class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="token-type-t" placeholder="[Token Type]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter PSP ID. example:514">
+                          <label class="label-text-color"><h6>PSP ID:  <a href="#" data-toggle="tooltip"
+                                                                          class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="psp-id-t" placeholder="[PSP ID]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+
+                <div class="row">
+
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Product Id. example:161041">
+                          <label class="label-text-color"><h6>Product Id:  <a href="#" data-toggle="tooltip"
+                                                                              class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="product-id-t" placeholder="[Product Id]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Email address of card holder">
+                          <label class="label-text-color"><h6>Email:   <a href="#" data-toggle="tooltip"
+                                                                          class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="email" class="form-control" id="email-id-t" placeholder="[Email Id]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Code assigned to a benefit for which eligibility needs to check. e.g: ae-amazonprime">
+                          <label class="label-text-color"><h6>Access Code:  <a href="#" data-toggle="tooltip"
+                                                                               class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="access-code-t" placeholder="[Access Code]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3 p-3"></div>
+                    <div class="col-sm-3 p-3">
+                        <button type="button" id="el_submit_t" class="btn btn-default button col button-style-custom">
+                            <center>Submit</center>
+                        </button>
+                    </div>
+                    <div class="col-sm-3 p-3">
+                        <button type="button" id="el_reset_t"
+                                class="btn btn-outline-warning col button-style-custom .btn-text-color">
+                            <center>Reset</center>
+                        </button>
+                    </div>
+                    <div class="col-sm-3 p-3"></div>
+                </div>
+
+                <br/><br/>
+                <div class="card border-info" id="eli_body_card_t" style="display: none;">
+                    <div class="card-body" id="eli_body_out_t">
+                    </div>
+                </div>
+                <br/><br/>
+
+            </form>
+
+
+            </br></br>
+            <!--    -->
+
+
+        </div>
+
+        <div id="eli_body_p" class="container tab-pane"><br>
+            <form class="needs-validation" id="eligibility_form_p">
+
+
+                <div class="row">
+
+
+                    <div class="mb-3 mt-3 col">
+
+                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Please enter partner Id. example:512">
+                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"
+                                                                              class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+
+                        <input type="text" class="form-control" id="partner-id-p" placeholder="[Partner ID]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+
+                </div>
+
+                <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter payment card details">
+                          <label class="label-text-color"><h6>Payment Card:</h6></label>
+                      </span>
+                </div>
+
+
+                <div class="row" style="border: thin solid lightgrey ;  background-color: cornsilk">
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter payment number">
+                          <label class="label-text-color"><h6>Payment Number:  <a href="#" data-toggle="tooltip"
+                                                                                  class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="payment-number-p"
+                               placeholder="[Payment number]" maxlength="16"/>
+                    </div>
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Card Holder Name">
+                          <label class="label-text-color"><h6>Card Holder Name:  <a href="#" data-toggle="tooltip"
+                                                                                    class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="card-holder-name-p"
+                               placeholder="[Card holder name]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Expiration Year of the card. example:24">
+                          <label class="label-text-color"><h6>Expiration Year:  <a href="#" data-toggle="tooltip"
+                                                                                   class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="expiration-year-p" placeholder="[Expiration Year]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Expiration Month of the card. example:04">
+                          <label class="label-text-color"><h6>Expiration Month:  <a href="#" data-toggle="tooltip"
+                                                                                    class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="expiration-month-p" placeholder="[Expiration Month]"
+                               maxlength="2"/>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Product Id. example:161041">
+                          <label class="label-text-color"><h6>Product Id:  <a href="#" data-toggle="tooltip"
+                                                                              class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="product-id-p" placeholder="[Product Id]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Email address of card holder">
+                          <label class="label-text-color"><h6>Email:   <a href="#" data-toggle="tooltip"
+                                                                          class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="email" class="form-control" id="email-id-p" placeholder="[Email Id]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Code assigned to a benefit for which eligibility needs to check. e.g: ae-amazonprime">
+                          <label class="label-text-color"><h6>Access Code:  <a href="#" data-toggle="tooltip"
+                                                                               class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="access-code-p" placeholder="[Access Code]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3 p-3"></div>
+                    <div class="col-sm-3 p-3">
+                        <button type="button" id="el_submit_p" class="btn btn-default button col button-style-custom">
+                            <center>Submit</center>
+                        </button>
+                    </div>
+                    <div class="col-sm-3 p-3">
+                        <button type="button" id="el_reset_p"
+                                class="btn btn-outline-warning col button-style-custom .btn-text-color">
+                            <center>Reset</center>
+                        </button>
+                    </div>
+                    <div class="col-sm-3 p-3"></div>
+                </div>
+
+                <br/><br/>
+                <div class="card border-info" id="eli_body_card_p" style="display: none;">
+                    <div class="card-body" id="eli_body_out_p">
+                    </div>
+                </div>
+                <br/><br/>
+
+            </form>
+
+
+            </br></br>
+            <!--    -->
+
+
+        </div>
+
+
         <div id="red_body" class="container tab-pane fade"><br>
             <form id="redemption_form">
                 <div class="row">
@@ -962,7 +1707,7 @@
                                   class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
                         <input type="text" class="form-control" id="token-1"
-                               placeholder="[Token]" maxlength="16"/>
+                               placeholder="[Token]" maxlength="50"/>
                     </div>
                     <div class="mb-3 mt-3 col">
 						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -1013,6 +1758,378 @@
 
 
         </div>
+        <div id="red_body_t" class="container tab-pane fade"><br>
+            <form id="redemption_form_t">
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+                        <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter partner Id. example:512">
+                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"
+                                                                              class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="partner-id-1_t" placeholder="[Partner ID]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Please enter Eligibility ID received in the response of eligibilities API. example:17385_161041_1179">
+                          <label class="label-text-color"><h6>Eligibility ID:  <a href="#" data-toggle="tooltip"
+                                                                                  class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="eligibility-id_t" placeholder="[Eligibility ID]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+
+                <div class="row">
+
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Please enter external identifier. example : abcd">
+                          <label class="label-text-color"><h6>External Identifier:  <a href="#" data-toggle="tooltip"
+                                                                                       class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="email" class="form-control" id="external-identifier_t"
+                               placeholder="[External Identifier]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Please enter Redemption Code. example : k86n7a7">
+                          <label class="label-text-color"><h6>Redemption Code:  <a href="#" data-toggle="tooltip"
+                                                                                   class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="redemption-code_t" placeholder="[Redemption Code]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Please enter Redemption URL. example : https://www.amazonxxx.com">
+                          <label class="label-text-color"><h6>Redemption URL:  <a href="#" data-toggle="tooltip"
+                                                                                  class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="redemption-url_t" placeholder="[Redemption URL]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Please enter Is Default Card On File. example : 1">
+                          <label class="label-text-color"><h6>Is Default Card On File:  <a href="#"
+                                                                                           data-toggle="tooltip"
+                                                                                           class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="is-default-card-on-file_t"
+                               placeholder="[Is Default Card On File]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Benefit Start Time in YYYY-MM-DDThh:mm:ssZ format.example : 2022-05-04T00:00:00Z">
+                          <label class="label-text-color"><h6>Benefit Start Time: <a href="#" data-toggle="tooltip"
+                                                                                     class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="benefit-start-time_t"
+                               placeholder="[Benefit Start Time]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+					    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Benefit End Time in YYYY-MM-DDThh:mm:ssZ format. example : 2022-05-04T00:00:00Z">
+                          <label class="label-text-color"><h6>Benefit End Time: <a href="#" data-toggle="tooltip"
+                                                                                   class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="benefit-end-time_t"
+                               placeholder="[Benefit End Time]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+
+                    <div class="mb-3 mt-3 col">
+					<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                          title="Please enter Redeemed Time in YYYY-MM-DDThh:mm:ssZ format. example : 2022-05-04T00:00:00Z">
+                          <label class="label-text-color"><h6>Redeemed Time: <a href="#" data-toggle="tooltip"
+                                                                                class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                     </span>
+                        <input type="text" class="form-control" id="redeemed-time_t" placeholder="[Redeemed Time]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+
+                <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter payment token details">
+                          <label class="label-text-color"><h6>Payment Token:</h6></label>
+                      </span>
+                </div>
+
+
+                <div class="row" style="border: thin solid lightgrey; background-color: cornsilk">
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter token">
+                          <label class="label-text-color"><h6>Token:  <a href="#" data-toggle="tooltip"
+                                                                         class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="token-1_t"
+                               placeholder="[Token]" maxlength="50"/>
+                    </div>
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter token type. example:PARTNER">
+                          <label class="label-text-color"><h6>Token Type:  <a href="#" data-toggle="tooltip"
+                                                                              class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="token-type-1_t" placeholder="[Token Type]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter PSP ID. example:514">
+                          <label class="label-text-color"><h6>PSP ID:  <a href="#" data-toggle="tooltip"
+                                                                          class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="psp-id-1_t" placeholder="[PSP ID]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3 p-3"></div>
+                    <div class="col-sm-3 p-3">
+                        <button type="button" id="re_submit_t" class="btn btn-default button col button-style-custom">
+                            <center>Submit</center>
+                        </button>
+                    </div>
+                    <div class="col-sm-3 p-3">
+                        <button type="button" id="re_reset_t" class="btn btn-outline-warning col button-style-custom">
+                            <center>Reset</center>
+                        </button>
+                    </div>
+                    <div class="col-sm-3 p-3"></div>
+                    <div class="col-sm-3 p-3"></div>
+                </div>
+
+                <br/><br/>
+                <div class="card border-info" id="red_body_card_t" style="display:none;">
+                    <div class="card-body" id="red_body_out_t">
+                    </div>
+                </div>
+                <br/><br/>
+
+            </form>
+
+            <br/>
+
+
+        </div>
+
+        <div id="red_body_p" class="container tab-pane fade"><br>
+            <form id="redemption_form_p">
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+                        <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter partner Id. example:512">
+                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"
+                                                                              class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                      </span>
+                        <input type="text" class="form-control" id="partner-id-1_p" placeholder="[Partner ID]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row" style="border: thin solid lightgrey; background-color: cornsilk">
+                    <div class="mb-3 mt-3 col">
+                						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip"
+                                              data-bs-placement="top"
+                                              title="Please enter Payment Number">
+                                          <label class="label-text-color"><h6>Payment Number:  <a href="#"
+                                                                                                  data-toggle="tooltip"
+                                                                                                  class="tooltiptext"><i
+                                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                                        </span>
+                        <input type="text" class="form-control" id="payment-number-1_p"
+                               placeholder="[Payment number]" maxlength="16"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Please enter Eligibility ID received in the response of eligibilities API. example:17385_161041_1179">
+                          <label class="label-text-color"><h6>Eligibility ID:  <a href="#" data-toggle="tooltip"
+                                                                                  class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="eligibility-id_p" placeholder="[Eligibility ID]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+
+                <div class="row">
+
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Please enter external identifier. example : abcd">
+                          <label class="label-text-color"><h6>External Identifier:  <a href="#" data-toggle="tooltip"
+                                                                                       class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="email" class="form-control" id="external-identifier_p"
+                               placeholder="[External Identifier]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Please enter Redemption Code. example : k86n7a7">
+                          <label class="label-text-color"><h6>Redemption Code:  <a href="#" data-toggle="tooltip"
+                                                                                   class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="redemption-code_p" placeholder="[Redemption Code]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Please enter Redemption URL. example : https://www.amazonxxx.com">
+                          <label class="label-text-color"><h6>Redemption URL:  <a href="#" data-toggle="tooltip"
+                                                                                  class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="redemption-url_p" placeholder="[Redemption URL]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+
+                    <div class="mb-3 mt-3 col">
+						 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="Please enter Is Default Card On File. example : 1">
+                          <label class="label-text-color"><h6>Is Default Card On File:  <a href="#"
+                                                                                           data-toggle="tooltip"
+                                                                                           class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="is-default-card-on-file_p"
+                               placeholder="[Is Default Card On File]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Benefit Start Time in YYYY-MM-DDThh:mm:ssZ format.example : 2022-05-04T00:00:00Z">
+                          <label class="label-text-color"><h6>Benefit Start Time: <a href="#" data-toggle="tooltip"
+                                                                                     class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="benefit-start-time_p"
+                               placeholder="[Benefit Start Time]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 mt-3 col">
+					    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Please enter Benefit End Time in YYYY-MM-DDThh:mm:ssZ format. example : 2022-05-04T00:00:00Z">
+                          <label class="label-text-color"><h6>Benefit End Time: <a href="#" data-toggle="tooltip"
+                                                                                   class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                        </span>
+                        <input type="text" class="form-control" id="benefit-end-time_p"
+                               placeholder="[Benefit End Time]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+                <div class="row">
+
+                    <div class="mb-3 mt-3 col">
+					<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                          title="Please enter Redeemed Time in YYYY-MM-DDThh:mm:ssZ format. example : 2022-05-04T00:00:00Z">
+                          <label class="label-text-color"><h6>Redeemed Time: <a href="#" data-toggle="tooltip"
+                                                                                class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
+                     </span>
+                        <input type="text" class="form-control" id="redeemed-time_p" placeholder="[Redeemed Time]"/>
+                    </div>
+                    <div class="mb-3 mt-3 col"></div>
+                    <div class="mb-3 mt-3 col"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3 p-3"></div>
+                    <div class="col-sm-3 p-3">
+                        <button type="button" id="re_submit_p" class="btn btn-default button col button-style-custom">
+                            <center>Submit</center>
+                        </button>
+                    </div>
+                    <div class="col-sm-3 p-3">
+                        <button type="button" id="re_reset_p" class="btn btn-outline-warning col button-style-custom">
+                            <center>Reset</center>
+                        </button>
+                    </div>
+                    <div class="col-sm-3 p-3"></div>
+                    <div class="col-sm-3 p-3"></div>
+                </div>
+
+                <br/><br/>
+                <div class="card border-info" id="red_body_card_p" style="display:none;">
+                    <div class="card-body" id="red_body_out_p">
+                    </div>
+                </div>
+                <br/><br/>
+
+            </form>
+
+            <br/>
+
+
+        </div>
+
+
         <div id="token_body" class="container tab-pane fade"><br>
             <form id="token_form">
 
@@ -1021,8 +2138,11 @@
 
                     <div class="mb-3 mt-3 col">
 
-                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter partner Id. example:512">
-                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
+                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Please enter partner Id. example:512">
+                          <label class="label-text-color"><h6>Partner ID:  <a href="#" data-toggle="tooltip"
+                                                                              class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
 
                         <input type="text" class="form-control" id="partner-id-2" placeholder="[Partner ID]"/>
@@ -1058,7 +2178,8 @@
                                                                                     class="tooltiptext"><i
                                   class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
-                        <input type="text" class="form-control" id="card-holder-name-1" placeholder="[Card holder name]"/>
+                        <input type="text" class="form-control" id="card-holder-name-1"
+                               placeholder="[Card holder name]"/>
                     </div>
                     <div class="mb-3 mt-3 col">
 						<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -1085,8 +2206,11 @@
 
                     <div class="mb-3 mt-3 col">
 
-                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter token">
-                          <label class="label-text-color"><h6>Token:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
+                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Please enter token">
+                          <label class="label-text-color"><h6>Token:  <a href="#" data-toggle="tooltip"
+                                                                         class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
 
                         <input type="text" class="form-control" id="token-2" placeholder="[Token]"/>
@@ -1101,8 +2225,11 @@
 
                     <div class="mb-3 mt-3 col">
 
-                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Please ASI VERIFIED. eg 1">
-                          <label class="label-text-color"><h6>ASI Verified:  <a href="#" data-toggle="tooltip"  class="tooltiptext"><i class="bi-info-circle blue-color"></i></a></h6></label>
+                      <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Please ASI VERIFIED. eg 1">
+                          <label class="label-text-color"><h6>ASI Verified:  <a href="#" data-toggle="tooltip"
+                                                                                class="tooltiptext"><i
+                                  class="bi-info-circle blue-color"></i></a></h6></label>
                       </span>
 
                         <input type="text" class="form-control" id="asi-verified" placeholder="[ASI VERIFIED]"/>

@@ -7,11 +7,16 @@ import com.mastercard.developers.mbep.generated.models.Benefit;
 import com.mastercard.developers.mbep.generated.models.CardToken;
 import com.mastercard.developers.mbep.generated.models.CardTokenInfo;
 import com.mastercard.developers.mbep.generated.models.CheckEligibility;
+import com.mastercard.developers.mbep.generated.models.CheckEligibilityByToken;
+import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimePan;
+import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimeToken;
+import com.mastercard.developers.mbep.generated.models.CheckEligibilityByPan;
 import com.mastercard.developers.mbep.generated.models.Eligibility;
 import com.mastercard.developers.mbep.generated.models.EligibilityData;
 import com.mastercard.developers.mbep.generated.models.PartnerBenefitDetails;
 import com.mastercard.developers.mbep.generated.models.PartnerBenefitDetailsData;
 import com.mastercard.developers.mbep.generated.models.PaymentCard;
+import com.mastercard.developers.mbep.generated.models.PaymentToken;
 import com.mastercard.developers.mbep.generated.models.RedemptionInfo;
 import com.mastercard.developers.mbep.generated.models.RedemptionInfoData;
 import com.mastercard.developers.mbep.generated.models.Redemptions;
@@ -73,6 +78,40 @@ class MBEPServiceImplTest {
     }
 
     @Test
+    void checkEligibilityByToken() throws ApiException {
+        Eligibility eligibility = new Eligibility();
+        eligibility.setMsg(OK);
+        EligibilityData data = new EligibilityData();
+        data.setEligible(true);
+        data.setEligibilityId(ID);
+        data.setAccessCode(AMAZON);
+        data.setProductId(PRODUCT_ID);
+        data.setRedemptionCode(REDEMPTION_CODE);
+        data.setRedemptionURL(REDEMPTION_URL);
+        eligibility.setData(data);
+        when(mbepApi.checkEligibilityByToken(any())).thenReturn(eligibility);
+        mbepService.checkEligibilityByToken(checkEligibilityByTokenObject());
+        verify(mbepApi).checkEligibilityByToken(any(CheckEligibilityByToken.class));
+    }
+
+    @Test
+    void checkEligibilityPan() throws ApiException {
+        Eligibility eligibility = new Eligibility();
+        eligibility.setMsg(OK);
+        EligibilityData data = new EligibilityData();
+        data.setEligible(true);
+        data.setEligibilityId(ID);
+        data.setAccessCode(AMAZON);
+        data.setProductId(PRODUCT_ID);
+        data.setRedemptionCode(REDEMPTION_CODE);
+        data.setRedemptionURL(REDEMPTION_URL);
+        eligibility.setData(data);
+        when(mbepApi.checkEligibilityByPan(any())).thenReturn(eligibility);
+        mbepService.checkEligibilityByPan(checkEligibilityPanObject());
+        verify(mbepApi).checkEligibilityByPan(any(CheckEligibilityByPan.class));
+    }
+
+    @Test
     void checkEligibilityException() throws ApiException {
         when(mbepApi.checkEligibility(any())).thenThrow(new ApiException());
         assertThrows(ApiException.class, () -> mbepService.checkEligibility(checkEligibilityObject()));
@@ -89,6 +128,32 @@ class MBEPServiceImplTest {
         when(mbepApi.createRedemption(any())).thenReturn(redemptionInfo);
         mbepService.redemption(redemptionsObject());
         verify(mbepApi).createRedemption(any(Redemptions.class));
+
+    }
+
+    @Test
+    void testRealTimeRedemptionByToken() throws ApiException{
+        RedemptionInfo redemptionInfo = new RedemptionInfo();
+        redemptionInfo.setMsg(OK);
+        RedemptionInfoData data = new RedemptionInfoData();
+        data.setRedemptionId(ID);
+        redemptionInfo.setData(data);
+        when(mbepApi.createRedemptionByRealTimeToken(any())).thenReturn(redemptionInfo);
+        mbepService.createRedemptionByRealTimeToken(redemptionByRealTimeTokenObject());
+        verify(mbepApi).createRedemptionByRealTimeToken(any(RedemptionByRealTimeToken.class));
+
+    }
+
+    @Test
+    void testRealTimeRedemptionByPan() throws ApiException{
+        RedemptionInfo redemptionInfo = new RedemptionInfo();
+        redemptionInfo.setMsg(OK);
+        RedemptionInfoData data = new RedemptionInfoData();
+        data.setRedemptionId(ID);
+        redemptionInfo.setData(data);
+        when(mbepApi.createRedemptionByRealTimePan(any())).thenReturn(redemptionInfo);
+        mbepService.createRedemptionByRealTimePan(redemptionByRealTimePanObject());
+        verify(mbepApi).createRedemptionByRealTimePan(any(RedemptionByRealTimePan.class));
 
     }
 
@@ -160,6 +225,37 @@ class MBEPServiceImplTest {
         return redemptions;
     }
 
+    private RedemptionByRealTimeToken redemptionByRealTimeTokenObject(){
+        RedemptionByRealTimeToken redemptions = new RedemptionByRealTimeToken();
+        redemptions.setPartnerId(669);
+        redemptions.setPaymentToken(getPaymentToken());
+        redemptions.setEligibilityId("129017_161041_1179");
+        redemptions.setBenefitEndTime("2023-05-04T00:00:00Z");
+        redemptions.setBenefitStartTime("2022-05-04T00:00:00Z");
+        redemptions.setExternalIdentifier("EXT_ID-9a5k7");
+        redemptions.setIsDefaultCardOnFile(1);
+        redemptions.setRedeemedTime("2023-04-04T00:00:00Z");
+        redemptions.setRedemptionCode("k86n7a7");
+        redemptions.setRedemptionURL("https://www.amazonprime.com");
+        return redemptions;
+    }
+
+
+    private RedemptionByRealTimePan redemptionByRealTimePanObject(){
+        RedemptionByRealTimePan redemptions = new RedemptionByRealTimePan();
+        redemptions.setPartnerId(669);
+        redemptions.setPaymentNumber(BigDecimal.valueOf(5555555555556001L));
+        redemptions.setEligibilityId("129017_161041_1179");
+        redemptions.setBenefitEndTime("2023-05-04T00:00:00Z");
+        redemptions.setBenefitStartTime("2022-05-04T00:00:00Z");
+        redemptions.setExternalIdentifier("EXT_ID-9a5k7");
+        redemptions.setIsDefaultCardOnFile(1);
+        redemptions.setRedeemedTime("2023-04-04T00:00:00Z");
+        redemptions.setRedemptionCode("k86n7a7");
+        redemptions.setRedemptionURL("https://www.amazonprime.com");
+        return redemptions;
+    }
+
     private CheckEligibility checkEligibilityObject(){
         CheckEligibility checkEligibility = new CheckEligibility();
         checkEligibility.setPartnerId(669);
@@ -170,6 +266,26 @@ class MBEPServiceImplTest {
         return checkEligibility;
     }
 
+    private CheckEligibilityByPan checkEligibilityPanObject(){
+        CheckEligibilityByPan checkEligibilityPan = new CheckEligibilityByPan();
+        checkEligibilityPan.setPartnerId(669);
+        checkEligibilityPan.setEmail("ak.chauhan@hotmail.com");
+        checkEligibilityPan.setProductId(161041);
+        checkEligibilityPan.setAccessCode("ae-amazonprime");
+        checkEligibilityPan.setPaymentCard(getPaymentCard());
+        return checkEligibilityPan;
+    }
+
+    private CheckEligibilityByToken checkEligibilityByTokenObject(){
+        CheckEligibilityByToken checkEligibilityByToken = new CheckEligibilityByToken();
+        checkEligibilityByToken.setPartnerId(669);
+        checkEligibilityByToken.setEmail("ak.chauhan@hotmail.com");
+        checkEligibilityByToken.setProductId(161041);
+        checkEligibilityByToken.setAccessCode("ae-amazonprime");
+        checkEligibilityByToken.setPaymentToken(getPaymentToken());
+        return checkEligibilityByToken;
+    }
+
     private PaymentCard getPaymentCard(){
         PaymentCard paymentCard=new PaymentCard();
         paymentCard.setPaymentNumber(BigDecimal.valueOf(5555555555556001L));
@@ -177,6 +293,14 @@ class MBEPServiceImplTest {
         paymentCard.setExpirationMonth("04");
         paymentCard.setExpirationYear("24");
         return paymentCard;
+    }
+
+    private PaymentToken getPaymentToken(){
+        PaymentToken paymentToken=new PaymentToken();
+        paymentToken.setToken("MTFToken12355555555555561005555555555556647");
+        paymentToken.setTokenType("partner");
+        paymentToken.setPspId(String.valueOf(669));
+        return paymentToken;
     }
 
 }

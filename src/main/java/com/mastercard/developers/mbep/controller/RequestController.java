@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimePan;
+import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimeToken;
+import com.mastercard.developers.mbep.generated.models.CheckEligibilityByPan;
+import com.mastercard.developers.mbep.generated.models.CheckEligibilityByToken;
 
 /*
 * This class is used to invoke mbep APIs
@@ -51,5 +55,25 @@ public class RequestController {
     public String storePaymentToken(@RequestBody CardToken cardToken) throws ApiException {
         CardTokenInfo response = mbepService.saveToken(cardToken);
         return new Gson().toJson(response);
+    }
+
+    @PostMapping(value = "/eligibilities/pan")
+    public String eligibilitiesByPan(@RequestBody CheckEligibilityByPan checkEligibilityByPan) throws ApiException {
+        return new Gson().toJson(mbepService.checkEligibilityByPan(checkEligibilityByPan));
+    }
+
+    @PostMapping(value = "/eligibilities/token")
+    public String eligibilitiesByToken(@RequestBody CheckEligibilityByToken checkEligibilityByToken) throws ApiException {
+        return new Gson().toJson(mbepService.checkEligibilityByToken(checkEligibilityByToken));
+    }
+
+    @PostMapping(value = "/redemptions/real-time/token")
+    public String realTimeRedemptionByToken(@RequestBody RedemptionByRealTimeToken redemptionByRealTimeToken) throws ApiException {
+        return new Gson().toJson(mbepService.createRedemptionByRealTimeToken(redemptionByRealTimeToken));
+    }
+
+    @PostMapping(value = "/redemptions/real-time/pan")
+    public String realTimeRedemptionByPan(@RequestBody RedemptionByRealTimePan redemptionByRealTimePan) throws ApiException {
+        return new Gson().toJson(mbepService.createRedemptionByRealTimePan(redemptionByRealTimePan));
     }
 }

@@ -3,20 +3,21 @@ package com.mastercard.developers.mbep.service;
 
 import com.mastercard.developers.mbep.generated.apis.MbepApi;
 import com.mastercard.developers.mbep.generated.invokers.ApiException;
+import com.mastercard.developers.mbep.generated.models.AccrueRedemptionBySpend;
+import com.mastercard.developers.mbep.generated.models.AccrueRedemptionByTransaction;
 import com.mastercard.developers.mbep.generated.models.Benefit;
 import com.mastercard.developers.mbep.generated.models.CardToken;
 import com.mastercard.developers.mbep.generated.models.CardTokenInfo;
 import com.mastercard.developers.mbep.generated.models.CheckEligibility;
-import com.mastercard.developers.mbep.generated.models.CheckEligibilityByToken;
-import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimePan;
-import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimeToken;
 import com.mastercard.developers.mbep.generated.models.CheckEligibilityByPan;
+import com.mastercard.developers.mbep.generated.models.CheckEligibilityByToken;
 import com.mastercard.developers.mbep.generated.models.Eligibility;
 import com.mastercard.developers.mbep.generated.models.EligibilityData;
 import com.mastercard.developers.mbep.generated.models.PartnerBenefitDetails;
 import com.mastercard.developers.mbep.generated.models.PartnerBenefitDetailsData;
 import com.mastercard.developers.mbep.generated.models.PaymentCard;
 import com.mastercard.developers.mbep.generated.models.PaymentToken;
+import com.mastercard.developers.mbep.generated.models.RedemptionByRealTime;
 import com.mastercard.developers.mbep.generated.models.RedemptionInfo;
 import com.mastercard.developers.mbep.generated.models.RedemptionInfoData;
 import com.mastercard.developers.mbep.generated.models.Redemptions;
@@ -132,29 +133,39 @@ class MBEPServiceImplTest {
     }
 
     @Test
-    void testRealTimeRedemptionByToken() throws ApiException{
+    void testRealTimeRedemption() throws ApiException{
         RedemptionInfo redemptionInfo = new RedemptionInfo();
         redemptionInfo.setMsg(OK);
         RedemptionInfoData data = new RedemptionInfoData();
         data.setRedemptionId(ID);
         redemptionInfo.setData(data);
-        when(mbepApi.createRedemptionByRealTimeToken(any())).thenReturn(redemptionInfo);
-        mbepService.createRedemptionByRealTimeToken(redemptionByRealTimeTokenObject());
-        verify(mbepApi).createRedemptionByRealTimeToken(any(RedemptionByRealTimeToken.class));
-
+        when(mbepApi.createRedemptionByRealTime(any())).thenReturn(redemptionInfo);
+        mbepService.createRedemptionByRealTime(redemptionByRealTimeObject());
+        verify(mbepApi).createRedemptionByRealTime(any(RedemptionByRealTime.class));
     }
 
     @Test
-    void testRealTimeRedemptionByPan() throws ApiException{
+    void testRedemptionByAccruedTransaction() throws ApiException{
         RedemptionInfo redemptionInfo = new RedemptionInfo();
         redemptionInfo.setMsg(OK);
         RedemptionInfoData data = new RedemptionInfoData();
         data.setRedemptionId(ID);
         redemptionInfo.setData(data);
-        when(mbepApi.createRedemptionByRealTimePan(any())).thenReturn(redemptionInfo);
-        mbepService.createRedemptionByRealTimePan(redemptionByRealTimePanObject());
-        verify(mbepApi).createRedemptionByRealTimePan(any(RedemptionByRealTimePan.class));
+        when(mbepApi.createRedemptionByAccrueTransactions(any())).thenReturn(redemptionInfo);
+        mbepService.createRedemptionByAccrueTransaction(redemptionByAccruedTransactionObject());
+        verify(mbepApi).createRedemptionByAccrueTransactions(any(AccrueRedemptionByTransaction.class));
+    }
 
+    @Test
+    void testRedemptionByAccruedSpend() throws ApiException{
+        RedemptionInfo redemptionInfo = new RedemptionInfo();
+        redemptionInfo.setMsg(OK);
+        RedemptionInfoData data = new RedemptionInfoData();
+        data.setRedemptionId(ID);
+        redemptionInfo.setData(data);
+        when(mbepApi.createRedemptionByAccrueSpend(any())).thenReturn(redemptionInfo);
+        mbepService.createRedemptionByAccrueSpend(redemptionByAccruedSpendObject());
+        verify(mbepApi).createRedemptionByAccrueSpend(any(AccrueRedemptionBySpend.class));
     }
 
     @Test
@@ -225,10 +236,9 @@ class MBEPServiceImplTest {
         return redemptions;
     }
 
-    private RedemptionByRealTimeToken redemptionByRealTimeTokenObject(){
-        RedemptionByRealTimeToken redemptions = new RedemptionByRealTimeToken();
+    private RedemptionByRealTime redemptionByRealTimeObject(){
+        RedemptionByRealTime redemptions = new RedemptionByRealTime();
         redemptions.setPartnerId(669);
-        redemptions.setPaymentToken(getPaymentToken());
         redemptions.setEligibilityId("129017_161041_1179");
         redemptions.setBenefitEndTime("2023-05-04T00:00:00Z");
         redemptions.setBenefitStartTime("2022-05-04T00:00:00Z");
@@ -240,19 +250,25 @@ class MBEPServiceImplTest {
         return redemptions;
     }
 
-
-    private RedemptionByRealTimePan redemptionByRealTimePanObject(){
-        RedemptionByRealTimePan redemptions = new RedemptionByRealTimePan();
+    private AccrueRedemptionByTransaction redemptionByAccruedTransactionObject() {
+        AccrueRedemptionByTransaction redemptions = new AccrueRedemptionByTransaction();
         redemptions.setPartnerId(669);
-        redemptions.setPaymentNumber(BigDecimal.valueOf(5555555555556001L));
         redemptions.setEligibilityId("129017_161041_1179");
-        redemptions.setBenefitEndTime("2023-05-04T00:00:00Z");
-        redemptions.setBenefitStartTime("2022-05-04T00:00:00Z");
-        redemptions.setExternalIdentifier("EXT_ID-9a5k7");
-        redemptions.setIsDefaultCardOnFile(1);
-        redemptions.setRedeemedTime("2023-04-04T00:00:00Z");
-        redemptions.setRedemptionCode("k86n7a7");
-        redemptions.setRedemptionURL("https://www.amazonprime.com");
+        redemptions.setAccruedTransactionsCount(BigDecimal.valueOf(109.99));
+        redemptions.setCurrencyCode("USD");
+        redemptions.benefitWorth(BigDecimal.valueOf(50.99));
+        redemptions.benefitType("money");
+        return redemptions;
+    }
+
+    private AccrueRedemptionBySpend redemptionByAccruedSpendObject() {
+        AccrueRedemptionBySpend redemptions = new AccrueRedemptionBySpend();
+        redemptions.setPartnerId(669);
+        redemptions.setEligibilityId("129017_161041_1179");
+        redemptions.setAccruedSpend(BigDecimal.valueOf(2));
+        redemptions.setCurrencyCode("USD");
+        redemptions.benefitWorth(BigDecimal.valueOf(50.99));
+        redemptions.benefitType("money");
         return redemptions;
     }
 

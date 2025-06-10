@@ -1,23 +1,23 @@
 package com.mastercard.developers.mbep.controller;
 
 import com.mastercard.developers.mbep.generated.invokers.ApiException;
+import com.mastercard.developers.mbep.generated.models.AccrueRedemptionBySpend;
+import com.mastercard.developers.mbep.generated.models.AccrueRedemptionByTransaction;
 import com.mastercard.developers.mbep.generated.models.Benefit;
 import com.mastercard.developers.mbep.generated.models.CardToken;
 import com.mastercard.developers.mbep.generated.models.CardTokenInfo;
 import com.mastercard.developers.mbep.generated.models.CheckEligibility;
-import com.mastercard.developers.mbep.generated.models.CheckEligibilityByToken;
 import com.mastercard.developers.mbep.generated.models.CheckEligibilityByPan;
-import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimePan;
-import com.mastercard.developers.mbep.generated.models.RedemptionByRealTimeToken;
+import com.mastercard.developers.mbep.generated.models.CheckEligibilityByToken;
 import com.mastercard.developers.mbep.generated.models.Eligibility;
 import com.mastercard.developers.mbep.generated.models.EligibilityData;
 import com.mastercard.developers.mbep.generated.models.PartnerBenefitDetails;
 import com.mastercard.developers.mbep.generated.models.PartnerBenefitDetailsData;
+import com.mastercard.developers.mbep.generated.models.RedemptionByRealTime;
 import com.mastercard.developers.mbep.generated.models.RedemptionInfo;
 import com.mastercard.developers.mbep.generated.models.RedemptionInfoData;
 import com.mastercard.developers.mbep.generated.models.Redemptions;
 import com.mastercard.developers.mbep.service.MBEPServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -57,16 +57,13 @@ class RequestControllerTest {
     CheckEligibilityByPan eligibilityPayloadByPan;
 
     @Mock
-    RedemptionByRealTimeToken redemptionByRealTimeToken;
+    AccrueRedemptionByTransaction accrueRedemptionByTransaction;
 
     @Mock
-    RedemptionByRealTimePan redemptionByRealTimePan;
+    AccrueRedemptionBySpend accrueRedemptionBySpend;
 
-
-    @BeforeEach
-    void setUp() {
-
-    }
+    @Mock
+    RedemptionByRealTime redemptionByRealTime;
 
     @Test
     void eligibility() throws ApiException {
@@ -147,26 +144,38 @@ class RequestControllerTest {
     }
 
     @Test
-    void testRealTimeRedemptionByToken() throws ApiException{
+    void testRealTimeRedemption() throws ApiException{
         RedemptionInfo redemptionInfo = new RedemptionInfo();
         redemptionInfo.setMsg(OK);
         RedemptionInfoData redemptionInfoData =new RedemptionInfoData();
         redemptionInfoData.setRedemptionId("265342347");
         redemptionInfo.setData(redemptionInfoData);
-        when(elevateAcceleratorService.createRedemptionByRealTimeToken(any())).thenReturn(redemptionInfo);
-        String redemptionInfoResponseEntity = requestController.realTimeRedemptionByToken(redemptionByRealTimeToken);
+        when(elevateAcceleratorService.createRedemptionByRealTime(any())).thenReturn(redemptionInfo);
+        String redemptionInfoResponseEntity = requestController.realTimeRedemption(redemptionByRealTime);
         assertNotNull(redemptionInfoResponseEntity);
     }
 
     @Test
-    void testRealTimeRedemptionByPan() throws ApiException{
+    void testAccruedRedemptionByTransaction() throws ApiException {
         RedemptionInfo redemptionInfo = new RedemptionInfo();
         redemptionInfo.setMsg(OK);
         RedemptionInfoData redemptionInfoData =new RedemptionInfoData();
         redemptionInfoData.setRedemptionId("265342347");
         redemptionInfo.setData(redemptionInfoData);
-        when(elevateAcceleratorService.createRedemptionByRealTimePan(any())).thenReturn(redemptionInfo);
-        String redemptionInfoResponseEntity = requestController.realTimeRedemptionByPan(redemptionByRealTimePan);
+        when(elevateAcceleratorService.createRedemptionByAccrueTransaction(any())).thenReturn(redemptionInfo);
+        String redemptionInfoResponseEntity = requestController.accrueRedemptionByTransaction(accrueRedemptionByTransaction);
+        assertNotNull(redemptionInfoResponseEntity);
+    }
+
+    @Test
+    void testAccruedRedemptionBySpend() throws ApiException {
+        RedemptionInfo redemptionInfo = new RedemptionInfo();
+        redemptionInfo.setMsg(OK);
+        RedemptionInfoData redemptionInfoData =new RedemptionInfoData();
+        redemptionInfoData.setRedemptionId("265342347");
+        redemptionInfo.setData(redemptionInfoData);
+        when(elevateAcceleratorService.createRedemptionByAccrueSpend(any())).thenReturn(redemptionInfo);
+        String redemptionInfoResponseEntity = requestController.accrueRedemptionBySpend(accrueRedemptionBySpend);
         assertNotNull(redemptionInfoResponseEntity);
     }
 

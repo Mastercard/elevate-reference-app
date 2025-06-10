@@ -5,7 +5,7 @@ info:
     This is an open API document for Mastercard MBEP APIs. These APIs can be used to
     check eligibility for particular benefit and redeem the same for a given
     payment card number. For additional documentation and use cases, see
-    **[Documentation](https://developer.mastercard.com/mbep/documentation/).**
+    **[Documentation](https://developer.mastercard.com/elevate/documentation/).**
 
     <br/>
 
@@ -136,6 +136,48 @@ paths:
           $ref: '#/components/responses/RedemptionInfo'
         '400':
           $ref: '#/components/responses/RedemptionBadRequestError'
+  /redemptions/accrued/transactions:
+    post:
+      summary: >-
+        Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource.
+      tags:
+        - MBEP
+      description: >
+        **This endpoint uses [Mastercard payload encryption](https://mstr.cd/2UPfda0) to encrypt entire payload.Please refer to the API documentation for implementation details.**
+      operationId: createRedemptionByAccrueTransactions
+      x-mastercard-api-encrypted: true
+      requestBody:
+        $ref: '#/components/requestBodies/AccrueRedemptionByTransaction'
+      responses:
+        '200':
+          $ref: '#/components/responses/RedemptionInfo'
+        '400':
+          $ref: '#/components/responses/RedemptionBadRequestError'
+        '401':
+          $ref: '#/components/responses/APIAuthorizationError'
+        '404':
+          $ref: '#/components/responses/InvalidAPIError'
+  /redemptions/accrued/spend:
+    post:
+      summary: >-
+        Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource.
+      tags:
+        - MBEP
+      description: >
+        **This endpoint uses [Mastercard payload encryption](https://mstr.cd/2UPfda0) to encrypt entire payload.Please refer to the API documentation for implementation details.**
+      operationId: createRedemptionByAccrueSpend
+      x-mastercard-api-encrypted: true
+      requestBody:
+        $ref: '#/components/requestBodies/AccrueRedemptionBySpend'
+      responses:
+        '200':
+          $ref: '#/components/responses/RedemptionInfo'
+        '400':
+          $ref: '#/components/responses/RedemptionBadRequestError'
+        '401':
+          $ref: '#/components/responses/APIAuthorizationError'
+        '404':
+          $ref: '#/components/responses/InvalidAPIError'
   /benefits:
     get:
       summary: Used to fetch the partner benefit details.
@@ -166,37 +208,17 @@ paths:
           $ref: '#/components/responses/CardTokenInfo'
         400:
           $ref: '#/components/responses/TokenBadRequestError'
-  /redemptions/real-time/token:
+  /redemptions/real-time:
     post:
       summary: Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource.
       tags:
         - MBEP
       description: |
         **This endpoint uses [Mastercard payload encryption](https://mstr.cd/2UPfda0) to encrypt entire payload.Please refer to the API documentation for implementation details.**
-      operationId: createRedemptionByRealTimeToken
+      operationId: createRedemptionByRealTime
       x-mastercard-api-encrypted: true
       requestBody:
-        $ref: '#/components/requestBodies/RedemptionByRealTimeToken'
-      responses:
-        '200':
-          $ref: '#/components/responses/RedemptionInfo'
-        '400':
-          $ref: '#/components/responses/RedemptionBadRequestError'
-        '401':
-          $ref: '#/components/responses/APIAuthorizationError'
-        '404':
-          $ref: '#/components/responses/InvalidAPIError'
-  /redemptions/real-time/pan:
-    post:
-      summary: Used to create a redemption for a credit card that was previously enrolled through the eligibilities resource.
-      tags:
-        - MBEP
-      description: |
-        **This endpoint uses [Mastercard payload encryption](https://mstr.cd/2UPfda0) to encrypt entire payload.Please refer to the API documentation for implementation details.**
-      operationId: createRedemptionByRealTimePan
-      x-mastercard-api-encrypted: true
-      requestBody:
-        $ref: '#/components/requestBodies/RedemptionByRealTimePan'
+        $ref: '#/components/requestBodies/RedemptionByRealTime'
       responses:
         '200':
           $ref: '#/components/responses/RedemptionInfo'
@@ -252,6 +274,28 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Redemptions'
+    AccrueRedemptionByTransaction:
+      description: >-
+        User's Personal and Card information which needs to be registered onto
+        Priceless Planet Carbon Tracker platform. This endpoint uses Mastercard
+        payload encryption. Please refer to the **[Payload
+        Encryption](https://mstr.cd/2UPfda0)** page for implementation details.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccrueRedemptionByTransaction'
+    AccrueRedemptionBySpend:
+      description: >-
+        User's Personal and Card information which needs to be registered onto
+        Priceless Planet Carbon Tracker platform. This endpoint uses Mastercard
+        payload encryption. Please refer to the **[Payload
+        Encryption](https://mstr.cd/2UPfda0)** page for implementation details.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccrueRedemptionBySpend'
     CardToken:
       description: >-
         Each paymentToken is directly stored and associated with the partnerId submitted in the request.
@@ -260,26 +304,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CardToken'
-    RedemptionByRealTimeToken:
+    RedemptionByRealTime:
       description: >-
-        User's token created from token endpoint and eligibility ID created from
-        Eligibility endpoint is now being used to do actual redemption using this
+        Eligibility ID created from Eligibility endpoint is now being used to do actual redemption using this
         Endpoint
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RedemptionByRealTimeToken'
-    RedemptionByRealTimePan:
-      description: >-
-        User's token created from token endpoint and eligibility ID created from
-        Eligibility endpoint is now being used to do actual redemption using this
-        Endpoint
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RedemptionByRealTimePan'
+            $ref: '#/components/schemas/RedemptionByRealTime'
   schemas:
     ErrorWrapper:
       title: ErrorWrapper
@@ -740,103 +773,111 @@ components:
         benefitStartTime: 2022-05-04T00:00:00Z
         benefitEndTime: 2023-05-04T00:00:00Z
         redeemedTime: 2023-03-04T00:00:00Z
-    RedemptionByRealTimeToken:
-      title: Redemptions
+    AccrueRedemptionByTransaction:
+      title: Real time redemptions using Transaction
       type: object
-      description: The request object contains redemption details.
+      description: The request object contains redemption using transaction.
       required:
         - partnerId
-        - paymentToken
         - eligibilityId
-        - externalIdentifier
-        - redemptionCode
-        - redemptionURL
-        - isDefaultCardOnFile
-        - benefitStartTime
-        - benefitEndTime
-        - redeemedTime
+        - accruedTransactionsCount
+        - currencyCode
+        - benefitWorth
+        - benefitType
       properties:
         partnerId:
           type: integer
           example: 512
           description: A unique identifier assigned to the issuer.
-        paymentToken:
-          $ref: '#/components/schemas/PaymentToken'
         eligibilityId:
           type: string
           example: '17385_161041_1179'
           description: An id received in the response of `eligibilities` API.
-        externalIdentifier:
-          type: string
-          example: 'EXT_ID-9a5k7'
-          description: External Identifier for each product.
-        redemptionCode:
-          type: string
-          example: 'k86n7a7'
-          description: This field is only presented when the partner program is configured
-            to return redemption info.
-        redemptionURL:
-          type: string
-          example: 'https://www.amazonprime.com'
-          description: This field is only presented when the partner program is configured to
-            return redemption info. This is the url where one can redeem benefit.
-        isDefaultCardOnFile:
-          type: integer
-          example: 1
-          description: This field indicates if the given card is default or not.
-        benefitStartTime:
-          type: string
-          example: 2022-05-04T00:00:00Z
-          description: This is the time when a benefit becomes available for redemption.
-        benefitEndTime:
-          type: string
-          example: 2022-05-04T00:00:00Z
-          description: This is the time by when a benefit can be availed for redemption.
-        redeemedTime:
-          type: string
-          example: 2022-05-04T00:00:00Z
-          description: This is the time when a benefit is actually redeemed.
-      example:
-        partnerId: 10
-        paymentToken:
-          token: '1234token'
-          tokenType: 'partner'
-          pspId: 514
-        eligibilityId: '1234_5467_50'
-        spendAmount: 109.99
-        spendCurrencyCode: USD
-        benefitAmountGiven: 50.99
-        benefitCurrencyCode: USD
-        externalIdentifier: EXT_ID-9a5k7
-        redemptionCode: k86n7a7
-        redemptionURL: https://www.amazonprime.com
-        isDefaultCardOnFile: 1
-        benefitStartTime: 2022-05-04T00:00:00Z
-        benefitEndTime: 2023-05-04T00:00:00Z
-        redeemedTime: 2023-03-04T00:00:00Z
-    RedemptionByRealTimePan:
-      title: Redemptions
-      type: object
-      description: The request object contains redemption details.
-      required:
-        - partnerId
-        - paymentNumber
-        - eligibilityId
-        - externalIdentifier
-        - redemptionCode
-        - redemptionURL
-        - isDefaultCardOnFile
-        - benefitStartTime
-        - benefitEndTime
-        - redeemedTime
-      properties:
-        partnerId:
-          type: integer
-          example: 512
-          description: A unique identifier assigned to the issuer.
-        paymentNumber:
+        accruedTransactionsCount:
           type: number
-          example: 5555555555554444
+          example: 109.99
+          description:
+        currencyCode:
+          type: string
+          example: 'USD'
+          description:
+        benefitWorth:
+          type: number
+          example: 50.99
+          description:
+        benefitType:
+          type: string
+          example: "money"
+          description:
+      example:
+        partnerId: 600
+        eligibilityId: '28074_192314_1295'
+        accruedTransactionsCount: 109.99
+        currencyCode: 'USD'
+        benefitWorth: 50.99
+        benefitType: "money"
+    AccrueRedemptionBySpend:
+      title: Real time redemptions using Transaction
+      type: object
+      description: The request object contains redemption using transaction.
+      required:
+        - partnerId
+        - eligibilityId
+        - accruedSpend
+        - currencyCode
+        - benefitWorth
+        - benefitType
+      properties:
+        partnerId:
+          type: integer
+          example: 600
+          description: A unique identifier assigned to the issuer.
+        eligibilityId:
+          type: string
+          example: '28074_192314_1295'
+          description: An id received in the response of `eligibilities` API.
+        accruedSpend:
+          type: number
+          example: 2
+          description:
+        currencyCode:
+          type: string
+          example: 'USD'
+          description:
+        benefitWorth:
+          type: number
+          example: 50.99
+          description:
+        benefitType:
+          type: string
+          example: "money"
+          description:
+      example:
+        partnerId: 600
+        eligibilityId: '28074_192314_1295'
+        accruedSpend: 2
+        currencyCode: 'USD'
+        benefitWorth: 50.99
+        benefitType: "money"
+    RedemptionByRealTime:
+      title: Redemptions
+      type: object
+      description: The request object contains redemption details.
+      required:
+        - partnerId
+        - eligibilityId
+        - externalIdentifier
+        - redemptionCode
+        - redemptionURL
+        - isDefaultCardOnFile
+        - benefitStartTime
+        - benefitEndTime
+        - redeemedTime
+      properties:
+        partnerId:
+          type: integer
+          example: 512
+          description: A unique identifier assigned to the issuer.
         eligibilityId:
           type: string
           example: '17385_161041_1179'
@@ -873,7 +914,6 @@ components:
           description: This is the time when a benefit is actually redeemed.
       example:
         partnerId: 10
-        paymentNumber: '5555555555554444'
         eligibilityId: '1234_5467_50'
         spendAmount: 109.99
         spendCurrencyCode: USD
